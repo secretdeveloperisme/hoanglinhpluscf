@@ -1,0 +1,14 @@
+h1{
+    text-align: center;
+}
+input[type="text"]{
+    box-sizing: border-box;
+    width: 232px;
+    height: 30px;
+}
+.form-comment{
+    width: 100%;
+    height: 500px;
+    display: flex;
+    justify-content: center;
+}
