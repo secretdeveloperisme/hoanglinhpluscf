@@ -1,0 +1,16 @@
+body{
+    display: flex;
+}
+.container{ 
+    margin: auto;
+    
+}
+.container__item + .container__item{
+    margin-top: 10px;
+}
+.container__item > label {
+    color: red;
+}
+input[type=text],input[type=password]{
+    width: 300px;
+}
