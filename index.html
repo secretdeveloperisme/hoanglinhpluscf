@@ -6,16 +6,191 @@
       <meta name="keywords" content="HLP,hoanglinhplus,plus"> 
       <meta name="description" content="hoanglinhplus,linh">
       <meta name="viewport" content="initial-scale=1.0">
-      
+      <link rel="preconnect" href="https://fonts.gstatic.com">
+      <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,700&display=swap" rel="stylesheet">
+      <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+      <link rel="stylesheet" href="css/base.css">
+      <link rel="stylesheet" href="css/main.css">
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css">
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/js/solid.min.js">
+      <link rel="icon" href="asset/icons/hlp_icon.png">
    </head>
-   <body>
-      <header>
-         <h1>hoang linh plus website</h1>
+   <body onload = "removeAd()">
+      <header class="header">
+         <div class="header__title">
+            <h1>Hoang Linh Plus</h1>
+            <p>welcome to hoanglinhplus website</p>
+         </div>
+         
       </header>
-      <input type="button" onclick="helloWorld()" value="helloworld">
-      <a href="php/DisplayComments.php">display comment</a>
-      <a href="html/comment.html" >commnent about linh</a>
-      <script src="js/helloworld.js"></script>
-      </script>
+      <nav class="header__nav">
+         <ul class="header__nav-list">
+            <li class="header__nav-items header__nav-home"><a href=""><i class="fas fa-code"></i></a></li>
+            <li class="header__nav-items "><a class="active" href="#">home</a></li>  
+            <li class="header__nav-items"><a href="html/comment.html" target="_blank">comment about hoanglinh</a></li>
+            <li class="header__nav-items"><a href="php/DisplayComments.php">display comments</a></li>
+            <li class="header__nav-items header__nav_items-right dropdown" >
+               <button class="dropdown-btn">account</button>
+               <div class="dropdown-content">
+                  <a class="hl-center-text" href="html/login.html">login</a>
+                  <a class="hl-center-text" href="php/signup.php">sign up</a>
+               </div>
+            </li>
+         </ul>
+      </nav>
+      <div class="container grid">
+         <div class="container__column-left flex-column">
+            <div class="card ">
+               <img class="card__img" src="https://www.w3schools.com/w3images/woods.jpg" alt="woods">
+               <div class="card__text">
+                  <h2>Patient</h2>
+                  <h4 class="date">Monday January 1 2020</h4>
+                  <p>We all know the old adage: Patience is a virtue. But it's true! Patience can help us achieve our goals, maintain a more positive outlook on life, and make us less reactive, which in turn will make us less prone to bad decisions. Stress, regret, and anger don't help anything. So when you're facing an uncertain future, a negative event, or something scary, take a minute. Don't do anything. Just sit a spell. And if you find your brain veering in a negative direction, take note of some positive quotes about lifeto get yourself back in the right frame of mind to make better decisions.</p>
+               </div>   
+               <button class="hl-button">read more>></button>
+            </div>
+            <div class="card ">
+               <img class="card__img" src="asset/images/RE4wwtq.jpg" alt="flower and mountain">
+               <div class="card__text">
+                  <h2>Passion</h2>
+                  <h4 class="date">Tuesday January 2 2020</h4>
+                  <p> “You can do anything as long as you have the passion, the drive, the focus, and the support.” —Sabrina Bryan.</p>
+               </div>   
+               <button class="hl-button">read more>></button>
+            </div>
+            <div class="card  flex-items-end">
+               <img class="card__img" src="asset/images/universal.jpg" alt="flower and mountain">
+               <div class="card__text">
+                  <h2>Universal</h2>
+                  <h4 class="date">Wednesday January 3 2020</h4>
+                  <p>“Wisdom is not a product of schooling but of the lifelong attempt to acquire it.”
+                     ― Albert Einstein</p>
+               </div>   
+               <button class="hl-button">read more>></button>
+            </div>
+         </div>
+
+         <div class="container__column-right flex-column">
+            <div class="card hl-center-text" style="flex-shrink: 1;  ">
+               <img src="asset/images/hlp.jpg" class="card__profile-picture" alt="picture-profile" style="width: 60%;">
+               <div class="card__text">
+                  <h2 class="hl-center-text">About Me</h2>
+                  <h5>name : Hoang Linh</h5>
+                  <h5>major: information technology</h5>
+                  <h5>address : Giong Rieng, Kien Giang</h5>
+               </div>
+            </div>
+            <div class="card">
+               <img src="https://www.w3schools.com/w3images/avatar_g.jpg" alt="woods" style="width: 100%;">
+               <div class="card__text">
+               <h2 class="hl-center-text">Wonder woman</h2>
+               <p>Just me, myself and I, exploring the universe of uknownment. I have a heart of love and a interest of <span class="hl-important-text">Programing</span> and <span class="hl-important-text">Reading Book</span> quam blog. I want to share my world with you.</p>
+               </div>
+            </div>
+            <div class="card">
+               <div class="card__text">
+               <h1>hobbies</h1>
+               <ul class="hl-ul-customize" >
+                 <li><img class="hl-margin-right"src="asset/images/favorites/code.png" alt="" width="50px"> Coding</li>
+                 <li><img class="hl-margin-right"src="asset/images/favorites/readingbook.png" alt="" style="width: 50px;">Reading</li>
+                 <li><img class="hl-margin-right"src="asset/images/favorites/football.png" alt="" style="width: 50px;">Football</li>
+                 <li><img class="hl-margin-right"src="asset/images/favorites/badminton.jpg" alt="" style="width: 50px;">Badminton</li>
+               </ul>   
+               </div>
+            </div>
+            <div class="card">
+               <div class="card__text">
+               <h1>Programing language</h1>
+               <ul class="hl-ul-customize--flex" >
+                  <li>Java</li>
+                  <li>HTML</li>
+                  <li>CSS</li>
+                  <li>JavaScript</li>
+                  <li>Python</li>
+                  <li>php</li>
+                  <li>Mysql</li>
+                  <li>Kotlin</li>
+                  <li>C++</li>
+                  <li>C</li>
+               </ul>   
+               </div>
+            </div>
+            <div class="card" style="padding-bottom: 10px;">
+               <h1 class="hl-title--effect">Hoàng Linh gallery</h1>
+               <div class="grid__gallery">
+                  <img class="grid__gallery__img" src="asset/images/girls/1.jpg" alt="beautiful girl 1">
+                  <img class="grid__gallery__img" src="asset/images/girls/2.jpg" alt="beautiful girl 2">
+                  <img class="grid__gallery__img" src="asset/images/girls/3.jpg" alt="beautiful girl 3">
+                  <img class="grid__gallery__img" src="asset/images/girls/4.jpg" alt="beautiful girl 4">
+                  <img class="grid__gallery__img" src="asset/images/girls/5.jpg" alt="beautiful girl 5">
+                  <img class="grid__gallery__img" src="asset/images/girls/6.jpg" alt="beautiful girl 6">
+                  <img class="grid__gallery__img" src="asset/images/girls/7.jpg" alt="beautiful girl 7">
+                  <img class="grid__gallery__img" src="asset/images/girls/8.jpg" alt="beautiful girl 8">
+                  <img class="grid__gallery__img" src="asset/images/girls/9.jpg" alt="beautiful girl 9">
+               </div>
+            </div>
+         </div>
+      </div>
+      <div class="article">
+         <div class="slideshow_container">
+            <div class="slideshow_container__item hl-position-relative" >
+               <img src="asset/images/Hawaii_US.jpg" alt=""width="100%"  height="100%">
+               <h1 class="hl-center-bottom hl-title--effect">Beach</h1>
+            </div>
+            <div class="slideshow_container__item hl-position-relative"  >
+               <img src="asset/images/java_wallpaper.jpg" alt=""width="100%" height="100%">
+               <h1 class="hl-center-bottom hl-title--effect">Java Programing Language</h1>
+            </div>
+               
+            <div class="slideshow_container__item hl-position-relative" >
+               <img src="asset/images/Johns_Island_South_Carolina.jpg" alt=""width="100%" height="100%">
+               <h1 class="hl-center-bottom hl-title--effect">Old Tree</h1>
+            </div>
+            <button class="btn-left hl-margin-left hl-background-transparent" onclick="plusDiv(-1)"><i class="fas fa-backward "></i></button>
+            <button class="btn-right hl-margin-right hl-background-transparent" onclick="plusDiv(1)"><i class="fas fa-forward"  ></i></button>
+        </div>
+      </div>
+      <!-- display a huge picture from hoanglinh gallery -->
+      <div id="modal">
+         <div id="modal__close">&times;</div>
+         <img id="modal__content">
+         <div class="hl-title--effect" id="modal__caption"></div>
+      </div>
+      <!-- display a huge picture from hoanglinh gallery -->
+      <footer class="footer">
+          <div class="footer__container footer__container--flex-row">
+             <div class="container__item">
+                <h3>Social Network</h3>
+                <ul>
+                  <li><a href="https://github.com/secretdeveloperisme"><p><i class="fab fa-github"></i>github</p></a></li>      
+                  <li><a href="https://www.facebook.com/hoanglinhplus"><p><i class="fab fa-facebook"></i>facebook</p></a></li>
+                  <li><a href=""><p><i class="fas fa-phone-square-alt"></i>zalo</p></a></li>
+                  <li><a href=""><p><i class="fab fa-quora"></i>quora</p></a></li>
+                </ul>
+             </div>
+             <div class="container__item">
+                <h3>Website Learning</h3>
+                <ul>
+                     <li><a href="https://www.w3schools.com/">   w3schools </a></li>
+                     <li><a href="https://www.freecodecamp.org/">    freecodecamp</a></li>
+                     <li><a href="https://stackoverflow.com/users/story/11562196">    stackoverflow</a></li>
+                     <li><a href="https://www.javatpoint.com/">    javatpoint</a></li>
+                     <li><a href="https://github.com/">   github </a></li>
+                     <li><a href="https://app.pluralsight.com/">    pluralsight</a></li>
+                     <li><a href="https://codelearn.io/home">    codelearn.io</a></li>
+                </ul>
+             </div>
+             <div class="container__item">
+                <h3>Universities</h3>
+                <ul>
+                   <li><a href="https://www.ctu.edu.vn/"><img src="asset/icons/ctu.png" alt="can tho university" width="150px"><p>Can Tho University</p></a></li>
+                </ul>
+             </div>
+            
+          </div>
+          <h2 class="hl-title--effect">Mọi chi tiết xin liên hệ hoanglinhplus email: linh072217@gmail.com</h2>
+      </footer>
+      <script src="js/main.js"></script>
+      <div style="text-align:right;position:fixed;bottom:3px;right:3px;width:100%;z-index:999999;cursor:pointer;line-height:0;display:block;"><a target="_blank" href="https://www.freewebhostingarea.com" title="Free Web Hosting with PHP5 or PHP7"><img alt="Free Web Hosting" src="https://www.freewebhostingarea.com/images/poweredby.png" style="border-width: 0px;width: 180px; height: 45px; float: right;"></a></div>
    </body>
 </html>
