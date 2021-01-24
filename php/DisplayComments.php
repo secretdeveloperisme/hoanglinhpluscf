@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
     <head>
+        <meta charset="UTF-8">
         <link rel="stylesheet" href="../css/displaycomment.css">
     </head>
     <body>
@@ -12,12 +13,12 @@
         <?php
             include "ConnectDB.php";
             $connect = getConnectDB();
-            $sql = "SELECT * FROM  comments";
+            $sql = "SELECT * FROM  comment";
             $result = $connect->query($sql);
             while($row = $result->fetch_assoc()){
                 echo    "<tr>
-                        <td>".$row["user"]."</td>".
-                        "<td>".$row["comment"]."</td>
+                        <td>".htmlspecialchars($row["user"])."</td>".
+                        "<td>".htmlspecialchars($row["comment"])."</td>
                         </tr>";
                 }
             
