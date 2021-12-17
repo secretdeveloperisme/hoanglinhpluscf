@@ -62,7 +62,7 @@ function showDiv(n){
 }
 setInterval(() => {
   plusDiv(1)
-}, 4000);
+}, 7000);
 function removeAd(){
   let childOfBody = document.body.children;
   let divsOfBody = childOfBody[childOfBody.length-1]
