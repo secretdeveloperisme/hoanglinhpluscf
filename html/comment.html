@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>comment</title>
+        <meta charset="utf-8">
+        <link rel="stylesheet" href="../css/comment.css">
+    </head>
+    <body>
+        <header>
+            <h1>you can write anything about Hoang Linh</h1>
+        </header>
+        <div class="form-comment">
+            <form accept-charset="utf-8" action="../php/insertcomment.php" method="POST">
+                <label for="username">Your name is : </label><br>
+                <input type="text" name="username" placeholder="input name"><br>
+                <label for="comment">Write your comment: </label><br>
+                <textarea name="comments" cols="30" rows="5" placeholder="input your comment"></textarea><br>
+                <input type="submit" value="Okay">
+            </form>
+        </div>
+        
+    </body>
+</html>
