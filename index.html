@@ -143,7 +143,10 @@
             <div class="row">
                <div class="container__column-left col l-8 m-7 c-12">
                   <div class="card ">
-                     <img class="card__img" src="https://www.w3schools.com/w3images/woods.jpg" alt="woods">
+                     <div class="card__img">
+                        <img src="https://www.w3schools.com/w3images/woods.jpg" alt="woods">
+                     </div>
+                     
                      <div class="card__text">
                         <h2>Patient</h2>
                         <h4 class="date">Monday January 1 2020</h4>
@@ -152,7 +155,10 @@
                      <button class="hl-button">read more>></button>
                   </div>
                   <div class="card ">
-                     <img class="card__img" src="assets/images/RE4wwtq.jpg" alt="flower and mountain">
+                     <div class="card__img">
+                        <img src="assets/images/RE4wwtq.jpg" alt="flower and mountain">
+                     </div>
+                     
                      <div class="card__text">
                         <h2>Passion</h2>
                         <h4 class="date">Tuesday January 2 2020</h4>
@@ -160,8 +166,11 @@
                      </div>   
                      <button class="hl-button">read more>></button>
                   </div>
-                  <div class="card  flex-items-end">
-                     <img class="card__img" src="assets/images/universal.jpg" alt="flower and mountain">
+                  <div class="card">
+                     <div class="card__img">
+                        <img src="assets/images/universal.jpg" alt="flower and mountain">
+                     </div>
+                     
                      <div class="card__text">
                         <h2>Universal</h2>
                         <h4 class="date">Wednesday January 3 2020</h4>
@@ -191,7 +200,7 @@
                      </div>
                      <div class="card col l-12 m-12 c-6 ">
                         <div class="card__text">
-                        <h2>hobbies</h2>
+                        <h2 class="hl-center-text">Hobbies</h2>
                         <ul class="hl-ul-customize" >
                           <li><img class="hl-margin-right"src="assets/images/favorites/code.png" alt="" width="50px"> Coding</li>
                           <li><img class="hl-margin-right"src="assets/images/favorites/readingbook.png" alt="" style="width: 50px;">Reading</li>
@@ -202,8 +211,8 @@
                      </div>
                      <div class="card col l-12 m-12 c-6 ">
                         <div class="card__text">
-                        <h2>Programing language</h3>
-                        <ul class="hl-ul-customize--flex" >
+                        <h2 class="hl-center-text">Programing Languages</h3>
+                        <ul class="hl-ul-customize--flex mobile-list hl-center-text" >
                            <li>Java</li>
                            <li>HTML</li>
                            <li>CSS</li>
@@ -237,24 +246,24 @@
             <div class="article">
                <div class="slideshow_container">
                   <div class="slideshow_container__item hl-position-relative" >
-                     <img src="assets/images/Hawaii_US.jpg" alt=""width="100%"  height="100%">
+                     <div class="slideshow-container_image" style="background-image: url(assets/images/Hawaii_US.jpg)" ></div>
                      <h2 class="hl-center-bottom hl-title--effect caption-mobile">Beach</h2>
                   </div>
                   <div class="slideshow_container__item hl-position-relative"  >
-                     <img src="assets/images/java_wallpaper.jpg" alt=""width="100%" height="100%">
+                     <div class="slideshow-container_image" style="background-image: url(assets/images/java_wallpaper.jpg)" ></div>
                      <h2 class="hl-center-bottom hl-title--effect caption-mobile">Java Programing Language</h2>
                   </div>
                      
                   <div class="slideshow_container__item hl-position-relative" >
-                     <img src="assets/images/Johns_Island_South_Carolina.jpg" alt=""width="100%" height="100%">
+                     <div class="slideshow-container_image" style="background-image: url(assets/images/Johns_Island_South_Carolina.jpg)" ></div>
                      <h2 class="hl-center-bottom hl-title--effect caption-mobile">Old Tree</h2>
                   </div>
                   <div class="slideshow_container__item hl-position-relative" >
-                     <img src="assets/images/slideshows/operating_system.jpg" alt=""width="100%" height="100%">
+                     <div class="slideshow-container_image" style="background-image: url(assets/images/slideshows/operating_system.jpg)" ></div>
                      <h2 class="hl-center-bottom hl-title--effect caption-mobile">Operating System</h2>
                   </div>
                   <div class="slideshow_container__item hl-position-relative" >
-                     <img src="assets/images/slideshows/ubuntu.jpg" alt=""width="100%" height="100%">
+                     <div class="slideshow-container_image" style="background-image: url(assets/images/slideshows/ubuntu.jpg)" ></div>
                      <h2 class="hl-center-bottom hl-title--effect caption-mobile">Ubuntu</h2>
                   </div>
                   <button class="btn-left hl-margin-left hl-background-transparent" onclick="plusDiv(-1)"><i class="fas fa-backward "></i></button>
@@ -274,11 +283,11 @@
             </div>
             <!-- display a huge picture from hoanglinh gallery -->
             <div id="modal">
-               <div id="modal__close">&times;</div>
                <div class="modal__content">
                   <img id="imageShow">
                </div>
                <div class="hl-title--effect" id="modal__caption"></div>
+               <div id="modal__close"><i class="fas fa-times"></i></div>
             </div>
             <!-- display a huge picture from hoanglinh gallery -->
             <footer class="footer grid">

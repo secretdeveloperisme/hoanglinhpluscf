@@ -44,6 +44,9 @@ p{
     border: 1px solid black;
     box-shadow: 2px 2px 3px black;
 }
+.hl-button:hover{
+    cursor: pointer;
+}
 .hl-ul-customize{
     margin: 0.7rem;
     padding: 0;
