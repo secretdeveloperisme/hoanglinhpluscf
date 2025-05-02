@@ -292,7 +292,32 @@
 .card__profile-picture{
     margin-top: 10px;
     border-radius: 2px;
+    width: 200px;
+    
+    border-radius: 100%;
+    overflow: hidden;
+    color: black;
+    box-shadow: 0.5rem 0.5rem 0.5rem rgb(182, 181, 181),-0.5rem -0.5rem 0.5rem rgb(182, 181, 181);
+    
+    border: 5px solid green;
 }
+
+.about-me{
+    padding: 3.5rem;
+    margin-top: 2.5rem;
+    font-size: 1.875rem;
+    font-weight: 800;
+    color: #1f2937;
+
+    @media screen and (min-width: 1024px) {
+        margin-top: 3.5rem;
+    }
+
+    @media screen and (min-width: 1280px) {
+        font-size: 3rem;
+    }
+}
+
 .card .card__text{
     padding:0 1.6rem 1.2rem 1.6rem;
 }
