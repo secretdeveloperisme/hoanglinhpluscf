@@ -23,7 +23,6 @@
                <h1>Hoang Linh Plus</h1>
                <p>welcome to hoanglinhplus website</p>
             </div>
-            
          </header>
          <nav class="header__nav">
             <input type="checkbox" id="cbx-nav-bar" hidden>
@@ -34,14 +33,11 @@
                </a>
             </div>
             <ul class="header__nav-list header__nav-list--pc">
-               <li class="header__nav-items "><a class="active" href="#">home</a></li>
-               <li class="header__nav-items dropdown">
-                  <div class="dropdown-btn">ShopPlus</div>
-                  <div class="dropdown-content projects">
-                     <a href="ShopPlus_Customer/" class="hl-center-text">ShopPlus Customer</a>
-                     <a href="ShopPlus_Admin/" class="hl-center-text">ShopPlus Admin</a>
-                  </div>
-               </li> 
+               <li class="header__nav-items"><a href="#about">About</a></li>
+               <li class="header__nav-items"><a href="#quote">Quote</a></li>
+               <li class="header__nav-items"><a href="#posts">Posts</a></li>
+               <li class="header__nav-items"><a href="#projects">Projects</a></li>
+               <li class="header__nav-items"><a href="#experiences">Experience</a></li>
                <li class="header__nav-items dropdown">
                   <div class="dropdown-btn">Comment</div>
                   <div class="dropdown-content projects">
@@ -59,13 +55,21 @@
                      <a href="https://www.hoanglinhplus.cf/quote" class="hl-center-text">Quotes</a>
                      <a href="https://www.hoanglinhplus.cf/upload" class="hl-center-text">Upload</a>
                      <a href="HoangLinhSchedule/schedule.html " class="hl-center-text">Schedule</a>
+                     <div class="dropdown ">
+                        <div class="dropdown-btn hl-center-text">ShopPlus</div>
+                        <div class="dropdown-content dropdown-content__right">
+                           <a href="ShopPlus_Customer/" class="hl-center-text">ShopPlus Customer</a>
+                           <a href="ShopPlus_Admin/" class="hl-center-text">ShopPlus Admin</a>
+                        </div>
+                     </div> 
                   </div>
                </li> 
+               <li class="header__nav-items"><a href="#contact">Contact</a></li>
                <li class="header__nav-items header__nav_items-right dropdown dropdown--right" >
                   <div class="dropdown-btn btn-more">More</div>
                   <div class="dropdown-content">
                      <a class="hl-center-text" href="https://secretdeveloperisme.github.io/Curriculum_Vitae/HoangLinhPlusCV.html">My CV</a>
-                     <a class="hl-center-text" href="php/signup.php">About Me</a>
+                     <a class="hl-center-text" href="html/login.html">Login</a>
                   </div>
                </li>
             </ul>
@@ -84,10 +88,24 @@
                      <h1 class="hl-color-text">LinhPlus</h1>
                   </a>
                </li>
-               <li class="header__nav-mobile-item"><a class="active" href="#">HOME</a></li>
                <li class="header__nav-mobile-item">
-                  <div class="header-nav-mobile-item__label">ShopPlus</div>
+                  <div class="header-nav-mobile-item__label">Sections</div>
                   <div class="header-nav-mobile__sub-item">
+                     <a href="#about" class="hl-center-text">About</a>
+                     <a href="#quote" class="hl-center-text">Quote</a>
+                     <a href="#posts" class="hl-center-text">Posts</a>
+                     <a href="#projects" class="hl-center-text">Projects</a>
+                     <a href="#experiences" class="hl-center-text">Experience</a>
+                     <a href="#experiences" class="hl-center-text">Contact</a>
+                  </div>
+               </li>
+               
+               <li class="header__nav-mobile-item">
+                  <div class="header-nav-mobile-item__label">My Collections</div>
+                  <div class="header-nav-mobile__sub-item">
+                     <a href="https://www.hoanglinhplus.cf/quote" class="hl-center-text">Quotes</a>
+                     <a href="https://www.hoanglinhplus.cf/upload" class="hl-center-text">Upload</a>
+                     <a href="HoangLinhSchedule/schedule.html" class="hl-center-text">Schedule</a>
                      <a href="https://www.hoanglinhplus.cf/ShopPlus_Customer/" class="hl-center-text">ShopPlus Customer</a>
                      <a href="https://www.hoanglinhplus.cf/ShopPlus_Admin/" class="hl-center-text">ShopPlus Admin</a>
                   </div>
@@ -103,19 +121,11 @@
                      </a>
                   </div>
                </li> 
-               <li class="header__nav-mobile-item">
-                  <div class="header-nav-mobile-item__label">My Collections</div>
-                  <div class="header-nav-mobile__sub-item">
-                     <a href="https://www.hoanglinhplus.cf/quote" class="hl-center-text">Quotes</a>
-                     <a href="https://www.hoanglinhplus.cf/upload" class="hl-center-text">Upload</a>
-                     <a href="HoangLinhSchedule/schedule.html" class="hl-center-text">Schedule</a>
-                  </div>
-               </li> 
                <li class="header__nav-mobile-item" >
                   <div class="header-nav-mobile-item__label">More</div>
                   <div class="header-nav-mobile__sub-item">
                      <a class="hl-center-text" href="html/hlp_cv.html">My CV</a>
-                     <a class="hl-center-text" href="html/about_me.html">About Me</a>
+                     <a class="hl-center-text" href="html/login.html">Login</a>
                   </div>
                </li>
             </ul>
@@ -131,7 +141,7 @@
                   </div>
                </div>
             </div>
-            <div class="quote-container">
+            <div id="quote" class="quote-container">
                <div class="quote-content">
                   <div class="quote-content__icon-left">
                     <i class="fas fa-quote-left"></i>

@@ -11,6 +11,7 @@
 }
 .header__title{
     text-align: center;
+    padding: 1rem 0;
 }
 .header__home-logo{
     font-size: 1.6rem;
@@ -64,6 +65,10 @@
     list-style-type: none;
     width: 100%;
 }
+
+.header__nav-item {
+    border-left: 1px solid var(--black-color);
+}
 .header__nav-list--mobile{
     padding: 20px 15px;
     display: none;
@@ -114,8 +119,13 @@
 .header__nav-list li{
     float: left;
     display: block;
-    border-right:1px solid var(--black-color);
+    border-left:1px solid var(--black-color);
 }
+
+.header__nav-list li:nth-last-child(2){
+    border-right: 1px solid var(--black-color);
+}
+
 .header__nav-list li:nth-last-child(1){
     float: right;
     display: block;
@@ -137,34 +147,39 @@
 }
 .dropdown{
     position: relative;
-    
+    cursor: pointer;
+
 }
 .dropdown--right{
 
 }
-.dropdown--right.dropdown  .dropdown-content{
-    width: 300px;
+
+.dropdown--right.dropdown  > .dropdown-content{
     right: 0;
     transform-origin: 100% 0;
 }
-.dropdown .dropdown-content{
-    max-width: 200px;
+.dropdown > .dropdown-content{
+    width: 200px;
     display: none;
     position: absolute;
     background-color: gray;
     border: 0.1rem solid black;
     box-shadow: 5px 4px 3px black;
     animation: dropdown_appear .3s linear ;
-    overflow: hidden;
     transform-origin: 15% 0;
 }
-.dropdown .dropdown-btn{
-    display:inline-block;
+
+.dropdown-content__right{
+    left: 100%;
+    top: 0;
+    transform-origin: 0 0;
+}
+.dropdown >  .dropdown-btn{
     padding: 1.7rem 2rem;
     color: #fff;
     text-align: center;
 }
-.dropdown:hover .dropdown-content{
+.dropdown:hover > .dropdown-content{
     display: block;
 }
 .btn-more{
@@ -173,9 +188,7 @@
 .btn-more:hover{
     cursor: pointer;
 }
-.projects{
-    width: 300px;
-}
+
 .header__nav-btn-bars{
     display: none; 
     margin-left: auto;
