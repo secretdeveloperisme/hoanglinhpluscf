@@ -1,8 +1,12 @@
+/**
+ * Section 1: Navigation bar
+ */
 //add sticky navigation bar 
 window.onscroll = function() {myFunction()};
 let x = document.getElementsByClassName("header__nav");
 let navbar = x[0];
 let sticky = navbar.offsetTop;
+
 function myFunction() {
   if (window.pageYOffset >= sticky) {
     navbar.classList.add("sticky");
@@ -10,6 +14,7 @@ function myFunction() {
     navbar.classList.remove("sticky");
   }
 }
+
 // display random quote
 let quoteSentenceTag = document.querySelector("#quoteSentence");
 let quoteAuthorTag = document.querySelector("#quoteAuthor")

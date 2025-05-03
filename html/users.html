@@ -1,0 +1,97 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>users</title>
+</head>
+
+<body>
+    <h1>Users</h1>
+    <script>
+        const apiUrl = 'http://localhost/hoanglinhpluscf/api/users.php';
+
+        // Function to get all users
+        async function getAllUsers() {
+            try {
+                const response = await fetch(apiUrl);
+                if (!response.ok) {
+                    throw new Error('Network response was not ok ' + response.statusText);
+                }
+                
+                const users = await response.json();
+                console.log('All Users:', users);
+            } catch (error) {
+                console.error('Error fetching users:', error);
+            }
+        }
+
+        // Function to get a user by ID
+        async function getUserById(id) {
+            try {
+                const response = await fetch(`${apiUrl}?id=${id}`);
+                const user = await response.json();
+                console.log(`User with ID ${id}:`, user);
+            } catch (error) {
+                console.error(`Error fetching user with ID ${id}:`, error);
+            }
+        }
+
+        // Function to create a new user
+        async function createUser(username, email, password) {
+            try {
+                const response = await fetch(apiUrl, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ username, email, password }),
+                });
+                const result = await response.json();
+                console.log('User created:', result);
+            } catch (error) {
+                console.error('Error creating user:', error);
+            }
+        }
+
+        // Function to update a user by ID
+        async function updateUser(id, email) {
+            try {
+                const response = await fetch(`${apiUrl}?id=${id}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ email }),
+                });
+                const result = await response.json();
+                console.log(`User with ID ${id} updated:`, result);
+            } catch (error) {
+                console.error(`Error updating user with ID ${id}:`, error);
+            }
+        }
+
+        // Function to delete a user by ID
+        async function deleteUser(id) {
+            try {
+                const response = await fetch(`${apiUrl}?id=${id}`, {
+                    method: 'DELETE',
+                });
+                const result = await response.json();
+                console.log(`User with ID ${id} deleted:`, result);
+            } catch (error) {
+                console.error(`Error deleting user with ID ${id}:`, error);
+            }
+        }
+
+        // Example usage
+        
+        getUserById(1);
+        createUser('newuser', 'newuser@example.com', 'password123');
+        getAllUsers();
+        // updateUser(1, 'updatedemail@example.com');
+        // deleteUser(2);
+    </script>
+</body>
+
+</html>
