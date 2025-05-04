@@ -18,3 +18,18 @@ CREATE TABLE users (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
+
+
+/*
+ * This SQL script creates a table named 'quotes' with the following fields:
+ * - id: an auto-incrementing primary key
+ * - content: a text field to store the quote content
+ * - author: a string to store the author's name
+ * - created_at: a timestamp for when the quote was created
+ */
+CREATE TABLE quotes (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    content TEXT NOT NULL,
+    author VARCHAR(100) NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);

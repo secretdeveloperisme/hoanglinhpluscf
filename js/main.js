@@ -2,12 +2,12 @@
  * Section 1: Navigation bar
  */
 //add sticky navigation bar 
-window.onscroll = function() {myFunction()};
+window.onscroll = function() {registerStickyNavBarEvent()};
 let x = document.getElementsByClassName("header__nav");
 let navbar = x[0];
 let sticky = navbar.offsetTop;
 
-function myFunction() {
+function registerStickyNavBarEvent() {
   if (window.pageYOffset >= sticky) {
     navbar.classList.add("sticky");
   } else {
@@ -19,16 +19,14 @@ function myFunction() {
 let quoteSentenceTag = document.querySelector("#quoteSentence");
 let quoteAuthorTag = document.querySelector("#quoteAuthor")
 
-let xhr = new XMLHttpRequest();
-xhr.open("GET","php/getRandomQuote.php");
-xhr.onreadystatechange = function(){
-  if(this.readyState==4 && this.status==200){
-    quoteObject = JSON.parse(this.responseText);
+fetch("api/quotes.php")
+  .then(response => response.json())
+  .then(quoteObject => {
     quoteSentenceTag.textContent = quoteObject.content;
     quoteAuthorTag.textContent = quoteObject.author;
-  } 
-}
-xhr.send();
+  })
+  .catch(error => console.error('Error fetching quotes:', error));
+
 
 //display a huge picture
 let modal = document.getElementById("modal");
@@ -68,6 +66,7 @@ function showDiv(n){
 setInterval(() => {
   plusDiv(1)
 }, 7000);
+
 function removeAd(){
   let childOfBody = document.body.children;
   let divsOfBody = childOfBody[childOfBody.length-1]

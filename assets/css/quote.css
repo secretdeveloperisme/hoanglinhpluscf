@@ -1,0 +1,235 @@
+*{
+    box-sizing: border-box;
+}
+@font-face{
+    font-family: "Cassandra";
+    src: url("../font/cassandrapersonaluseregular-3bjg-webfont.woff") format("woff");
+}
+html{
+    font-size: 62.5%;
+    height: 100%;
+}
+body{
+    height: 100%;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: black;
+    transition: 0.5s ease;
+}
+.modal{
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    position: fixed;
+    display: flex;
+    display: none;
+
+}
+.modal-appear{
+    display: flex;
+}
+.modal__overlay{
+    position: absolute;
+    z-index: 1;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.3);
+}
+.modal__body{
+    margin: auto;
+    z-index: 2;
+    width: 40%;
+    max-width: 50%;
+    background-image: linear-gradient(to right ,#1c92d2,#f2fcfe);
+    border-radius: 3px;
+    box-shadow: 0,0,5px,rgba(0, 0, 0, 1);
+    animation: appear .5s  linear;
+}
+.modal__close{
+    cursor: pointer;
+    user-select: none;
+    z-index: 2;
+    position: absolute;
+    right: 3px;
+    font-size: 9rem;
+    color: red;
+    font-weight: 900;
+}
+
+
+.header__title{
+    font-family: "Cassandra",Arial,sans-serif;
+    font-size: 4rem;
+    color: red;
+    user-select: none;
+}
+.display__quote{
+    text-align: center;
+    transition: color 0.5s ease;
+    color: white;
+    font-family: 'Open Sans', sans-serif;
+    font-size: 3rem;
+    font-weight: 600;
+}
+.display__author{
+    font-family: 'Open Sans', sans-serif;
+    font-size: 2rem;
+    text-align: end;
+    color: green;
+}
+.input-quote{
+    display: flex;
+    flex-direction: column;
+    border-radius: 10px;
+    padding: 5px 10px;
+}
+
+.input__title{
+    font-size: 3rem;
+    text-align: center;
+    font-family: "Cassandra";
+}
+.input__content{
+    display: flex;
+    align-items: center;
+}
+.input__content + .input__content{
+    margin-top: 10px;
+}
+.input__label{
+    vertical-align: middle;
+    font-weight: 800;
+    font-size: 2rem;
+    margin-right: 5px;
+    flex-basis: 150px;
+}
+.input__content-text{
+    font-family: 'Open Sans', sans-serif;
+    flex-shrink: 1;
+    flex:1;
+    padding: 2px 5px;
+    font-size: 2rem;
+    line-height: 2rem;
+    outline: none;
+    border-left: transparent;
+    border-top: transparent;
+    border-right: transparent;
+    background-color: transparent;
+    color: red;
+}
+.input__content-text:focus{
+    border-bottom: 2px solid red;
+}
+.input-btn-group{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+.input__add{
+    outline: none;
+    border: none;
+    margin-top: 30px;
+    align-self: center;
+    width: 30%;
+    height: 30px;
+    border-radius: 10px;
+    background-image: linear-gradient(to right,#8360c3,#2ebf91);
+    font-weight: 900;
+    color: #fff;
+    
+}
+.input__add + .input__add{
+    margin-left: 5px;
+}
+.input__add:hover{
+    cursor: pointer;
+    opacity: 0.9;
+    color: black;
+}
+.input__add:active{
+    color: green;
+}
+.darkmode{
+    position: fixed;
+    bottom: 20px;
+    right: 5px;
+}
+.switch{
+    overflow: hidden;
+    position: relative;
+    display: inline-block;
+    width: 60px;
+    height: 34px;
+}
+.switch input{
+    cursor: pointer;
+    opacity: 0;
+    position: absolute;
+    z-index: 1;
+    top: -50%;
+    left: -55%;
+    width: 200%;
+    height: 200%;
+
+}
+.slider{
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    -webkit-transition: .4s;
+    transition: .4s;
+}
+.slider::before{
+    position: absolute;
+    content: "";
+    height: 26px;
+    width: 26px;
+    left: 4px;
+    bottom: 4px;
+    background-color: white;
+    -webkit-transition: .4s;
+    transition: .4s;
+}
+.switch input:checked + .slider {
+    background-color: #2196F3;
+}
+  
+.switch input:focus + .slider {
+    box-shadow: 0 0 1px #2196F3;
+}
+  
+.switch input:checked + .slider:before {
+    -webkit-transform: translateX(26px);
+    -ms-transform: translateX(26px);
+    transform: translateX(26px);
+
+}
+.slider.round {
+    border-radius: 34px;
+}
+.slider.round:before {
+  border-radius: 50%;
+}  
+
+@media only screen and (max-width:768px){
+    .modal__body{
+        width: 90%;
+    }
+}
+@keyframes appear{
+    from{
+        transform: scale(0);
+        opacity: 0;
+    }
+    to{
+        transform: scale(1);
+        opacity : 1;
+    }
+}
