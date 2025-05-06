@@ -12,9 +12,9 @@
       <link rel="stylesheet" href="assets/css/base.css">
       <link rel="stylesheet" href="assets/css/grid.css">
       <link rel="stylesheet" href="assets/css/main.css">
-      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css">
-      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/js/solid.min.js">
       <link rel="icon" href="assets/icons/hlp_icon.png">
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/js/all.min.js"></script>
+
    </head>
    <body onload = "removeAd()">
       <div class="main">
@@ -162,47 +162,59 @@
             </div>
             <div class="row">
                <div class="container__column-left col l-8 m-7 c-12">
-                  <div class="card ">
-                     <div class="card__img">
-                        <img src="https://www.w3schools.com/w3images/woods.jpg" alt="woods">
+                  <div class="posts-container">
+                     <div class="card">
+                        <div class="card__img">
+                           <img src="https://www.w3schools.com/w3images/woods.jpg" alt="woods">
+                        </div>
+                        
+                        <div class="card__text">
+                           <h2>Patient</h2>
+                           <h4 class="date">Monday January 1 2020</h4>
+                           <p>We all know the old adage: Patience is a virtue. But it's true! Patience can help us achieve our goals, maintain a more positive outlook on life, and make us less reactive, which in turn will make us less prone to bad decisions. Stress, regret, and anger don't help anything. So when you're facing an uncertain future, a negative event, or something scary, take a minute. Don't do anything. Just sit a spell. And if you find your brain veering in a negative direction, take note of some positive quotes about lifeto get yourself back in the right frame of mind to make better decisions.</p>
+                        </div>   
+                        <button class="hl-button">read more>></button>
                      </div>
-                     
-                     <div class="card__text">
-                        <h2>Patient</h2>
-                        <h4 class="date">Monday January 1 2020</h4>
-                        <p>We all know the old adage: Patience is a virtue. But it's true! Patience can help us achieve our goals, maintain a more positive outlook on life, and make us less reactive, which in turn will make us less prone to bad decisions. Stress, regret, and anger don't help anything. So when you're facing an uncertain future, a negative event, or something scary, take a minute. Don't do anything. Just sit a spell. And if you find your brain veering in a negative direction, take note of some positive quotes about lifeto get yourself back in the right frame of mind to make better decisions.</p>
-                     </div>   
-                     <button class="hl-button">read more>></button>
+                     <div class="card ">
+                        <div class="card__img">
+                           <img src="assets/images/RE4wwtq.jpg" alt="flower and mountain">
+                        </div>
+                        
+                        <div class="card__text">
+                           <h2>Passion</h2>
+                           <h4 class="date">Tuesday January 2 2020</h4>
+                           <p> "You can do anything as long as you have the passion, the drive, the focus, and the support." —Sabrina Bryan.</p>
+                        </div>   
+                        <button class="hl-button">read more>></button>
+                     </div>
+                     <div class="card">
+                        <div class="card__img">
+                           <img src="assets/images/universal.jpg" alt="flower and mountain">
+                        </div>
+                        
+                        <div class="card__text">
+                           <h2>Universal</h2>
+                           <h4 class="date">Wednesday January 3 2020</h4>
+                           <p>"Wisdom is not a product of schooling but of the lifelong attempt to acquire it."
+                              ― Albert Einstein</p>
+                        </div>   
+                        <button class="hl-button">read more>></button>
+                     </div>
                   </div>
-                  <div class="card ">
-                     <div class="card__img">
-                        <img src="assets/images/RE4wwtq.jpg" alt="flower and mountain">
-                     </div>
-                     
-                     <div class="card__text">
-                        <h2>Passion</h2>
-                        <h4 class="date">Tuesday January 2 2020</h4>
-                        <p> "You can do anything as long as you have the passion, the drive, the focus, and the support." —Sabrina Bryan.</p>
-                     </div>   
-                     <button class="hl-button">read more>></button>
-                  </div>
-                  <div class="card">
-                     <div class="card__img">
-                        <img src="assets/images/universal.jpg" alt="flower and mountain">
-                     </div>
-                     
-                     <div class="card__text">
-                        <h2>Universal</h2>
-                        <h4 class="date">Wednesday January 3 2020</h4>
-                        <p>"Wisdom is not a product of schooling but of the lifelong attempt to acquire it."
-                           ― Albert Einstein</p>
-                     </div>   
-                     <button class="hl-button">read more>></button>
+                  <div class="pagination">
+                     <a class="pagination__item" href="">&laquo;</a>
+                     <a class="pagination__item active" href="">1</a>
+                     <a class="pagination__item" href="">2</a>
+                     <a class="pagination__item" href="">3</a>
+                     <a class="pagination__item" href="">4</a>
+                     <a class="pagination__item" href="">5</a>
+                     <a class="pagination__item" href="">6</a>
+                     <a class="pagination__item" href="">7</a>
+                     <a class="pagination__item" href="">&raquo;</a>
                   </div>
                </div>
                <div class="container__column-right col l-4 m-5 c-12 grid">
                   <div class="row">
-                     
                      <div class="card col l-12 m-12 c-12 ">
                         <img src="./assets/images/IT_and_BOOKS.png" alt="woods" style="width: 100%;">
                         <div class="card__text">
@@ -250,6 +262,137 @@
                   </div>
                </div>
             </div>
+            <div class="section">
+               <h2 class="section-title">My Projects</h2>
+               <div class="projects-container">
+                  <div class="row">
+                     <div class="col l-4 m-6 c-12">
+                        <div class="project-card">
+                           <img src="assets/images/projects/career_social_network.webp" alt="Career Social Network" class="project-card__image responsive--image">
+                           <div class="project-card__content">
+                              <h3 class="project-card__title">Career Social Network</h3>
+                                <p class="project-card__description">A project designed to connect employers and employees through a social network platform. This platform allows users to create profiles, share their professional experiences, and interact with potential employers or employees. It aims to streamline the hiring process by providing tools for job postings, applications, and direct communication between parties.</p>
+                              <div class="project-card__category">
+                                 <span class="project-card__category pill">Web</span>
+                                 <span class="project-card__category pill">Java</span>
+                                 <span class="project-card__category pill">Spring Boot</span>
+                                 <span class="project-card__category pill">MySQL</span>
+                                 <span class="project-card__category pill">Chat</span>
+                              </div>  
+                           </div>
+                           <div class="project-card__link">
+                              <a href="https://github.com/secretdeveloperisme/CareerSocialNetwork" target="_blank" class="button primary-button" >
+                                 <i class="fa-brands fa-github"></i>
+                                 <span class="hl-margin-left-sm">Github</span>
+                              </a>
+                           </div>
+                        </div>
+                     </div>
+                     <div class="col l-4 m-6 c-12">
+                        <div class="project-card">
+                           <img src="assets/images/projects/anonymous-chat-system-design.webp" alt="Anonymous Chat" class="project-card__image responsive--image">
+                           <div class="project-card__content">
+                              <h3 class="project-card__title">Anonymous Chat</h3>
+                              <p class="project-card__description">Creating an anonymous chat application where users can communicate without identity, stored data, authentication, or authorization can be both interesting and challenging, especially in terms of privacy and security.</p>
+                              <div class="project-card__category">
+                                 <span class="project-card__category pill">Web</span>
+                                 <span class="project-card__category pill">Rust</span>
+                                 <span class="project-card__category pill">PostgreSQL</span>
+                                 <span class="project-card__category pill">Chat</span>
+                              </div>
+                           </div>
+                           <div class="project-card__link">
+                              <a href="https://github.com/secretdeveloperisme/anonymous-chat-backbone" target="_blank" class="button primary-button" >
+                                 <i class="fa-brands fa-github"></i>
+                                 <span class="hl-margin-left-sm">Github</span>
+                              </a>
+                           </div>
+                        </div>
+                     </div>
+                     <div class="col l-4 m-6 c-12">
+                        <div class="project-card">
+                           <img src="assets/images/projects/shop_plus_customer.webp" alt="ShopPlus" class="project-card__image responsive--image">
+                           <div class="project-card__content">
+                              <h3 class="project-card__title">ShopPlus</h3>
+                              <p class="project-card__description">build a pure comercial website using php, javascript, html, css, mysql and using jquery library,ajax to send and receive data</p>
+                              <span class="project-card__category pill">HTML</span>
+                              <span class="project-card__category pill">CSS</span>
+                              <span class="project-card__category pill">JavaScript</span>
+                              <span class="project-card__category pill">JQuery</span>
+                              <span class="project-card__category pill">PHP</span>
+                              <span class="project-card__category pill">MySQL</span>
+                           </div>
+                           <div class="project-card__link">
+                              <a href="https://github.com/secretdeveloperisme/ShopPlus_Customer" target="_blank" class="button primary-button" >
+                                 <i class="fa-brands fa-github"></i>
+                                 <span class="hl-margin-left-sm">Github</span>
+                              </a>
+                           </div>
+                        </div>
+                        
+                     </div>
+                     <div class="col l-4 m-6 c-12">
+                        <div class="project-card">
+                           <img src="assets/images/projects/WeddingInvitation.webp" alt="Wedding Invitation Online" class="project-card__image responsive--image">
+                           <div class="project-card__content">
+                                <h3 class="project-card__title">Wedding Invitation Online</h3>
+                                <p class="project-card__description">An online wedding invitation website with personalized invitations with multiple cute and meaningfull sections and enables guests to send their wishes to the bride and groom.</p>
+                              <div class="project-card__category">
+                                 <span class="project-card__category pill">HTML</span>
+                                 <span class="project-card__category pill">Tailwindcss</span>
+                                 <span class="project-card__category pill">Javascript</span>
+                              </div>
+                           </div>
+                           <div class="project-card__link">
+                              <a href="https://github.com/secretdeveloperisme/WeddingInvitation" target="_blank" class="button primary-button" >
+                                 <i class="fa-brands fa-github"></i>
+                                 <span class="hl-margin-left-sm">Github</span>
+                              </a>
+                           </div>
+                        </div>
+                     </div>
+                     <div class="col l-4 m-6 c-12">
+                        <div class="project-card">
+                           <img src="assets/images/projects/hoanglinhplus-portfolio.webp" alt="Hoang Linh Plus's Porfolio" class="project-card__image responsive--image">
+                           <div class="project-card__content">
+                                <h3 class="project-card__title">Hoang Linh Plus's Porfolio</h3>
+                              <p class="project-card__description">A personal portfolio website showcasing my projects, skills, and experiences in software development.</p>
+                              <div class="project-card__category">
+                                 <span class="project-card__category pill">Porfolio</span>
+                                 <span class="project-card__category pill">Web Development</span>
+                              </div>
+                           </div>
+                           <div class="project-card__link">
+                              <a href="https://github.com/secretdeveloperisme/hoanglinhpluscf" target="_blank" class="button primary-button" >
+                                 <i class="fa-brands fa-github"></i>
+                                 <span class="hl-margin-left-sm">Github</span>
+                              </a>
+                           </div>
+                        </div>
+                     </div>
+                     <div class="col l-4 m-6 c-12">
+                        <div class="project-card">
+                           <img src="assets/images/projects/rust-tools.webp" alt="Rust Tool Collections" class="project-card__image responsive--image">
+                           <div class="project-card__content">
+                                <h3 class="project-card__title">Rust Tool Collections</h3>
+                                <p class="project-card__description">A collections of tool were written by Rust. One of my favorites programming language to serve enhance productivty and task automation</p>
+                              <div class="project-card__category">
+                                 <span class="project-card__category pill">Rust</span>
+                                 <span class="project-card__category pill">CLI</span>
+                                 <span class="project-card__category pill">Tool</span>
+                              </div>
+                           </div>
+                           <div class="project-card__link">
+                              <a href="https://github.com/secretdeveloperisme?tab=repositories" target="_blank" class="button primary-button" >
+                                 <i class="fa-brands fa-github"></i>
+                                 <span class="hl-margin-left-sm">Github</span>
+                              </a>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+            </div>
             <div class="article">
                <div class="slideshow_container">
                   <div class="slideshow_container__item hl-position-relative" >
@@ -277,17 +420,7 @@
                   <button class="btn-right hl-margin-right hl-background-transparent" onclick="plusDiv(1)"><i class="fas fa-forward"  ></i></button>
               </div>
             </div>
-            <div class="pagination">
-               <a class="pagination__item" href="">&laquo;</a>
-               <a class="pagination__item active" href="">1</a>
-               <a class="pagination__item" href="">2</a>
-               <a class="pagination__item" href="">3</a>
-               <a class="pagination__item" href="">4</a>
-               <a class="pagination__item" href="">5</a>
-               <a class="pagination__item" href="">6</a>
-               <a class="pagination__item" href="">7</a>
-               <a class="pagination__item" href="">&raquo;</a>
-            </div>
+            
             <!-- display a huge picture from hoanglinh gallery -->
             <div id="modal">
                <div class="modal__content">

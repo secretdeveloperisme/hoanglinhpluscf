@@ -24,6 +24,8 @@
 .col {
   padding-left: 4px;
   padding-right: 4px;
+  padding-top: 8px;
+  padding-bottom: 8px;
 }
 
 .row.no-gutters .col {
