@@ -3,6 +3,7 @@
  */
 //add sticky navigation bar 
 window.onscroll = function() {registerStickyNavBarEvent()};
+
 let x = document.getElementsByClassName("header__nav");
 let navbar = x[0];
 let sticky = navbar.offsetTop;
@@ -39,7 +40,7 @@ for(i=0; i < imgs.length; i++){
     img.src = this.src; 
     modal.style.display = "block"
     caption.innerHTML = this.alt;
-}
+  }
 }
 
 close.onclick = function(){
@@ -66,10 +67,4 @@ function showDiv(n){
 setInterval(() => {
   plusDiv(1)
 }, 7000);
-
-function removeAd(){
-  let childOfBody = document.body.children;
-  let divsOfBody = childOfBody[childOfBody.length-1]
-  console.log(document.getElementsByTagName("body")[0].removeChild(divsOfBody));
-}
 
