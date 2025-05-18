@@ -231,11 +231,11 @@
     padding: 1rem 3rem;
 }
 .quote-container{
+    padding: 1rem;
     background-color: #293333;
-    padding: 2rem 10rem;
     margin-bottom: 25px;
-    box-shadow: 10px 7px 3px rgba(0, 0, 0, 0.5), -10px -7px 3px rgba(0, 0, 0, 0.5);
-    border-radius: 0 5px;
+    border-radius: 5px;
+    box-shadow: 0.5rem 0.5rem 0.5rem rgb(182, 181, 181),-0.5rem -0.5rem 0.5rem rgb(182, 181, 181);
 }
 .quote-content{
     display: flex;
@@ -243,11 +243,11 @@
     color: #fff;
 }
 .quote-content__icon-left{
-    font-size: 7rem;
+    font-size: 3rem;
     text-align: start;
 }
 .quote-content__icon-right{
-    font-size: 4rem;
+    font-size: 3rem;
     text-align: end;
 }
 .quote__sentence{
@@ -264,10 +264,19 @@
 .container .container__column-left{
    grid-column: 1/span 8;
    grid-row: 1/span 2;
+   display: flex;
 }
 .container .container__column-right{
     grid-column: 9/span 4;
     grid-row: 1/span 2;
+    
+}
+.container__column-left, .container__column-right{
+    display: flex;
+    flex-direction: column;
+}
+.container__column-left > div:nth-last-child(1), .container__column-right > div:nth-last-child(1){
+    flex-grow: 1;
 }
 .container .grid__row{
    grid-row: 3/4;
@@ -275,17 +284,60 @@
 }
 .section{
     background-color: var(--white-color);
-    margin-bottom: 3rem;
+    margin-bottom: 2rem;
     box-shadow: 0.5rem 0.5rem 0.5rem rgb(182, 181, 181),-0.5rem -0.5rem 0.5rem rgb(182, 181, 181);
     padding: 1.6rem;
 }
-.section-title{
-    font-size: 2.5rem;
-    font-weight: 800;
-    color: #1f2937;
-    text-align: center;
+/* Section Title Effects */
+.section-title {
+    position: relative;
+    display: inline-block;
+    font-family: 'Playfair Display', serif;
+    font-size: 2.6rem;
+    font-weight: 700;
+    color: var(--primary-color);
+    letter-spacing: 1.5px;
     margin-bottom: 2rem;
+    padding-bottom: 0.5rem;
+    background: linear-gradient(90deg, var(--primary-color) 60%, var(--2-palette) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: sectionTitleFadeIn 1s cubic-bezier(0.4,0,0.2,1);
 }
+
+.section-title::after {
+    content: '';
+    display: block;
+    width: 60%;
+    height: 4px;
+    margin: 0.6rem auto 0 auto;
+    background: linear-gradient(90deg, var(--primary-color), var(--2-palette));
+    border-radius: 2px;
+    opacity: 0.7;
+    animation: sectionTitleBarGrow 1.2s cubic-bezier(0.4,0,0.2,1);
+}
+
+@keyframes sectionTitleFadeIn {
+    from { opacity: 0; transform: translateY(-30px);}
+    to { opacity: 1; transform: translateY(0);}
+}
+@keyframes sectionTitleBarGrow {
+    from { width: 0; opacity: 0; }
+    to { width: 60%; opacity: 0.7; }
+}
+
+
+@media screen and (max-width: 739px) {
+    .section-title {
+        font-size: 1.7rem;
+        padding-bottom: 0.3rem;
+    }
+    .section-title::after {
+        height: 3px;
+    }
+}
+
+
 .card{
     background-color: var(--white-color);
     box-shadow: 0.5rem 0.5rem 0.5rem rgb(182, 181, 181),-0.5rem -0.5rem 0.5rem rgb(182, 181, 181);
@@ -346,11 +398,12 @@
     border-radius: 1rem;
     padding: 1rem;
     border: 3px solid var(--primary-color);
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+
 }
 
-.post + .post{
-    margin-top: 2rem;
-}
 .post-image{
     width: 100%;
     height: 20rem;
@@ -375,6 +428,13 @@
     color: var(--black-color);
     line-height: 5rem;
     margin: 0.5rem 0;
+}
+
+.post-created-date{
+    font-size: 1.2rem;
+    color: gray;
+    margin-bottom: 1rem;
+    text-align: right;
 }
 
 
@@ -414,16 +474,14 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-top: 1rem;
+    margin-top: auto;
 }
 
 .hl-ul-customize li{
     padding: 0.3rem;
     border-bottom: 0.1rem solid var(--black-color);
 }
-.hl-ul-customize li:hover{
-    background-color: aqua;
-}
+
 .hl-ul-customize--flex {
     padding: 0.5rem;
     margin: 0.3rem;
@@ -765,9 +823,6 @@ footer ul a:hover{
     html{
         font-size: 50%;
     }
-    .quote-container{
-        padding: 1rem 1rem;
-    }
     .caption-mobile{
         font-size: 1rem;
     }
@@ -781,9 +836,7 @@ footer ul a:hover{
 }
 /* Tablet */
 @media screen and (min-width: 740px) and (max-width: 1023px) {
-    .quote-container{
-        padding: 1rem 3rem;
-    }
+
     .slideshow_container{
         width: 100%;
         height: 400px;

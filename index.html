@@ -1,12 +1,13 @@
 <!DOCTYPE html>
-<html>
-
+<html lang="en">
 <head>
    <title>HoangLinhPlus</title>
-   <meta name="author" content="Hoang Linh">
+   <meta name="author" content="Linh Nguyen">
+   <meta name="copyright" content="Hoang Linh Plus">
    <meta name="keywords" content="HLP,hoanglinhplus,plus">
-   <meta name="description" content="hoanglinhplus,linh">
+   <meta name="description" content="Hoang Linh Plus's Portfolio">
    <meta name="viewport" content="initial-scale=1.0">
+   <meta charset="UTF-8">
    <link rel="preconnect" href="https://fonts.gstatic.com">
    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,700&display=swap"
       rel="stylesheet">
@@ -17,10 +18,8 @@
    <link rel="icon" href="assets/icons/hlp_icon.png">
    <script src="js/common.js"></script>
    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/js/all.min.js"></script>
-
 </head>
-
-<body onload="removeAd()">
+<body>
    <div class="main">
       <header class="header">
          <div class="header__title">
@@ -150,63 +149,112 @@
                </div>
             </div>
          </div>
-         <div id="quote" class="quote-container">
-            <div class="quote-content">
-               <div class="quote-content__icon-left">
-                  <i class="fas fa-quote-left"></i>
-               </div>
-               <div class="quote">
-                  <div class="quote__sentence" id="quoteSentence">
-                     Twenty years from now you will be more disappointed by the things that you didn't do than by the
-                     ones you did do. So throw off the bowlines. Sail away from the safe harbor. Catch the trade winds
-                     in your sails. Explore. Dream. Discover.
+         <div class="row">
+            <div class="container__column-left col l-8 m-7 c-12">
+               <div id="quote" class="quote-container">
+                  <div class="quote-content">
+                     <div class="quote-content__icon-left">
+                        <i class="fas fa-quote-left"></i>
+                     </div>
+                     <div class="quote">
+                        <div class="quote__sentence" id="quoteSentence">
+                           Twenty years from now you will be more disappointed by the things that you didn't do than by the
+                           ones you did do. So throw off the bowlines. Sail away from the safe harbor. Catch the trade winds
+                           in your sails. Explore. Dream. Discover.
+                        </div>
+                        <div class="quote__author">
+                           <span>-</span>
+                           <span id="quoteAuthor">No Name</span>
+                        </div>
+                     </div>
+                     <div class="quote-content__icon-right">
+                        <i class="fas fa-quote-right"></i>
+                     </div>
                   </div>
-                  <div class="quote__author">
-                     <span>-</span>
-                     <span id="quoteAuthor">No Name</span>
+               </div>
+               <div class="section">
+                     <div class="">
+                        <div class="card__text">
+                           <h2 class="section-title">Technical stack <i class="fa-solid fa-gear"></i></h3>
+                              <ul class="hl-ul-customize--flex mobile-list hl-center-text center-items">
+                                 <li>Java</li>
+                                 <li>Rust</li>
+                                 <li>C/C++</li>
+                                 <li>JavaScript</li>
+                                 <li>HTML</li>
+                                 <li>CSS</li>
+                              </ul>
+                        </div>
+                     </div>
+                  </div>
+            </div>
+            
+            <div class="container__column-right col l-4 m-5 c-12">
+               <div id="about" class="section">
+                  <img src="./assets/images/IT_and_BOOKS.png" alt="woods" style="width: 100%;">
+                  <div class="card__text">
+                     <h2 class="hl-center-text">About me</h2>
+                     <p>Just me, myself and I, exploring the universe of uknownment. I have a heart of love and a
+                        interest of <span class="hl-important-text">Programing</span> and <span
+                           class="hl-important-text">Reading Book</span>. I want to share my world with you.</p>
                   </div>
                </div>
-               <div class="quote-content__icon-right">
-                  <i class="fas fa-quote-right"></i>
+               <div class="section">
+                  <div class="card__text">
+                     <h2 class="hl-center-text">Hobbies</h2>
+                     <ul class="hl-ul-customize">
+                        <li><img class="hl-margin-right" src="assets/images/favorites/code.png" alt=""
+                              width="50px"> Coding</li>
+                        <li><img class="hl-margin-right" src="assets/images/favorites/readingbook.png" alt=""
+                              style="width: 50px;">Reading</li>
+                        <li><img class="hl-margin-right" src="assets/images/favorites/football.png" alt=""
+                              style="width: 50px;">Football</li>
+                        <li><img class="hl-margin-right" src="assets/images/favorites/badminton.jpg" alt=""
+                              style="width: 50px;">Badminton</li>
+                     </ul>
+                  </div>
                </div>
             </div>
          </div>
-         <div class="row">
-            <div class="container__column-left col l-8 m-7 c-12">
-               <div class="posts-container section">
+         <div id="posts" class="section">
+            <h1 class="section-title">My Posts <i class="fa-solid fa-book"></i></h1>
+            <div class="row">
+               <div class="col l-6 m-6 c-12">   
                   <div class="post">
                      <div class="post-image responsive--image">
-                        <img src="https://www.w3schools.com/w3images/woods.jpg" alt="woods">
-                     </div>
-                     <div class="card__text">
-                        <h2 class="post-title">Patient</h2>
-                        <h4 class="date">Monday January 1 2020</h4>
-                        <p>We all know the old adage: Patience is a virtue. But it's true! Patience can help us achieve
-                           our goals, maintain a more positive outlook on life, and make us less reactive, which in turn
-                           will make us less prone to bad decisions. Stress, regret, and anger don't help anything. So
-                           when you're facing an uncertain future, a negative event, or something scary, take a minute.
-                           Don't do anything. Just sit a spell. And if you find your brain veering in a negative
-                           direction, take note of some positive quotes about life to get yourself back in the right
-                           frame of mind to make better decisions.</p>
-                        <div class="post-tags">
-                           <span class="tag">Motivation</span>
-                           <span class="tag">Patience</span>
-                           <span class="tag">Self-Improvement</span>
-                        </div>
-                     </div>
-                     <div class="post-footer">
-                        <button class="button primary-button post-read-more">read more <i
-                              class="fa-solid fa-angles-right"></i></button>
-                        <p class="reading-time">Reading Time: 3 minutes</p>
+                     <img src="https://www.w3schools.com/w3images/woods.jpg" alt="woods">
+                  </div>
+                  <div class="card__text">
+                     <h2 class="post-title">Patient</h2>
+                     <h6 class="post-created-date">Monday January 1 2020</h6>
+                     <p>We all know the old adage: Patience is a virtue. But it's true! Patience can help us achieve
+                        our goals, maintain a more positive outlook on life, and make us less reactive, which in turn
+                        will make us less prone to bad decisions. Stress, regret, and anger don't help anything. So
+                        when you're facing an uncertain future, a negative event, or something scary, take a minute.
+                        Don't do anything. Just sit a spell. And if you find your brain veering in a negative
+                        direction, take note of some positive quotes about life to get yourself back in the right
+                        frame of mind to make better decisions.</p>
+                     <div class="post-tags">
+                        <span class="tag">Motivation</span>
+                        <span class="tag">Patience</span>
+                        <span class="tag">Self-Improvement</span>
                      </div>
                   </div>
+                  <div class="post-footer">
+                     <button class="button primary-button post-read-more">read more <i
+                           class="fa-solid fa-angles-right"></i></button>
+                     <p class="reading-time">Reading Time: 3 minutes</p>
+                  </div>
+                  </div>
+               </div>
+               <div class="col l-6 m-6 c-12">
                   <div class="post">
                      <div class="post-image responsive--image">
                         <img src="assets/images/RE4wwtq.jpg" alt="flower and mountain">
                      </div>
                      <div class="card__text">
                         <h2 class="post-title">Passion</h2>
-                        <h4 class="date">Tuesday January 2 2020</h4>
+                        <h6 class="post-created-date">Tuesday January 2 2020</h6>
                         <p>"You can do anything as long as you have the passion, the drive, the focus, and the support."
                            —Sabrina Bryan.</p>
                         <div class="post-tags">
@@ -221,6 +269,8 @@
                         <p class="reading-time">Reading Time: 1 minute</p>
                      </div>
                   </div>
+               </div>
+               <div class="col l-6 m-6 c-12">
                   <div class="post">
                      <div class="post-image responsive--image">
                         <img src="assets/images/universal.jpg" alt="flower and mountain">
@@ -228,7 +278,7 @@
 
                      <div class="card__text">
                         <h2 class="post-title">Universal</h2>
-                        <h4 class="date">Wednesday January 3 2020</h4>
+                        <h6 class="post-created-date">Wednesday January 3 2020</h6>
                         <p>"Wisdom is not a product of schooling but of the lifelong attempt to acquire it." —Albert
                            Einstein.</p>
                         <div class="post-tags">
@@ -244,84 +294,22 @@
                      </div>
                   </div>
                </div>
-               <div class="pagination">
-                  <a class="pagination__item" href="">&laquo;</a>
-                  <a class="pagination__item active" href="">1</a>
-                  <a class="pagination__item" href="">2</a>
-                  <a class="pagination__item" href="">3</a>
-                  <a class="pagination__item" href="">4</a>
-                  <a class="pagination__item" href="">5</a>
-                  <a class="pagination__item" href="">6</a>
-                  <a class="pagination__item" href="">7</a>
-                  <a class="pagination__item" href="">&raquo;</a>
-               </div>
             </div>
-            <div class="container__column-right col l-4 m-5 c-12 grid">
-               <div class="row">
-                  <div class="col l-12 m-12 c-12">
-                     <div class="card">
-                        <img src="./assets/images/IT_and_BOOKS.png" alt="woods" style="width: 100%;">
-                        <div class="card__text">
-                           <h2 class="hl-center-text">About me</h2>
-                           <p>Just me, myself and I, exploring the universe of uknownment. I have a heart of love and a
-                              interest of <span class="hl-important-text">Programing</span> and <span
-                                 class="hl-important-text">Reading Book</span>. I want to share my world with you.</p>
-                        </div>
-                     </div>
-                  </div>
-                  <div class="col l-12 m-12 c-6">
-                     <div class="card h-100">
-                        <div class="card__text">
-                           <h2 class="hl-center-text">Hobbies</h2>
-                           <ul class="hl-ul-customize">
-                              <li><img class="hl-margin-right" src="assets/images/favorites/code.png" alt=""
-                                    width="50px"> Coding</li>
-                              <li><img class="hl-margin-right" src="assets/images/favorites/readingbook.png" alt=""
-                                    style="width: 50px;">Reading</li>
-                              <li><img class="hl-margin-right" src="assets/images/favorites/football.png" alt=""
-                                    style="width: 50px;">Football</li>
-                              <li><img class="hl-margin-right" src="assets/images/favorites/badminton.jpg" alt=""
-                                    style="width: 50px;">Badminton</li>
-                           </ul>
-                        </div>
-                     </div>
-                  </div>
-                  <div class="col l-12 m-12 c-6 ">
-                     <div class="card h-100">
-                        <div class="card__text">
-                           <h2 class="hl-center-text">Programming Languages</h3>
-                              <ul class="hl-ul-customize--flex mobile-list hl-center-text center-items">
-                                 <li>Java</li>
-                                 <li>Rust</li>
-                                 <li>C/C++</li>
-                                 <li>JavaScript</li>
-                                 <li>HTML</li>
-                                 <li>CSS</li>
-                              </ul>
-                        </div>
-                     </div>
-                  </div>
-                  <div class=" col l-12 m-12 c-12">
-                     <div class="card">
-                        <h2 class="hl-title--effect">Girls Gallery</h2>
-                        <div class="grid__gallery">
-                           <img class="grid__gallery__img" src="assets/images/girls/1.jpg" alt="beautiful girl 1">
-                           <img class="grid__gallery__img" src="assets/images/girls/2.jpg" alt="beautiful girl 2">
-                           <img class="grid__gallery__img" src="assets/images/girls/3.jpg" alt="beautiful girl 3">
-                           <img class="grid__gallery__img" src="assets/images/girls/4.jpg" alt="beautiful girl 4">
-                           <img class="grid__gallery__img" src="assets/images/girls/5.jpg" alt="beautiful girl 5">
-                           <img class="grid__gallery__img" src="assets/images/girls/6.jpg" alt="beautiful girl 6">
-                           <img class="grid__gallery__img" src="assets/images/girls/7.jpg" alt="beautiful girl 7">
-                           <img class="grid__gallery__img" src="assets/images/girls/8.jpg" alt="beautiful girl 8">
-                           <img class="grid__gallery__img" src="assets/images/girls/9.jpg" alt="beautiful girl 9">
-                        </div>
-                     </div>
-                  </div>
-               </div>
+            <div class="pagination">
+               <a class="pagination__item" href="">&laquo;</a>
+               <a class="pagination__item active" href="">1</a>
+               <a class="pagination__item" href="">2</a>
+               <a class="pagination__item" href="">3</a>
+               <a class="pagination__item" href="">4</a>
+               <a class="pagination__item" href="">5</a>
+               <a class="pagination__item" href="">6</a>
+               <a class="pagination__item" href="">7</a>
+               <a class="pagination__item" href="">&raquo;</a>
             </div>
+            
          </div>
-         <div class="section">
-            <h2 class="section-title">My Projects 🧰⚒️</h2>
+         <div id="projects" class="section">
+            <h2 class="section-title">My Projects <i class="fa-solid fa-microscope"></i></h2>
             <div class="projects-container">
                <div class="row">
                   <div class="col l-4 m-6 c-12">
@@ -473,11 +461,9 @@
                </div>
             </div>
          </div>
-         <!-- ...existing code... -->
          <div class="section" id="experiences">
-            <h2 class="section-title">Experience 💼</h2>
+            <h2 class="section-title">Experience <i class="fa-solid fa-briefcase"></i></h2>
             <div class="experience-timeline">
-               <!-- Example Experience 1 -->
                <div class="experience-item">
                   <div class="experience-item__left">
                      <img src="assets/images/company-logos/FPT_Software_Logo.png"  alt="fpt-software" class="experience-logo">
@@ -510,7 +496,6 @@
                      
                   </div>
                </div>
-               <!-- Example Experience 2 -->
                <div class="experience-item">
                   <div class="experience-item__left">
                      <img src="assets/images/company-logos/tma-solutions.webp"  alt="tma-solutions" class="experience-logo">
@@ -545,7 +530,6 @@
                      
                   </div>
                </div>
-               <!-- Example Experience 3 -->
                <div class="experience-item">
                   <div class="experience-item__left">
                      <img src="assets/images/company-logos/tma-solutions.webp" alt="tma-solutions" class="experience-logo">
@@ -575,7 +559,6 @@
                      </div>
                   </div>
                </div>
-               <!-- Example Experience 4 -->
                <div class="experience-item">
                   <div class="experience-item__left">
                      <img src="assets/images/company-logos/tma-solutions.webp" alt="Tma solutions" class="experience-logo">
@@ -604,11 +587,9 @@
                      </div>
                   </div>
                </div>
-               <!-- Add more experience items as needed -->
             </div>
          </div>
-         <!-- ...existing code... -->
-         <div class="article">
+         <div class="section" id="gallery">
             <div class="slideshow_container">
                <div class="slideshow_container__item hl-position-relative">
                   <div class="slideshow-container_image" style="background-image: url(assets/images/Hawaii_US.jpg)">
@@ -641,6 +622,20 @@
                <button class="btn-right hl-margin-right hl-background-transparent" onclick="plusDiv(1)"><i
                      class="fas fa-forward"></i></button>
             </div>
+            <div class="gallerry-container">
+               <h2 class="hl-title--effect">Girls Gallery</h2>
+               <div class="grid__gallery">
+                  <img class="grid__gallery__img" src="assets/images/girls/1.jpg" alt="beautiful girl 1">
+                  <img class="grid__gallery__img" src="assets/images/girls/2.jpg" alt="beautiful girl 2">
+                  <img class="grid__gallery__img" src="assets/images/girls/3.jpg" alt="beautiful girl 3">
+                  <img class="grid__gallery__img" src="assets/images/girls/4.jpg" alt="beautiful girl 4">
+                  <img class="grid__gallery__img" src="assets/images/girls/5.jpg" alt="beautiful girl 5">
+                  <img class="grid__gallery__img" src="assets/images/girls/6.jpg" alt="beautiful girl 6">
+                  <img class="grid__gallery__img" src="assets/images/girls/7.jpg" alt="beautiful girl 7">
+                  <img class="grid__gallery__img" src="assets/images/girls/8.jpg" alt="beautiful girl 8">
+                  <img class="grid__gallery__img" src="assets/images/girls/9.jpg" alt="beautiful girl 9">
+               </div>
+            </div>
          </div>
 
          <!-- display a huge picture from hoanglinh gallery -->
@@ -657,18 +652,26 @@
                <div class="container__item l-4 m-6 c-12 hl-center-text">
                   <h3>Let's Connect!</h3>
                   <ul>
-                     <li><a href="https://github.com/secretdeveloperisme">
+                     <li>
+                        <a href="https://github.com/secretdeveloperisme">
                            <p><i class="fab fa-github"></i> GitHub</p>
-                        </a></li>
-                     <li><a href="https://www.linkedin.com/in/hoanglinhplus">
+                        </a>
+                     </li>
+                     <li>
+                        <a href="https://www.linkedin.com/in/hoanglinhplus">
                            <p><i class="fab fa-linkedin"></i> LinkedIn</p>
-                        </a></li>
-                     <li><a href="https://www.facebook.com/hoanglinhplus">
-                           <p><i class="fab fa-facebook"></i> Facebook</p>
-                        </a></li>
-                     <li><a href="mailto:linh072217@gmail.com">
+                        </a>
+                     </li>
+                     <li>
+                        <a href="mailto:linh072217@gmail.com">
                            <p><i class="fas fa-envelope"></i> Email</p>
-                        </a></li>
+                        </a>
+                     </li>
+                     <li>
+                        <a href="https://www.facebook.com/hoanglinhplus">
+                           <p><i class="fab fa-facebook"></i> Facebook</p>
+                        </a>
+                     </li>
                   </ul>
                </div>
                <div class="container__item l-4 m-6 c-12 hl-center-text">
