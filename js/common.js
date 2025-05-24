@@ -7,6 +7,4 @@ function removeAd(){
     console.log(document.getElementsByTagName("body")[0].removeChild(divsOfBody));
 }
   
-document.addEventListener("DOMContentLoaded", function() {
-    removeAd();
-});
+document.addEventListener("DOMContentLoaded", removeAd);
