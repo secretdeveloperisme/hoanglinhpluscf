@@ -8,6 +8,9 @@
     --1-palette: #7267CB;
     --2-palette: #98BAE7;
     --3-palette: #B8E4F0;
+
+    font-family: Inter, sans-serif;
+    font-feature-settings: 'liga' 1, 'calt' 1; /* fix for Chrome */
 }
 *{
     box-sizing: inherit;
