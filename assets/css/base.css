@@ -9,8 +9,12 @@
     --2-palette: #98BAE7;
     --3-palette: #B8E4F0;
 
+    --cursor-default: url('../icons/cursors/default_cursor.svg'), default;
+    --cursor-pointer: url('../icons/cursors/hand_cursor.svg'), pointer;
+    --cursor-link: url('../icons/cursors/link_cursor.svg'), pointer;
     font-family: Inter, sans-serif;
     font-feature-settings: 'liga' 1, 'calt' 1; /* fix for Chrome */
+
 }
 *{
     box-sizing: inherit;
@@ -18,18 +22,38 @@
     padding: 0;
     
 }
-a{
-    text-decoration: none;
-    color: inherit;
-}
-
 html{
     box-sizing:border-box;
     font-size: 62.5%;
     font-family: 'Roboto', sans-serif;
 }
+
+body{
+    cursor: url('../icons/cursors/default_cursor.svg'), default;
+}
+
+a{
+    text-decoration: none;
+    color: inherit;
+}
+
+a[target="_blank"]{
+    cursor: var(--cursor-link);
+}
+
+a, button{
+   cursor: var(--cursor-pointer);
+}
+
 p{
     line-height: 1.6rem;
+}
+
+.cursor-default{
+    cursor: var(--cursor-default);
+}
+.cursor-pointer{
+    cursor: var(--cursor-pointer);
 }
 
 .flex-column{
@@ -55,7 +79,7 @@ p{
 }
 
 .hl-button:hover{
-    cursor: pointer;
+    cursor: var(--cursor-pointer);
 }
 .hl-ul-customize{
     margin: 0.7rem;
@@ -156,7 +180,7 @@ p{
     user-select: none;
     -webkit-user-select: none;
     touch-action: manipulation;
-    cursor: pointer;
+    cursor: var(--cursor-pointer);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -216,7 +240,7 @@ p{
     font-size: 5rem;
     line-height: 0;
     color: red;
-    cursor: pointer;
+    cursor: var(--cursor-pointer);
 }
 
 #modal__caption{

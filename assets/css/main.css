@@ -18,7 +18,6 @@
     display: block;
 }
 .header__home-logo a{
-    height: 100%;
     display: flex;
     flex-direction: row;
     justify-content: center;
@@ -97,7 +96,7 @@
     font-weight: 700;
 }
 .header-nav-mobile__sub-item > a:hover{
-    cursor: pointer;
+    cursor: var(--cursor-pointer);
     background-color: var(--0-palette);
     color: white;
 }
@@ -145,7 +144,7 @@
 }
 .dropdown{
     position: relative;
-    cursor: pointer;
+   
 
 }
 
@@ -180,9 +179,6 @@
 .btn-more{
     width: 100px;
 }
-.btn-more:hover{
-    cursor: pointer;
-}
 
 .header__nav-btn-bars{
     display: none; 
@@ -203,9 +199,7 @@
 #cbx-nav-bar:checked ~ .header__nav-btn-bars .bar-2{
     display: none;
 }
-.header__nav-btn-bars:hover{
-    cursor: pointer;
-}
+
 .bars-icon {
     width: 50px;
     height: 50px;
@@ -299,6 +293,7 @@
     margin-bottom: 2rem;
     padding-bottom: 0.5rem;
     background: linear-gradient(90deg, var(--primary-color) 60%, var(--2-palette) 100%);
+    background-clip: text;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     animation: sectionTitleFadeIn 1s cubic-bezier(0.4,0,0.2,1);
@@ -414,7 +409,7 @@
     transition: transform 0.25s, box-shadow 0.25s;
     position: relative;
     overflow: hidden;
-    cursor: pointer;
+    cursor: var(--cursor-pointer)
 }
 
 .hobby-card:hover {
@@ -498,7 +493,7 @@
 }
 
 .post-title{
-    cursor: pointer;
+    cursor: var(--cursor-link);
     font-size: 3rem;
     font-weight: 700;
     color: var(--black-color);
@@ -543,7 +538,7 @@
 
 .post-tags .tag:hover {
     background-color: darkgreen;
-    cursor: pointer;
+    cursor: var(--cursor-pointer);
 }
 
 .post-footer{
@@ -551,6 +546,9 @@
     justify-content: space-between;
     align-items: center;
     margin-top: auto;
+}
+.btn-read-more{
+    cursor: var(--cursor-link);
 }
 
 .hl-ul-customize li{
@@ -576,7 +574,7 @@
 }
 .hl-ul-customize--flex li:hover{
     background-color: red;
-    cursor: pointer;
+    cursor: var(--cursor-pointer);
 }
 /* Slideshow */
 .article{
@@ -640,7 +638,6 @@
 }
 
 .btn-left:hover, .btn-right:hover{
-    cursor: pointer;
     background-color: var(--0-palette);
     color: var(--white-color);
 }
@@ -665,7 +662,7 @@
     border-radius: 12px;
     box-shadow: 0 2px 12px rgba(0,0,0,0.08);
     transition: transform 0.25s, box-shadow 0.25s;
-    cursor: pointer;
+    cursor: var(--cursor-pointer);
 }
 
 .grid__gallery__img:hover {
@@ -732,6 +729,7 @@
 }
 
 .project-card__link{
+    cursor: var(--cursor-link);
     margin-top: auto;
 }
 
@@ -890,7 +888,7 @@
 .tech-stack-item:hover {
     background: var(--primary-color);
     color: #fff;
-    cursor: pointer;
+    cursor: var(--cursor-pointer);
 }
 
 @media screen and (max-width: 739px) {
@@ -963,9 +961,9 @@
     border-radius: 0 5px 5px 0;
 }
 .footer__container{
-    background: #a8ff78;  /* fallback for old browsers */
-    background: -webkit-linear-gradient(to right, #78ffd6, #a8ff78);  /* Chrome 10-25, Safari 5.1-6 */
-    background: linear-gradient(to right, #78ffd6, #a8ff78); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+    background: #a8ff78;  
+    background: -webkit-linear-gradient(to right, #78ffd6, #a8ff78); 
+    background: linear-gradient(to right, #78ffd6, #a8ff78); 
     width: 100%;
     padding: 1rem 2rem;
 }
