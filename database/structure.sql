@@ -94,3 +94,25 @@ CREATE TABLE post_tags (
         ON DELETE CASCADE
         ON UPDATE CASCADE
 );
+
+-- This SQL script creates a table named 'attachments' to store attachments related to posts.
+-- Fields:
+-- - attachment_id: an auto-incrementing primary key
+-- - post_id: an integer foreign key referencing the post
+-- - file_name: the name of the file
+-- - file_url: the URL or path to the file
+-- - file_type: the mime type of attachments
+-- - created_at: a timestamp for when the attachment was added
+
+DROP TABLE IF EXISTS attachments;
+CREATE TABLE attachments (
+    attachment_id INT AUTO_INCREMENT PRIMARY KEY,
+    post_id INT NOT NULL,
+    file_name VARCHAR(255) NOT NULL,
+    file_url VARCHAR(500) NOT NULL,
+    file_type VARCHAR(50) NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (post_id) REFERENCES posts(post_id)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE
+);

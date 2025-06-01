@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <title>Create Post</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="../assets/css/base.css">
+  <link rel="stylesheet" href="../assets/css/posts.css">
+  <link rel="stylesheet" href="../assets/css/custom_quill.css">
+
+  <script type="module" src="../js/common.js"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@11.11.1/styles/atom-one-dark.css">
+  <script src="../assets/libs/highlight_11-11-1.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.js"></script>
+  <link href="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.snow.css" rel="stylesheet">
+  <script type="module" src="../js/editor_configurations.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/interactjs@1.10.27/dist/interact.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/js/all.min.js"></script>
+</head>
+
+<body>
+  <div class="app">
+    <form method="post" id="createPostForm">
+      <div class="sidebar overflow-auto p-2">
+        <div class="form-section" id="imageUpload">
+          <div class="form-label">Image</div>
+          <input type="file" name="postImage" hidden accept="image/*" id="postImage">
+          <input type="hidden" name="postImagePath" id="postImagePath">
+          <label class="post-image-wrapper" for="postImage">
+            <img class="border-danger img-thumbnail post-image" id="displayPostImage" src="../assets/icons/upload.svg"
+              alt="post image">
+          </label>
+        </div>
+        <div class="form-section">
+          <div class="form-label">Tags</div>
+          <div type="text" name="tags" contenteditable="true" id="tags" class="form-control tags"
+            placeholder="separate tags by space">
+          </div>
+        </div>
+        <div class="form-section">
+          <div class="form-label">Status</div>
+          <div class="post__status-container">
+            <div class="mb-2">
+              <input type="radio" hidden class="btn-check" name="postStatus" id="status0" value="PUBLIC" checked>
+              <label for="status0" class="btn btn-outline-success">Public</label>
+            </div>
+            <div class="ms-2">
+              <input type="radio" hidden class="btn-check" name="postStatus" value="PRIVATE" id="status1">
+              <label for="status1" class="btn btn-outline-danger">Private</label>
+            </div>
+          </div>
+        </div>
+        <div class="form-section">
+          <div class="form-label">Attachments</div>
+          <div id="attachmentContainer" class="attachment-container"></div>
+        </div>
+      </div>
+      <div class="content">
+        <div class="p-2">
+          <div class="form-section">
+            <label for="title">
+              <div class="form-label">Title: </div>
+            </label>
+            <input type="text" name="title" id="title" class="form-control" required placeholder="Input your title ...">
+          </div>
+          <div class="form-section">
+            <label for="description">
+              <div class="form-label">Description: </div>
+            </label>
+            <input type="text" name="description" id="description" class="form-control"
+              placeholder="Input your description ...">
+          </div>
+          <div class="form-section">
+            <div class="form-label">Content</div>
+            <div class="post-content bg-white">
+              <div id="toolbar" class="ql-toolbar ql-snow">
+                <span class="ql-formats">
+                  <select class="ql-font"></select>
+                  <select class="ql-size"></select>
+                </span>
+                <span class="ql-formats">
+                  <button class="ql-bold"></button>
+                  <button class="ql-italic"></button>
+                  <button class="ql-underline"></button>
+                  <button class="ql-strike"></button>
+                </span>
+                <span class="ql-formats">
+                  <select class="ql-color"></select>
+                  <select class="ql-background"></select>
+                </span>
+                <span class="ql-formats">
+                  <button class="ql-script" value="sub"></button>
+                  <button class="ql-script" value="super"></button>
+                </span>
+                <span class="ql-formats">
+                  <button class="ql-header" value="1"></button>
+                  <button class="ql-header" value="2"></button>
+                  <button class="ql-blockquote"></button>
+                  <button class="ql-code-block"></button>
+                </span>
+                <span class="ql-formats">
+                  <button class="ql-list" value="ordered"></button>
+                  <button class="ql-list" value="bullet"></button>
+                  <button class="ql-indent" value="-1"></button>
+                  <button class="ql-indent" value="+1"></button>
+                </span>
+                <span class="ql-formats">
+                  <button class="ql-direction" value="rtl"></button>
+                  <select class="ql-align"></select>
+                </span>
+                <span class="ql-formats">
+                  <button class="ql-link"></button>
+                  <button class="ql-image"></button>
+                  <button class="ql-video"></button>
+                  <button class="ql-formula"></button>
+                </span>
+                <span class="ql-formats">
+                  <button class="ql-clean"></button>
+                </span>
+              </div>
+              <div id="editor" class="pb-3"></div>
+              <input type="hidden" name="content" id="postContent">
+            </div>
+            <div class="btn-upload-wrapper p-2 bg-white w-100">
+              <button class="btn btn-primary" id="btnCreatePost"><i class="fas fa-plus"></i>
+                Create</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+  <div class="top-link">
+    <button class="button primary-button" onclick="window.scrollTo({top:0})">
+      <i class="fa fa-arrow-up" aria-hidden="true"></i>
+    </button>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/datalist-css/dist/datalist-css.min.js"></script>
+  <script type="module" src="../js/create_post.js"></script>
+  <div class="empty"></div>
+</body>
+
+</html>
