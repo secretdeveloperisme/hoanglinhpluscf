@@ -49,21 +49,22 @@ CREATE TABLE quotes (
  * - deleted_at: a timestamp for soft deletion of the post
  */
 DROP TABLE IF EXISTS posts;
-CREATE TABLE posts (
-  post_id INT NOT NULL AUTO_INCREMENT,
-  title varchar(255) NOT NULL,
-  description varchar(1000) DEFAULT NULL,
-  content text NOT NULL,
-  cover_image varchar(255) DEFAULT NULL,
-  slug varchar(255) DEFAULT NULL,
-  author_id INT DEFAULT NULL,
-  is_pulished BOOLEAN NOT NULL DEFAULT FALSE,
-  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE current_timestamp,
-  deleted_at TIMESTAMP NULL,
-  PRIMARY KEY (post_id),
-  CONSTRAINT FK_AUTHOR FOREIGN KEY (author_id) REFERENCES users (id)
-);
+CREATE TABLE `posts` (
+  `post_id` int(11) NOT NULL AUTO_INCREMENT,
+  `title` varchar(255) NOT NULL,
+  `description` varchar(1000) DEFAULT NULL,
+  `content` text NOT NULL,
+  `cover_image` varchar(255) DEFAULT NULL,
+  `slug` varchar(255) DEFAULT NULL,
+  `author_id` int(11) DEFAULT NULL,
+  `post_status` enum('DRAFT','PUBLISH','ARCHIVED','DELETED') NOT NULL DEFAULT 'DRAFT' COMMENT 'ENUM(''DRAFT'', ''PUBLISH'', ''ARCHIVED'', ''DELETED'' )',
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`post_id`),
+  KEY `FK_AUTHOR` (`author_id`),
+  CONSTRAINT `FK_AUTHOR` FOREIGN KEY (`author_id`) REFERENCES `users` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 
 -- This SQL script creates a table named 'tags' to categorize posts with the following fields:

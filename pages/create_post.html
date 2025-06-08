@@ -26,7 +26,7 @@
         <div class="form-section" id="imageUpload">
           <div class="form-label">Image</div>
           <input type="file" name="postImage" hidden accept="image/*" id="postImage">
-          <input type="hidden" name="postImagePath" id="postImagePath">
+          <input type="hidden" name="cover_image" id="postImagePath">
           <label class="post-image-wrapper" for="postImage">
             <img class="border-danger img-thumbnail post-image" id="displayPostImage" src="../assets/icons/upload.svg"
               alt="post image">
@@ -42,12 +42,12 @@
           <div class="form-label">Status</div>
           <div class="post__status-container">
             <div class="mb-2">
-              <input type="radio" hidden class="btn-check" name="postStatus" id="status0" value="PUBLIC" checked>
-              <label for="status0" class="btn btn-outline-success">Public</label>
+              <input type="radio" hidden class="btn-check" name="post_status" id="status0" value="PUBLISH" checked>
+              <label for="status0" class="btn btn-outline-success">PUBLISH</label>
             </div>
             <div class="ms-2">
-              <input type="radio" hidden class="btn-check" name="postStatus" value="PRIVATE" id="status1">
-              <label for="status1" class="btn btn-outline-danger">Private</label>
+              <input type="radio" hidden class="btn-check" name="post_status" value="DRAFT" id="status1">
+              <label for="status1" class="btn btn-outline-danger">DRAFT</label>
             </div>
           </div>
         </div>

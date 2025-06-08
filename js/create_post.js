@@ -50,7 +50,7 @@ document.addEventListener("DOMContentLoaded", () => {
           imagePath,
         );
         addResizeHandleToImage();
-        addAttachment(res.filename, res.fileType);
+        addAttachment(res.filename, res.fileType, res.filePath);
       }, err => {
         console.error('Image upload failed:', err);
         alert('Failed to upload image: ' + (err.message || 'Unknown error'));
@@ -158,7 +158,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
     let tagInput = document.createElement("input");
     tagInput.type = "hidden";
-    tagInput.name = "tags.name";
+    tagInput.name = "tags";
     tagInput.value = value;
     tagSpan.appendChild(tagLabel);
     tagSpan.appendChild(tagRemove);
@@ -180,8 +180,8 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  function addAttachment(name, type) {
-    const attachment = { name: name, type: type };
+  function addAttachment(name, type, url) {
+    const attachment = { name: name, type: type , url: url};
     attachments.push(attachment);
     renderAttachments();
   }
@@ -242,6 +242,10 @@ document.addEventListener("DOMContentLoaded", () => {
     // Serialize form data
     const formData = new FormData(createPostForm);
     let dataObject = objectifyForm(Array.from(formData.entries()).map(([name, value]) => ({ name, value })));
+
+    if(attachments.length > 0) {
+      dataObject.attachments = attachments.map(file => ({ file_name: file.name, file_type: file.type, file_url: file.url }));
+    }
     console.log("postPayload:", dataObject);
 
     fetch(POST_API_URL, {
