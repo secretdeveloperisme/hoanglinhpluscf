@@ -1,8 +1,6 @@
 <?php
+require_once __DIR__ . '/services/FileService.php';
 header('Content-Type: application/json');
-// Define the upload directory and temporary directory
-$uploadDir = __DIR__ . "/../storage/uploads/";
-$tempDir = __DIR__ . "/../storage/temp/";
 
 $ENTRY_POINT = '/api/files.php';
 
@@ -17,37 +15,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     }
     $isTemp = isset($_GET['isTemp']) && $_GET['isTemp'] === 'true';
 
-    if($isTemp) {
-        $filePath = $tempDir . $filename;
-    } else {
-        $filePath = $uploadDir . $filename;
-    }
+    $result = FileService::getFile($filename, $isTemp);
 
-    if (file_exists($filePath)) {
-           // Use finfo to detect MIME type
-        $finfo = finfo_open(FILEINFO_MIME_TYPE);
-        $mimeType = finfo_file($finfo, $filePath);
-        finfo_close($finfo);
-
-        // Set headers
-        header('Content-Type: ' . $mimeType);
-        header('Content-Length: ' . filesize($filePath));
-
-
-        // Output image
-        $numberOfBytes = readfile($filePath);
-        if ($numberOfBytes === false) {
-            http_response_code(500);
-            echo json_encode(['error' => 'Failed to read file']);
-            exit;
-        }
-        
-        exit;
-    } else {
-        http_response_code(404);
-        echo json_encode(['error' => 'File not found']);
+    if (isset($result['error'])) {
+        http_response_code($result['status'] ?? 500);
+        echo json_encode(['error' => $result['error']]);
         exit;
     }
+
+    header('Content-Type: ' . $result['mimeType']);
+    header('Content-Length: ' . $result['size']);
+    readfile($result['filePath']);
+    exit;
 }
 
 // Handle file upload
@@ -57,40 +36,26 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         echo json_encode(['error' => 'No file uploaded']);
         exit;
     }
-    
-    $file = $_FILES['file'];
-    $uniqueName = uniqid('', true) . '_' . basename($file['name']);
-    $targetPath = $tempDir . $uniqueName;
 
-    // Validate file size (optional, e.g., max 10MB)
-    if ($file['size'] > 10 * 1024 * 1024) { // 10MB limit
-        http_response_code(413);
-        echo json_encode(['error' => 'File size exceeds limit']);
+    $result = FileService::uploadFile($_FILES['file']);
+
+    if (isset($result['error'])) {
+        http_response_code($result['status'] ?? 500);
+        echo json_encode(['error' => $result['error']]);
         exit;
     }
 
-    // Get file type 
-    $fileType = mime_content_type($file['tmp_name']);
-
-    if (!is_dir($tempDir)) {
-        mkdir($tempDir, 0777, true);
-    }
-
-    
-
-    if (move_uploaded_file($file['tmp_name'], $targetPath)) {
-        $targetPath = $ENTRY_POINT."?isTemp=true&fileName=". urlencode($uniqueName);
-        echo json_encode(['success' => true, 'filename' => $uniqueName, 'fileType' => $fileType, 'filePath' => $targetPath]);
-    } else {
-        http_response_code(500);
-        echo json_encode(['error' => 'Failed to move uploaded file']);
-    }
+    $targetPath = $ENTRY_POINT . "?isTemp=true&fileName=" . urlencode($result['filename']);
+    echo json_encode([
+        'success' => true,
+        'filename' => $result['filename'],
+        'fileType' => $result['fileType'],
+        'filePath' => $targetPath
+    ]);
     exit;
 }
 
-/**
- * Handle file delete using JSON request body
- */
+// Handle file delete using JSON request body
 if ($_SERVER['REQUEST_METHOD'] === 'DELETE') {
     $input = file_get_contents("php://input");
     $data = json_decode($input, true);
@@ -103,18 +68,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'DELETE') {
         exit;
     }
 
-    $filePath = $tempDir . $filename;
-    if (file_exists($filePath)) {
-        if (unlink($filePath)) {
-            echo json_encode(['success' => true]);
-        } else {
-            http_response_code(500);
-            echo json_encode(['error' => 'Failed to delete file']);
-        }
-    } else {
-        http_response_code(404);
-        echo json_encode(['error' => 'File not found']);
+    $result = FileService::deleteFile($filename);
+
+    if (isset($result['error'])) {
+        http_response_code($result['status'] ?? 500);
+        echo json_encode(['error' => $result['error']]);
+        exit;
     }
+
+    echo json_encode(['success' => true]);
     exit;
 }
 
@@ -122,5 +84,4 @@ if ($_SERVER['REQUEST_METHOD'] === 'DELETE') {
 http_response_code(405);
 echo json_encode(['error' => 'Method not allowed']);
 exit;
-
 ?>

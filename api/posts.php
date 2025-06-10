@@ -3,10 +3,13 @@
 use Api\Constants\PostStatus;
 
 require_once 'constants/PostStatus.php';
+require_once 'utilities/PostUtility.php';
 require_once 'connect_db.php';
 require_once 'entities/Post.php';
 require_once 'entities/Tag.php';
 require_once 'entities/Attachment.php';
+require_once 'services/FileService.php';
+
 header('Content-Type: application/json');
 
 $connection = getMariaDBConnection();
@@ -41,6 +44,21 @@ function getPostAttachments($connection, $post_id) {
     }
     return $attachments;
 }
+
+function getPostById($connection, $post_id) {
+    $stmt = $connection->prepare("SELECT * FROM posts WHERE post_id = ? AND deleted_at IS NULL");
+    $stmt->bind_param("i", $post_id);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    if ($result->num_rows === 0) {
+        return null;
+    }
+    $post = $result->fetch_assoc();
+    $post['tags'] = getPostTags($connection, $post_id);
+    $post['attachments'] = getPostAttachments($connection, $post_id);
+    return new Post($post);
+}
+
 
 switch ($method) {
     case 'GET':
@@ -145,8 +163,14 @@ switch ($method) {
         $cover_image = $data['cover_image'] ?? null;
         $author_id = $data['author_id'] ?? 1;
         $post_status_str = $data['post_status'] ?? 'DRAFT';
-        $post_status = PostStatus::getStatusForNewPost($post_status_str);
-        
+
+        $post_status = null;
+        try {
+            $post_status = PostStatus::getStatusForNewPost($post_status_str);
+        } catch (\InvalidArgumentException $ex) {
+            return json_encode(['error' => 'Invalid post status', 'status' => 422]);
+        }
+    
         // Validation for create post
         $errors = [];
         if (empty($data['title']) || strlen($data['title']) > 255) {
@@ -167,7 +191,8 @@ switch ($method) {
                 }
             }
         }
-        if (isset($data['attachments']) && is_array($data['attachments'])) {
+        $has_attachments = isset($data['attachments']) && is_array($data['attachments']) && count($data['attachments']) > 0;
+        if ($has_attachments) {
             foreach ($data['attachments'] as $att) {
                 if (empty($att['file_name']) || strlen($att['file_name']) > 255) {
                     $errors[] = "Attachment file name must be non-empty and less than 255 characters.";
@@ -188,7 +213,29 @@ switch ($method) {
             echo json_encode(["errors" => $errors]);
             exit;
         }
+        
+        if($has_attachments){
+            // Move files from temp to upload directory
+            $filenames = [];
+            foreach ($data['attachments'] as $att) {
+                if (isset($att['file_name'])) {
+                    $filenames[] = basename($att['file_name']);
+                }
+            }
+            if (!empty($filenames)) {
+                
+                $move_result = FileService::moveFilesToUpload($filenames);
+                if (!$move_result) {
+                    return json_encode(['error' => 'Failed to move files from temp to upload directory', 'status' => 500]);
+                }                
+
+            }  
+        }
+        
         $slug = generateSlug($title);
+        if($has_attachments){
+            $content = PostUtility::replaceText($content, PostUtility::$FILE_IS_TEMP_SEARCHING_TEXT, 'isTemp=false');
+        }
 
         $stmt = $connection->prepare("INSERT INTO posts (title, description, content, cover_image, slug, author_id, post_status) VALUES (?, ?, ?, ?, ?, ?, ?)");
         $post_status_str = $post_status->toString();
@@ -216,16 +263,25 @@ switch ($method) {
                 }
             }
             // Handle attachments
-            if (!empty($data['attachments']) && is_array($data['attachments'])) {
+            if ($has_attachments) {
                 foreach ($data['attachments'] as $att) {
                     if (isset($att['file_name'], $att['file_url'], $att['file_type'])) {
+                        $new_file_url = PostUtility::replaceText($att['file_url'], PostUtility::$FILE_IS_TEMP_SEARCHING_TEXT, 'isTemp=false');
                         $att_stmt = $connection->prepare("INSERT INTO attachments (post_id, file_name, file_url, file_type) VALUES (?, ?, ?, ?)");
-                        $att_stmt->bind_param("isss", $post_id, $att['file_name'], $att['file_url'], $att['file_type']);
+                        $att_stmt->bind_param("isss", $post_id, $att['file_name'], $new_file_url, $att['file_type']);
                         $att_stmt->execute();
                     }
                 }
             }
-            echo json_encode(["message" => "Post created", "post_id" => $post_id]);
+
+            // Get newly created post with tags and attachments
+            $new_post = getPostById($connection, $post_id);
+            if (!$new_post) {
+                http_response_code(500);
+                echo json_encode(["error" => "Failed to retrieve newly created post"]);
+                exit;
+            }
+            echo json_encode(["message" => "Post created", "Post" => $new_post]);
         } else {
             http_response_code(500);
             echo json_encode(["error" => "Failed to create post"]);
