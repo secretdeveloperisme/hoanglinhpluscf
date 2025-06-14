@@ -1,5 +1,7 @@
 <?php
 
+require_once __DIR__ . "/../utilities/Logger.php";
+
 
 $uploadDir = __DIR__ . "/../../storage/uploads/";
 $tempDir = __DIR__ . "/../../storage/temp/";
@@ -10,11 +12,13 @@ class FileService
 {
     private static $uploadDir;
     private static $tempDir;
+    static $logger ;
 
     public static function init($uploadDir, $tempDir)
     {
         self::$uploadDir = $uploadDir;
         self::$tempDir = $tempDir;
+        
     }
 
     public static function getFile($filename, $isTemp)
@@ -22,6 +26,7 @@ class FileService
         $dir = $isTemp ? self::$tempDir : self::$uploadDir;
         $filePath = $dir . $filename;
 
+        FileService::$logger->debug("Fetching file: " . $filePath);
         if (!file_exists($filePath)) {
             return ['error' => 'File not found', 'status' => 404];
         }
@@ -98,5 +103,6 @@ class FileService
         }
     }
 }
+FileService::$logger = Logger::getInstance();
 
 ?>

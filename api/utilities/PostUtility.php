@@ -17,6 +17,29 @@ class PostUtility
     {
         return str_replace($search, $replace, $text);
     }
+
+
+    /** Extract file name from file path regex */
+    public static function extractFileNameFromPath($filePath)
+    {
+        $pattern = '/([^\/]+)$/';
+        preg_match($pattern, $filePath, $matches);
+        return $matches[1] ?? '';
+    }
+
+    public static function extractFileNameFromUrl($url)
+    {
+        $pattern = '/fileName=(.+)$/';
+        preg_match($pattern, $url, $matches);
+        return $matches[1] ?? '';
+    }
+
+
+    // check string is null or empty
+    public static function isNullOrEmptyString($string)
+    {
+        return !isset($string) || trim($string) === '';
+    }
     
 }
 

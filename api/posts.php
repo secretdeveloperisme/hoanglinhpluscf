@@ -9,6 +9,10 @@ require_once 'entities/Post.php';
 require_once 'entities/Tag.php';
 require_once 'entities/Attachment.php';
 require_once 'services/FileService.php';
+require_once 'utilities/Logger.php';
+require_once 'utilities/HttpUtility.php';
+
+$logger = Logger::getInstance();
 
 header('Content-Type: application/json');
 
@@ -168,7 +172,8 @@ switch ($method) {
         try {
             $post_status = PostStatus::getStatusForNewPost($post_status_str);
         } catch (\InvalidArgumentException $ex) {
-            return json_encode(['error' => 'Invalid post status', 'status' => 422]);
+            respond_to_client(422, "Invalid post status: $post_status_str");
+            exit;
         }
     
         // Validation for create post
@@ -209,12 +214,11 @@ switch ($method) {
             }
         }
         if (!empty($errors)) {
-            http_response_code(422);
-            echo json_encode(["errors" => $errors]);
+            respond_to_client(422, "Validation errors", null, $errors);
             exit;
         }
         
-        if($has_attachments){
+        if($has_attachments){   
             // Move files from temp to upload directory
             $filenames = [];
             foreach ($data['attachments'] as $att) {
@@ -226,7 +230,9 @@ switch ($method) {
                 
                 $move_result = FileService::moveFilesToUpload($filenames);
                 if (!$move_result) {
-                    return json_encode(['error' => 'Failed to move files from temp to upload directory', 'status' => 500]);
+                    $logger->error("Failed to move files: " . json_encode($filenames));
+                    respond_to_client(500, "Failed to move files from temp to upload directory");
+                    exit;
                 }                
 
             }  
@@ -236,6 +242,19 @@ switch ($method) {
         if($has_attachments){
             $content = PostUtility::replaceText($content, PostUtility::$FILE_IS_TEMP_SEARCHING_TEXT, 'isTemp=false');
         }
+
+        if(!PostUtility::isNullOrEmptyString($cover_image)){
+            $logger->info("Cover image provided: $cover_image");
+            $cover_image_filename = PostUtility::extractFileNameFromUrl($cover_image);
+            $move_result = FileService::moveFilesToUpload([$cover_image_filename]);
+            if (!$move_result) {
+                $logger->error("Failed to move cover image: $cover_image_filename");
+                respond_to_client(500, "Failed to move cover image from temp to upload directory");
+                exit;
+            }
+            $cover_image = PostUtility::replaceText($cover_image, PostUtility::$FILE_IS_TEMP_SEARCHING_TEXT, 'isTemp=false');
+        }
+        
 
         $stmt = $connection->prepare("INSERT INTO posts (title, description, content, cover_image, slug, author_id, post_status) VALUES (?, ?, ?, ?, ?, ?, ?)");
         $post_status_str = $post_status->toString();
@@ -277,14 +296,15 @@ switch ($method) {
             // Get newly created post with tags and attachments
             $new_post = getPostById($connection, $post_id);
             if (!$new_post) {
-                http_response_code(500);
-                echo json_encode(["error" => "Failed to retrieve newly created post"]);
+                $logger->error("Failed to retrieve newly created post with ID: $post_id");
+                respond_to_client(500, "Failed to retrieve newly created post");
                 exit;
             }
             echo json_encode(["message" => "Post created", "Post" => $new_post]);
         } else {
-            http_response_code(500);
-            echo json_encode(["error" => "Failed to create post"]);
+            $logger->error("Failed to create post: " . $stmt->error);
+            respond_to_client(500, "Failed to create post");
+            exit;
         }
         break;
     case 'PUT':
