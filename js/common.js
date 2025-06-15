@@ -59,6 +59,64 @@ function countDuplicateArray(arr){
   return counts
 }
 
+
+export function makeElementSticky(elementId) {
+  const stickyElement = document.getElementById(elementId);
+
+  if (!stickyElement) {
+    console.error(`Element with ID "${elementId}" not found.`);
+    return;
+  }
+  const stickyPosition = stickyElement.offsetTop;
+
+  window.onscroll = function () {
+    if (window.pageYOffset > stickyPosition) {
+      stickyElement.classList.add("sticky");
+    } else {
+      stickyElement.classList.remove("sticky");
+    }
+  };
+}
+
+export function deepClone(obj) {
+  if (obj === null || typeof obj !== "object") return obj;
+
+  if (Array.isArray(obj)) {
+    return obj.map(deepClone);
+  }
+
+  const clone = {};
+  for (let key in obj) {
+    clone[key] = deepClone(obj[key]);
+  }
+  return clone;
+}
+
+async function makeHttpRequest(method = 'GET', url, data, onError = () => {}) {
+  if(url === null || url === ""){
+    return;
+  }
+  try{
+    let response = await fetch(url, {
+      method,
+      headers: {
+        "Content-Type": "application/json" 
+      },
+      body: JSON.stringify(data)
+      }
+    );
+    let responseObject = await response.json();
+    if(!response.ok){
+      onError(responseObject);
+      return null;
+    }
+    return responseObject;
+  }catch(err){
+    onError(err);
+  }
+
+}
+
 function callUploadFile(file, method = 'POST', url = UPLOAD_FILE_API_URL, async = true, onSuccess = () => {}, onError = () => {}) {
   if (!file) return;
 
@@ -97,6 +155,6 @@ function toast($toast,type, title, content){
   $toast.toast("show");
 }
 
-export {UPLOAD_FILE_API_URL, objectifyForm, callUploadFile };
+export {UPLOAD_FILE_API_URL, objectifyForm, callUploadFile, makeHttpRequest };
 
 document.addEventListener("DOMContentLoaded", removeAd);

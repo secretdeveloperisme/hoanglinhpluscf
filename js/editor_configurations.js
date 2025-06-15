@@ -1,4 +1,4 @@
-import {callUploadFile, UPLOAD_FILE_API_URL} from "./common.js";
+import {callUploadFile, UPLOAD_FILE_API_URL, deepClone} from "./common.js";
 const Image = Quill.import('formats/image');
 
 class CustomImage extends Image {
@@ -32,7 +32,7 @@ let toolbarOption = {
   }
 }
 
-let quillOptions = {
+let quillOptionsWithoutToolBar = {
   modules: {
     syntax: {
       languages: [
@@ -51,7 +51,7 @@ let quillOptions = {
         { key: 'markdown', label: 'Markdown' },
       ]
     },
-    toolbar: toolbarOption,
+    toolbar: false
   },
   placeholder: "Write your Post Here!",
   readOnly: false,
@@ -60,6 +60,9 @@ let quillOptions = {
     doAfterInsertImage: null
   }
 }
+
+let quillOptions = deepClone(quillOptionsWithoutToolBar);
+quillOptions.modules.toolbar = toolbarOption;
 
 function addResizeHandleToImage() {
     let images = document.querySelectorAll(".resizeable-image");
@@ -120,4 +123,4 @@ function imageHandler() {
   });
 }
 
-export {quillOptions, attachments}
+export {quillOptions, quillOptionsWithoutToolBar, attachments}

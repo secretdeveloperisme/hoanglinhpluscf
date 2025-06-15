@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <title>Post Detail</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="../assets/css/base.css">
+  <link rel="stylesheet" href="../assets/css/posts.css">
+  <link rel="stylesheet" href="../assets/css/custom_quill.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@11.11.1/styles/atom-one-dark.css">
+  <link href="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.snow.css" rel="stylesheet">
+
+  <script type="module" src="../js/common.js"></script>
+  <script src="../assets/libs/highlight_11-11-1.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/js/all.min.js"></script>
+  <script type="module" src="../js/editor_configurations.js"></script>
+  <script type="module" src="../js/post_detail.js"></script>
+
+</head>
+
+<body>
+  <div class="post-container">
+    <div class="main-content">
+      <img id="postCoverImage"
+        src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=800&q=80" alt="Cover"
+        class="cover-image">
+      <div class="title" id="postTitle">How to Build a Modern Web Page</div>
+      <div class="meta">Created at: <span id="postCreatedAt">June 15, 2025</span></div>
+      <div class="meta">Updated at: <span id="postUpdatedAt">June 15, 2025</span></div>
+      <div class="tags" id="tagsContainer">
+        <span class="tag">Web Development</span>
+        <span class="tag">HTML</span>
+        <span class="tag">CSS</span>
+        <span class="tag">Tutorial</span>
+      </div>
+      <div class="description" id="postDescription">
+        Learn how to create a modern, responsive web page layout with HTML and CSS, including a table of contents for
+        easy navigation.
+      </div>
+      <div class="content" id="postContent"></div>
+    </div>
+    <aside class="toc">
+      <div id="tableOfContent">
+        <h3>Table of Contents</h3>
+        <ul>
+          <li><a href="#introduction">Introduction</a></li>
+          <li><a href="#layout">Page Layout</a></li>
+          <li><a href="#styling">Styling</a></li>
+          <li><a href="#conclusion">Conclusion</a></li>
+        </ul>
+      </div>
+    </aside>
+  </div>
+  <div class="top-link">
+    <div class="btn-group-wrapper p-2 bg-white w-100">
+      <button class="button primary-button" onclick="window.scrollTo({top:0})">
+        <i class="fa fa-arrow-up" aria-hidden="true"></i>
+      </button>
+    </div>
+  <div class="empty"></div>
+</body>
+
+</html>

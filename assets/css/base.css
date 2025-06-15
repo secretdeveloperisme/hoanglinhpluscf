@@ -252,6 +252,13 @@ p{
     color:white;
 }
 
+.sticky {
+    position: sticky;
+    position: -webkit-sticky;
+    top: 0;
+    z-index: 1000;
+}
+
 
 /* Tablet */
 @media screen and (min-width: 740px) and (max-width: 1023px) {

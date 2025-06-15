@@ -171,7 +171,7 @@ document.addEventListener("DOMContentLoaded", () => {
     editor.setText("");
     publishedStatusRadio.checked = true;
     attachmentContainer.innerHTML = "";
-    attachments.slice(0, -1);
+    attachments.splice(0, attachments.length);
 
     postTitle.value = "";
     postDescription.value = "";
