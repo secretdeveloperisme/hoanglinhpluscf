@@ -8,15 +8,17 @@
   <link rel="stylesheet" href="../assets/css/base.css">
   <link rel="stylesheet" href="../assets/css/posts.css">
   <link rel="stylesheet" href="../assets/css/custom_quill.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@11.11.1/styles/atom-one-dark.css">
+  <link href="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.snow.css" rel="stylesheet">
 
   <script type="module" src="../js/common.js"></script>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@11.11.1/styles/atom-one-dark.css">
   <script src="../assets/libs/highlight_11-11-1.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.js"></script>
-  <link href="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.snow.css" rel="stylesheet">
-  <script type="module" src="../js/editor_configurations.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/interactjs@1.10.27/dist/interact.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/js/all.min.js"></script>
+  <script type="module" src="../js/editor_configurations.js"></script>
+  <script type="module" src="../js/post.js"></script>
+  <script type="module" src="../js/create_post.js"></script>
 </head>
 
 <body>
@@ -42,12 +44,12 @@
           <div class="form-label">Status</div>
           <div class="post__status-container">
             <div class="mb-2">
-              <input type="radio" hidden class="btn-check" name="post_status" id="status0" value="PUBLISHED" checked>
-              <label for="status0" class="btn btn-outline-success">PUBLISHED</label>
+              <input type="radio" hidden class="btn-check" name="post_status" id="publishedStatusRadio" value="PUBLISHED" checked>
+              <label for="publishedStatusRadio" class="btn btn-outline-success">PUBLISHED</label>
             </div>
             <div class="ms-2">
-              <input type="radio" hidden class="btn-check" name="post_status" value="DRAFT" id="status1">
-              <label for="status1" class="btn btn-outline-danger">DRAFT</label>
+              <input type="radio" hidden class="btn-check" name="post_status" value="DRAFT" id="draftStatusRadio">
+              <label for="draftStatusRadio" class="btn btn-outline-danger">DRAFT</label>
             </div>
           </div>
         </div>
@@ -62,13 +64,13 @@
             <label for="title">
               <div class="form-label">Title: </div>
             </label>
-            <input type="text" name="title" id="title" class="form-control" required placeholder="Input your title ...">
+            <input type="text" name="title" id="postTitle" class="form-control" required placeholder="Input your title ...">
           </div>
           <div class="form-section">
             <label for="description">
               <div class="form-label">Description: </div>
             </label>
-            <input type="text" name="description" id="description" class="form-control"
+            <input type="text" name="description" id="postDescription" class="form-control"
               placeholder="Input your description ...">
           </div>
           <div class="form-section">
@@ -96,6 +98,8 @@
                 <span class="ql-formats">
                   <button class="ql-header" value="1"></button>
                   <button class="ql-header" value="2"></button>
+                  <button class="ql-header" value="3"></button>
+                  <button class="ql-header" value="4"></button>
                   <button class="ql-blockquote"></button>
                   <button class="ql-code-block"></button>
                 </span>
@@ -122,23 +126,22 @@
               <div id="editor" class="pb-3"></div>
               <input type="hidden" name="content" id="postContent">
             </div>
-            <div class="btn-upload-wrapper p-2 bg-white w-100">
-              <button class="btn btn-primary" id="btnCreatePost"><i class="fas fa-plus"></i>
-                Create</button>
-            </div>
           </div>
         </div>
       </div>
     </form>
   </div>
   <div class="top-link">
-    <button class="button primary-button" onclick="window.scrollTo({top:0})">
-      <i class="fa fa-arrow-up" aria-hidden="true"></i>
-    </button>
+    <div class="btn-group-wrapper p-2 bg-white w-100">
+      <button class="button btn-primary" id="btnResetPost"><i class="fas fa-soap"></i>Reset</button>
+      <button class="button btn-primary" id="btnCreatePost"><i class="fas fa-plus"></i>Create</button>
+      <button class="button primary-button" onclick="window.scrollTo({top:0})">
+        <i class="fa fa-arrow-up" aria-hidden="true"></i>
+      </button>
+    </div>
   </div>
-  <script src="https://cdn.jsdelivr.net/npm/datalist-css/dist/datalist-css.min.js"></script>
-  <script type="module" src="../js/create_post.js"></script>
   <div class="empty"></div>
+  <script type="module" src="https://cdn.jsdelivr.net/npm/datalist-css/dist/datalist-css.min.js"></script>
 </body>
 
 </html>

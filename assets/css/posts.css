@@ -113,7 +113,8 @@ form {
 .attachment-item {
     display: flex;
     align-items: center;
-    gap: 16px;
+    justify-content: space-between;
+    gap: 8px;
     padding: 6px 0;
     border-bottom: 1px solid #eee;
 }
@@ -125,6 +126,9 @@ form {
     font-size: 1.2rem;
     font-weight: 500;
     color: #333;
+    width: 80px;
+    text-overflow: ellipsis;
+    overflow: hidden;
 }
 .attachment-type {
     color: #888;
@@ -183,9 +187,9 @@ input[name="title"] {
     background: #fff;
 }
 
-.btn-upload-wrapper {
-    text-align: right;
-    margin-bottom: 1rem;
+.btn-group-wrapper {
+   display: flex;
+   gap: 8px;
 }
 
 .btn-primary {

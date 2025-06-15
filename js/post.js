@@ -1,93 +1,27 @@
-import {objectifyForm} from "./common.js";
+import {UPLOAD_FILE_API_URL, objectifyForm, callUploadFile} from "./common.js";
+import {quillOptions, attachments} from "./editor_configurations.js";
+
 document.addEventListener("DOMContentLoaded", () => {
-  const UPLOAD_FILE_API_URL = "/api/files.php";
   const POST_API_URL = "/api/posts.php";
+  const defaultUploadIconUrl = "/assets/icons/upload.svg"
 
-
+  // post form elements
   const postImageInput = document.querySelector("#postImage");
   const displayPostImage = document.querySelector("#displayPostImage");
   const tagsContainer = document.querySelector("#tags");
+  const publishedStatusRadio = document.querySelector('#publishedStatusRadio');
+  const postTitle = document.querySelector("#postTitle");
+  const postDescription = document.querySelector("#postDescription");
   const createPostForm = document.querySelector("#createPostForm");
   const postImagePath = document.querySelector("#postImagePath");
   const postContent = document.querySelector("#postContent");
+  const btnCreatePost = document.querySelector("#btnCreatePost");
+  const btnResetPost = document.querySelector("#btnResetPost");
 
-  function callUploadFile(file, method = 'POST', url = UPLOAD_FILE_API_URL, async = true, onSuccess = () => {}, onError = () => {}) {
-    if (!file) return;
+  const attachmentContainer = document.getElementById('attachmentContainer');
 
-    let form = new FormData();
-    form.append('file', file);
-    let xhr = new XMLHttpRequest();
-    xhr.open(method, url, async);
-    xhr.onload = function () {
-      try {
-        let res = JSON.parse(this.responseText);
-        if (xhr.status === 200) {
-          onSuccess(res);
-        } else {
-          onError(res);
-        }
-      } catch (err) {
-        onError(err);
-      }
-    };
-    xhr.onerror = function () {
-      onError(new Error('Network error'));
-    };
-    xhr.send(form);
-  }
+  quillOptions.customEvents.doAfterInsertImage = addAttachment;
 
-  function imageHandler() {
-    let input = document.createElement('input');
-    input.type = 'file';
-    input.click();
-    input.addEventListener('change', function (event) {
-      let image = input.files[0];
-      callUploadFile(image, 'POST', UPLOAD_FILE_API_URL, true, (res) => {
-        let imagePath = res.filePath;
-        editor.insertEmbed(
-          editor.getSelection().index,
-          'image',
-          imagePath,
-        );
-        addResizeHandleToImage();
-        addAttachment(res.filename, res.fileType, res.filePath);
-      }, err => {
-        console.error('Image upload failed:', err);
-        alert('Failed to upload image: ' + (err.message || 'Unknown error'));
-      });
-    });
-  }
-
-  let toolbarOption = {
-    container: "#toolbar",
-    handlers: {
-      image: imageHandler
-    }
-  }
-  let quillOptions = {
-    modules: {
-      syntax: {
-        languages: [
-          { key: 'Plain', label: 'Plain' },
-          { key: 'java', label: 'Java' },
-          { key: 'rust', label: 'Rust' },
-          { key: 'javascript', label: 'JavaScript' },
-          { key: 'c', label: 'C' },
-          { key: 'cpp', label: 'C++' },
-          { key: 'xml', label: 'HTML/XML' },
-          { key: 'css', label: 'CSS' },
-          { key: 'python', label: 'Python' },
-          { key: 'sql', label: 'SQL' },
-          { key: 'bash', label: 'Bash' },
-          { key: 'markdown', label: 'Markdown' },
-        ]
-      },
-      toolbar: toolbarOption,
-    },
-    placeholder: "Write your Post Here!",
-    readOnly: false,
-    theme: "snow",
-  }
   let editor = new Quill("#editor", quillOptions);
 
   postImageInput.addEventListener("change", function (event) {
@@ -98,37 +32,6 @@ document.addEventListener("DOMContentLoaded", () => {
     fileReader.readAsDataURL(this.files[0]);
   });
 
-
-  function addResizeHandleToImage() {
-    let images = document.querySelectorAll(".resizeable-image");
-    images.forEach((image) => {
-      if (!image.classList.contains('resizable')) {
-        image.classList.add('resizable');
-        interact(image).resizable({
-          edges: { left: true, right: true, bottom: true, top: true },
-          listeners: {
-            move(event) {
-              let target = event.target;
-              let x = (parseFloat(target.getAttribute('data-x')) || 0) + event.deltaRect.left;
-              let y = (parseFloat(target.getAttribute('data-y')) || 0) + event.deltaRect.top;
-
-              target.style.width = `${event.rect.width}px`;
-              target.style.height = `${event.rect.height}px`;
-              target.style.transform = `translate(${x}px, ${y}px)`;
-
-              target.setAttribute('data-x', x);
-              target.setAttribute('data-y', y);
-            }
-          },
-          modifiers: [
-            interact.modifiers.restrictSize({
-              min: { width: 100, height: 100 },
-            })
-          ],
-        });
-      }
-    });
-  }
 
   function setCaretToEnd(target) {
     const range = document.createRange();
@@ -185,10 +88,6 @@ document.addEventListener("DOMContentLoaded", () => {
     attachments.push(attachment);
     renderAttachments();
   }
-
-  const attachmentContainer = document.getElementById('attachmentContainer');
-  let attachments = [];
-
 
   function renderAttachments() {
     attachmentContainer.innerHTML = '';
@@ -266,9 +165,29 @@ document.addEventListener("DOMContentLoaded", () => {
       });
     
   };
+  function resetPostForm() {
+    displayPostImage.src = defaultUploadIconUrl;
+    tagsContainer.innerHTML = "";
+    editor.setText("");
+    publishedStatusRadio.checked = true;
+    attachmentContainer.innerHTML = "";
+    attachments.slice(0, -1);
 
-  createPostForm.addEventListener("submit", (event) => {
-    event.preventDefault();
-    callCreatePost();
-  });
+    postTitle.value = "";
+    postDescription.value = "";
+    postContent.value = "";
+    postImagePath.value = "";
+  }
+  // Add event listeners
+
+
+  btnResetPost.addEventListener("click", resetPostForm);
+
+  if(btnCreatePost != undefined){
+    btnCreatePost.addEventListener("click", (event) => {
+        event.preventDefault();
+        callCreatePost();
+    });
+  }
+    
 });

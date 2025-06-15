@@ -1,3 +1,6 @@
+const UPLOAD_FILE_API_URL = "/api/files.php";
+
+
 function removeAd(){
     let hostname = window.location.hostname;
     if (hostname === "localhost" || hostname === "127.0.0.1")
@@ -56,21 +59,31 @@ function countDuplicateArray(arr){
   return counts
 }
 
-function uploadFile($inputFile){
-  const xmlHttpRequest = new XMLHttpRequest();
-  xmlHttpRequest.open("POST","/api/file/upload",false);
-  let form  = new FormData();
-  let file = $inputFile[0].files[0];
-  console.log(file)
-  form.append("file", file);
-  xmlHttpRequest.send(form);
-  if(xmlHttpRequest.status === 200) {
-    console.log(xmlHttpRequest.responseText)
-    let responseJSON = JSON.parse(xmlHttpRequest.responseText);
-    return responseJSON.data.fileInfo[0].filePath;
-  }
-  return null;
+function callUploadFile(file, method = 'POST', url = UPLOAD_FILE_API_URL, async = true, onSuccess = () => {}, onError = () => {}) {
+  if (!file) return;
+
+  let form = new FormData();
+  form.append('file', file);
+  let xhr = new XMLHttpRequest();
+  xhr.open(method, url, async);
+  xhr.onload = function () {
+    try {
+      let res = JSON.parse(this.responseText);
+      if (xhr.status === 200) {
+        onSuccess(res);
+      } else {
+        onError(res);
+      }
+    } catch (err) {
+      onError(err);
+    }
+  };
+  xhr.onerror = function () {
+    onError(new Error('Network error'));
+  };
+  xhr.send(form);
 }
+
 // display login response  from server
 function toast($toast,type, title, content){
   if(type === "success"){
@@ -84,6 +97,6 @@ function toast($toast,type, title, content){
   $toast.toast("show");
 }
 
-export { objectifyForm };
+export {UPLOAD_FILE_API_URL, objectifyForm, callUploadFile };
 
 document.addEventListener("DOMContentLoaded", removeAd);
