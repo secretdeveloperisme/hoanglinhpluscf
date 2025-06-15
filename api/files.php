@@ -1,8 +1,15 @@
 <?php
-require_once __DIR__ . '/services/FileService.php';
 header('Content-Type: application/json');
 
+require_once __DIR__ . '/services/FileService.php';
+require_once __DIR__ . '/utilities/Logger.php';
+require_once __DIR__ . '/utilities/HttpUtility.php';
+
+
 $ENTRY_POINT = '/api/files.php';
+
+
+$logger = Logger::getInstance();
 
 // Handle get file
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
@@ -18,8 +25,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     $result = FileService::getFile($filename, $isTemp);
 
     if (isset($result['error'])) {
-        http_response_code($result['status'] ?? 500);
-        echo json_encode(['error' => $result['error']]);
+        respond_to_client(500, message: "File retrieval failed", data: null, errors: $result['error']);
         exit;
     }
 
@@ -31,21 +37,23 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
 
 // Handle file upload
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $logger->debug("File upload request received");
+
     if (!isset($_FILES['file'])) {
-        http_response_code(400);
-        echo json_encode(['error' => 'No file uploaded']);
+        respond_to_client(400, message: "No file uploaded");
         exit;
     }
 
+    $logger->debug("File upload: " . $_FILES['file']['name']);
     $result = FileService::uploadFile($_FILES['file']);
 
     if (isset($result['error'])) {
-        http_response_code($result['status'] ?? 500);
-        echo json_encode(['error' => $result['error']]);
+        respond_to_client(500, message: "Upload to file failed", data: null, errors: $result['error']);
         exit;
     }
 
     $targetPath = $ENTRY_POINT . "?isTemp=true&fileName=" . urlencode($result['filename']);
+    
     echo json_encode([
         'success' => true,
         'filename' => $result['filename'],
@@ -63,16 +71,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'DELETE') {
     $filename = isset($data['filename']) ? basename($data['filename']) : null;
 
     if (!$filename) {
-        http_response_code(400);
-        echo json_encode(['error' => 'No filename specified']);
+        respond_to_client(400, message: "No filename specified");
         exit;
     }
 
     $result = FileService::deleteFile($filename);
 
     if (isset($result['error'])) {
-        http_response_code($result['status'] ?? 500);
-        echo json_encode(['error' => $result['error']]);
+        respond_to_client(500, message: "File deletion failed", data: null, errors: $result['error']);
         exit;
     }
 
@@ -81,7 +87,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'DELETE') {
 }
 
 // Handle unsupported methods
-http_response_code(405);
-echo json_encode(['error' => 'Method not allowed']);
+respond_to_client(405, message: "Method not allowed", data: null, errors: "Unsupported HTTP method: " . $_SERVER['REQUEST_METHOD']);
 exit;
 ?>
