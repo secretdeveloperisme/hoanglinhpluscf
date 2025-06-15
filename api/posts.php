@@ -58,29 +58,41 @@ function getPostById($connection, $post_id) {
         return null;
     }
     $post = $result->fetch_assoc();
-    $post['tags'] = getPostTags($connection, $post_id);
-    $post['attachments'] = getPostAttachments($connection, $post_id);
+    return new Post($post);
+}
+
+function getPostBySlug($connection, $slug) {
+    $stmt = $connection->prepare("SELECT * FROM posts WHERE slug = ? AND deleted_at IS NULL");
+    $stmt->bind_param("s", $slug);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    if ($result->num_rows === 0) {
+        return null;
+    }
+    $post = $result->fetch_assoc();
     return new Post($post);
 }
 
 
 switch ($method) {
     case 'GET':
-        if (isset($_GET['id'])) {
-            // Get single post by id
-            $post_id = intval($_GET['id']);
-            $stmt = $connection->prepare("SELECT * FROM posts WHERE post_id = ? AND deleted_at IS NULL");
-            $stmt->bind_param("i", $post_id);
-            $stmt->execute();
-            $result = $stmt->get_result();
-            if ($result->num_rows === 0) {
-                http_response_code(404);
-                echo json_encode(["error" => "Post not found"]);
+        if (isset($_GET['id']) || isset($_GET['slug'])) {
+            $post = [];
+            if(isset($_GET['slug'])) {
+                $slug = $_GET['slug'];
+                $post = getPostBySlug($connection, $slug);
+            }else if (isset($_GET['id'])) {
+                $post_id = intval($_GET['id']);
+                $post = getPostById($connection, $post_id);
+            }
+         
+            if (!$post) {
+                respond_to_client(404, "Post not found");
                 exit;
             }
-            $post = $result->fetch_assoc();
-            $post['tags'] = getPostTags($connection, $post_id);
-            $post['attachments'] = getPostAttachments($connection, $post_id);
+
+            $post->tags = getPostTags($connection, $post->post_id);
+            $post->attachments = getPostAttachments($connection, $post->post_id);
             echo json_encode(new Post($post));
         } else {
             // Paging parameters
