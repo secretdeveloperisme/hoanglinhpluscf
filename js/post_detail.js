@@ -9,12 +9,12 @@ document.addEventListener('DOMContentLoaded', async () => {
   const postUpdatedAt = document.querySelector('#postUpdatedAt');
   const tagsContainer = document.querySelector('#tagsContainer');
   const postContent = document.querySelector('#postContent');
-  const tocWrapper = document.querySelector('.toc')
-  const tocEl = document.querySelector('.toc ul');
+  const tocWrapper = document.querySelector('#tocWrapper')
+  const tocElement = document.querySelector('#tableOfContent');
   const GET_POST_URL = "/api/posts.php?id="
 
 
-  makeElementSticky("tableOfContent")
+  makeElementSticky("tocWrapper")
 
   function getPostId() {
     const params = new URLSearchParams(window.location.search);
@@ -92,8 +92,8 @@ function buildTOC(contentEl, tocContainer) {
       const quillEditor = new Quill(postContent, quillOptionsWithoutToolBar);
       quillEditor.setContents(JSON.parse(post.content));
     }
-    if (tocEl && postContent) {
-      buildTOC(postContent, tocEl)
+    if (tocElement && postContent) {
+      buildTOC(postContent, tocElement)
     }
 
   } catch (err) {

@@ -1,8 +1,9 @@
-import {UPLOAD_FILE_API_URL, objectifyForm, callUploadFile} from "./common.js";
+import {UPLOAD_FILE_API_URL, objectifyForm, callUploadFile, makeElementSticky} from "./common.js";
 import {quillOptions, attachments} from "./editor_configurations.js";
 
 document.addEventListener("DOMContentLoaded", () => {
   const POST_API_URL = "/api/posts.php";
+  const POST_DETAIL_URL = "/pages/post_detail.html?id=";
   const defaultUploadIconUrl = "/assets/icons/upload.svg"
 
   // post form elements
@@ -68,9 +69,8 @@ document.addEventListener("DOMContentLoaded", () => {
     tagSpan.appendChild(tagInput);
     return tagSpan;
   }
-  tagsContainer.addEventListener("keyup", (event) => {
-    if (event.which === 32) {
-      let text = tagsContainer.textContent;
+  function generateTags(){
+    let text = tagsContainer.textContent;
       let tags = text.match(/\w+/g);
       if (tags !== null) {
         tagsContainer.innerHTML = "";
@@ -80,8 +80,20 @@ document.addEventListener("DOMContentLoaded", () => {
           setCaretToEnd(tagsContainer);
         });
       }
+  }
+  
+  tagsContainer.addEventListener("keyup", (event) => {
+    if (event.which === 32 || event.which === 13) {
+      generateTags();
     }
   });
+
+  tagsContainer.addEventListener("input", (event) => {
+    if (event.which === 32 || event.which === 13) {
+      generateTags();
+    }
+  });
+
 
   function addAttachment(name, type, url) {
     const attachment = { name: name, type: type , url: url};
@@ -152,10 +164,11 @@ document.addEventListener("DOMContentLoaded", () => {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(dataObject)
     })
-      .then(response => response.json().then(data => ({ status: response.status, body: data })))
-      .then(({ status, body }) => {
+      .then(response => response.json().then(data => ({ status: response.status, post: data.Post })))
+      .then(({ status, post }) => {
         if (status === 200) {
           alert("Post created successfully!");
+          window.open(POST_DETAIL_URL + post.post_id, '_blank').focus();
         } else {
           alert("Failed to create post: " + body.message);
         }
@@ -180,6 +193,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
   // Add event listeners
 
+  makeElementSticky("toolbar")
 
   btnResetPost.addEventListener("click", resetPostForm);
 

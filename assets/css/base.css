@@ -45,9 +45,6 @@ a, button{
    cursor: var(--cursor-pointer);
 }
 
-p{
-    line-height: 1.6rem;
-}
 
 .cursor-default{
     cursor: var(--cursor-default);
