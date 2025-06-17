@@ -17,7 +17,7 @@
    <link rel="stylesheet" href="assets/css/grid.css">
    <link rel="stylesheet" href="assets/css/main.css">
    <link rel="icon" href="assets/icons/hlp_icon.png">
-   <script src="js/common.js"></script>
+   <script type="module" src="js/common.js"></script>
    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/js/all.min.js"></script>
 </head>
 <body>
@@ -43,13 +43,13 @@
             <li class="header__nav-items"><a href="#projects">Projects</a></li>
             <li class="header__nav-items"><a href="#experiences">Experience</a></li>
             <li class="header__nav-items dropdown">
-               <div class="dropdown-btn cursor-pointer">Comment</div>
-               <div class="dropdown-content projects">
-                  <a href="pages/comment.html" class="hl-center-text">
-                     Comment About Me
+               <div class="dropdown-btn cursor-pointer">Blogs</div>
+               <div class="dropdown-content posts">
+                  <a href="pages/create_post.html" class="hl-center-text">
+                     Create Post
                   </a>
-                  <a href="php/DisplayComments.php" class="hl-center-text">
-                     Display Comments
+                  <a href="pages/posts.html" class="hl-center-text">
+                     Read Posts
                   </a>
                </div>
             </li>
@@ -117,13 +117,13 @@
                </div>
             </li>
             <li class="header__nav-mobile-item">
-               <div class="header-nav-mobile-item__label">Comment</div>
+               <div class="header-nav-mobile-item__label">Blogs</div>
                <div class="header-nav-mobile__sub-item">
-                  <a href="pages/comment.html" class="hl-center-text">
-                     Comment About Me
+                  <a href="pages/create_post.html" class="hl-center-text">
+                     Create Post
                   </a>
-                  <a href="php/DisplayComments.php" class="hl-center-text">
-                     Display Comments
+                  <a href="pages/posts.html" class="hl-center-text">
+                     Read Posts
                   </a>
                </div>
             </li>
@@ -751,7 +751,7 @@
          <!-- display a huge picture from hoanglinh gallery -->
          <footer class="footer grid">
             <div class="footer__container footer__container--flex-row">
-               <div class="container__item l-4 m-6 c-12 hl-center-text">
+               <div class="container__item l-4 m-6 c-12 hl-center-text" id="contact">
                   <h3 class="footer__section-title">Let's Connect!</h3>
                   <ul class="footer__social-links">
                   <li>

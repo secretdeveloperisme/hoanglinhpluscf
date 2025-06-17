@@ -14,8 +14,12 @@
     padding: 1rem 0;
 }
 
+.header__home{
+    display: flex;
+}
+
 .header__home-logo{
-    height: 100%;
+    margin: auto;
     display: flex;
     flex-direction: row;
     justify-content: center;
@@ -67,7 +71,7 @@
     border-left: 1px solid var(--black-color);
 }
 .header__nav-list--mobile{
-    padding: 20px 15px;
+    padding: 10px 15px;
     display: none;
     position: fixed;
     top: 0;
@@ -207,7 +211,7 @@
 }
 .bars-icon *{
     margin: 3px;
-    height: 4px;
+    height: 6px;
     background: red;
 }
 @keyframes dropdown_appear{
