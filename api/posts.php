@@ -11,6 +11,7 @@ require_once 'entities/Attachment.php';
 require_once 'services/FileService.php';
 require_once 'utilities/Logger.php';
 require_once 'utilities/HttpUtility.php';
+require_once 'utilities/ConfigUtility.php';
 
 $logger = Logger::getInstance();
 
@@ -96,12 +97,15 @@ switch ($method) {
             echo json_encode(new Post($post));
         } else {
             // Paging parameters
-            $page = isset($_GET['page']) ? max(1, intval($_GET['page'])) : 1;
-            $limit = isset($_GET['limit']) ? max(1, intval($_GET['limit'])) : 10;
+            $default_page_start = ConfigUtility::get("defaultPageStart", 1);
+            $default_page_size = ConfigUtility::get("defaultPageSize", 10);
+            $page = isset($_GET['page']) ? max(1, intval($_GET['page'])) : $default_page_start;
+            $limit = isset($_GET['limit']) ? max(1, intval($_GET['limit'])) : $default_page_size;
             $offset = ($page - 1) * $limit;
 
             // Filtering
             $where = ["deleted_at IS NULL"];
+            
             $params = [];
             $types = '';
 
@@ -125,7 +129,8 @@ switch ($method) {
             }
 
             $where_sql = implode(' AND ', $where);
-            $sql = "SELECT * FROM posts WHERE $where_sql ORDER BY created_at DESC LIMIT ? OFFSET ?";
+            $select_columns = implode(",", Post::$SELECT_COLUMNS);
+            $sql = "SELECT $select_columns FROM posts WHERE $where_sql ORDER BY created_at DESC LIMIT ? OFFSET ?";
             $params[] = $limit;
             $params[] = $offset;
             $types .= 'ii';
@@ -145,10 +150,15 @@ switch ($method) {
             // Optionally, return total count for pagination
             $count_sql = "SELECT COUNT(*) as total FROM posts WHERE $where_sql";
             $count_stmt = $connection->prepare($count_sql);
+            $logger->debug("[getPosts] type: ".$types);
+            $logger->debug("[getPosts] params: ".implode(",", $params));
+            
             if ($types !== '') {
                 // Remove last two 'i' for limit/offset
                 $count_types = substr($types, 0, -2);
-                $count_stmt->bind_param($count_types, ...array_slice($params, 0, -2));
+                if($count_types !== ''){
+                    $count_stmt->bind_param($count_types, ...array_slice($params, 0, -2));
+                }
             }
             $count_stmt->execute();
             $count_result = $count_stmt->get_result();
@@ -445,20 +455,51 @@ switch ($method) {
         }
         break;
     case 'DELETE':
-        // Soft delete a post
+        // Delete a post: soft delete by default, hard delete if isHard=true
         if (!isset($_GET['id'])) {
             http_response_code(400);
             echo json_encode(["error" => "Missing post id"]);
             exit;
         }
         $post_id = intval($_GET['id']);
-        $stmt = $connection->prepare("UPDATE posts SET deleted_at = CURRENT_TIMESTAMP WHERE post_id = ? AND deleted_at IS NULL");
-        $stmt->bind_param("i", $post_id);
-        if ($stmt->execute()) {
-            echo json_encode(["message" => "Post deleted"]);
+        $is_hard = isset($_GET['isHard']) && ($_GET['isHard'] === 'true' || $_GET['isHard'] === '1');
+
+        if ($is_hard) {
+            // Hard delete: remove post, tags relation, attachments
+            $connection->begin_transaction();
+            try {
+                // Delete attachments
+                $stmt1 = $connection->prepare("DELETE FROM attachments WHERE post_id = ?");
+                $stmt1->bind_param("i", $post_id);
+                $stmt1->execute();
+
+                // Delete post_tags
+                $stmt2 = $connection->prepare("DELETE FROM post_tags WHERE post_id = ?");
+                $stmt2->bind_param("i", $post_id);
+                $stmt2->execute();
+
+                // Delete post
+                $stmt3 = $connection->prepare("DELETE FROM posts WHERE post_id = ?");
+                $stmt3->bind_param("i", $post_id);
+                $stmt3->execute();
+
+                $connection->commit();
+                echo json_encode(["message" => "Post hard deleted"]);
+            } catch (Exception $e) {
+                $connection->rollback();
+                http_response_code(500);
+                echo json_encode(["error" => "Failed to hard delete post"]);
+            }
         } else {
-            http_response_code(500);
-            echo json_encode(["error" => "Failed to delete post"]);
+            // Soft delete
+            $stmt = $connection->prepare("UPDATE posts SET deleted_at = CURRENT_TIMESTAMP WHERE post_id = ? AND deleted_at IS NULL");
+            $stmt->bind_param("i", $post_id);
+            if ($stmt->execute()) {
+                echo json_encode(["message" => "Post soft deleted"]);
+            } else {
+                http_response_code(500);
+                echo json_encode(["error" => "Failed to delete post"]);
+            }
         }
         break;
     default:

@@ -1,6 +1,7 @@
 <?php
 // Entity class for the 'posts' table
 class Post {
+    public static $SELECT_COLUMNS;
     public $post_id;
     public $title;
     public $description;
@@ -23,3 +24,7 @@ class Post {
         }
     }
 }
+Post::$SELECT_COLUMNS = [
+    "post_id", "title", "description", "cover_image",
+    "slug", "author_id", "post_status", "created_at", "updated_at"
+];
