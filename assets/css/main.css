@@ -82,11 +82,11 @@
     background-color: white;
     transform: translate(-320px,0);
     transition: all linear .5s;
-}
-.header__nav-list--mobile{
     list-style-type: none;
     overflow-y: scroll;
+    z-index: 2;
 }
+
 .header__nav-mobile-item a{
     padding: 5px 0;
     display: block;
@@ -1115,6 +1115,9 @@ footer ul a {
     }
     .header__nav-list--mobile{
         display: block;
+    }
+    .container{
+        padding: 1rem;
     }
     
 }

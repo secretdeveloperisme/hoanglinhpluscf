@@ -5,3 +5,35 @@
 .ql-code-block-container {
     padding-top: 20px !important;
 }
+
+.ql-font-roboto {
+    font-family: 'Roboto', sans-serif;
+}
+
+.ql-font-inter {
+    font-family: 'Inter', sans-serif;
+}
+
+.ql-font-lora {
+    font-family: 'Lora', serif;
+}
+
+.ql-font-playfair-display {
+    font-family: 'Playfair', sans-serif;
+}
+
+
+@media (max-width: 480px) {
+    .ql-editor{
+        padding: 0 !important;
+    }
+    .ql-code-block{
+        font-size: 1.4rem !important;
+        line-height: 1.6;
+    }
+    .ql-code-block-container {
+        overflow-x: auto;
+        white-space: pre;
+        -webkit-overflow-scrolling: touch; /* smooth on iOS */
+    }
+}

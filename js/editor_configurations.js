@@ -1,5 +1,11 @@
 import {callUploadFile, UPLOAD_FILE_API_URL, deepClone} from "./common.js";
 const Image = Quill.import('formats/image');
+const Font = Quill.import('formats/font');
+
+Font.whitelist = [
+  'sans-serif', 'serif', 'roboto', 'inter', 'lora', 'playfair'
+];
+
 
 class CustomImage extends Image {
   static create(value) {
@@ -19,6 +25,7 @@ class CustomImage extends Image {
   }
 }
 
+Quill.register(Font, true);
 Quill.register(CustomImage, true);
 
 // Quill toolbar options

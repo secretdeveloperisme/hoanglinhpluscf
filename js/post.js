@@ -153,7 +153,9 @@ document.addEventListener("DOMContentLoaded", () => {
     // Serialize form data
     const formData = new FormData(createPostForm);
     let dataObject = objectifyForm(Array.from(formData.entries()).map(([name, value]) => ({ name, value })));
-
+    if(dataObject.tags !== undefined &&  !Array.isArray(dataObject.tags)) {
+      dataObject.tags = [dataObject.tags];
+    }
     if(attachments.length > 0) {
       dataObject.attachments = attachments.map(file => ({ file_name: file.name, file_type: file.type, file_url: file.url }));
     }

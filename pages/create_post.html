@@ -5,6 +5,10 @@
   <title>Create Post</title>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Lora:ital,wght@0,400..700;1,400..700&family=Playfair:ital,opsz,wght@0,5..1200,300..900;1,5..1200,300..900&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="../assets/css/base.css">
   <link rel="stylesheet" href="../assets/css/posts.css">
   <link rel="stylesheet" href="../assets/css/custom_quill.css">
@@ -77,7 +81,15 @@
             <div class="post-content bg-white">
               <div id="toolbar" class="ql-toolbar ql-snow">
                 <span class="ql-formats">
-                  <select class="ql-font"></select>
+                  <select class="ql-font">
+                    <option selected></option>
+                    <option value="serif">Serif</option>
+                    <option value="monospace">Monospace</option>
+                    <option value="roboto">Roboto</option>
+                    <option value="inter">Inter</option>
+                    <option value="lora">Lora</option>
+                    <option value="playfair">Playfair</option>
+                  </select>
                   <select class="ql-size"></select>
                 </span>
                 <span class="ql-formats">

@@ -2,6 +2,7 @@
 html{
     font-size: 14px;
 }
+
 .app {
     display: flex;
     min-height: 100vh;
@@ -381,14 +382,35 @@ input[type="radio"].btn-check:checked+.btn.btn-outline-danger {
 }
 
 
-/* Responsive */
-@media (max-width: 900px) {
+/* Basic media queries for mobile and tablet */
+@media (max-width: 768px) {
+    html {
+        font-size: 13px;
+    }
+    .sidebar {
+        padding: 16px 8px;
+    }
+    .main-content {
+        padding: 0 0.5rem;
+    }
+    .toc-wrapper {
+        padding: 0 0.5rem;
+    }
+    .post-container {
+        margin: 16px 0;
+        border-radius: 0;
+    }
+    .cover-image {
+        max-height: 180px;
+        border-radius: 4px;
+    }
+}
 
+@media (max-width: 480px) {
     .app,
     form {
         flex-direction: column;
     }
-
     .sidebar {
         width: 100%;
         border-right: none;
@@ -396,7 +418,8 @@ input[type="radio"].btn-check:checked+.btn.btn-outline-danger {
         box-shadow: none;
     }
     .main-content{
-        padding: 0 1rem;
+        font-size: 1.6px;
+        padding: 0 0.5rem;
     }
     .content {
         padding: 0.5rem;
@@ -415,7 +438,6 @@ input[type="radio"].btn-check:checked+.btn.btn-outline-danger {
         min-width: unset;
     }
     .toc-wrapper{
-        padding: 0 1rem;
+        padding: 0.5rem;
     }
-    
 }
