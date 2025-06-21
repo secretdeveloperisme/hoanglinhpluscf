@@ -1,4 +1,4 @@
-import { makeHttpRequest, makeElementSticky } from "./common.js"
+import { makeHttpRequest, makeElementSticky, timeFromNow } from "./common.js"
 
 import { quillOptionsWithoutToolBar } from "./editor_configurations.js"
 document.addEventListener('DOMContentLoaded', async () => {
@@ -74,8 +74,8 @@ function buildTOC(contentEl, tocContainer) {
       postCoverImage.src = post.cover_image;
     }
     if (postTitle) postTitle.textContent = post.title;
-    if (postCreatedAt) postCreatedAt.textContent = post.created_at;
-    if (postUpdatedAt) postUpdatedAt.textContent = post.updated_at;
+    if (postCreatedAt) postCreatedAt.textContent = timeFromNow(post.created_at);
+    if (postUpdatedAt) postUpdatedAt.textContent = timeFromNow(post.updated_at);
     if (tagsContainer && Array.isArray(post.tags)) {
       tagsContainer.innerHTML = '';
       post.tags.forEach(tag => {

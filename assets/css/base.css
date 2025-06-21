@@ -85,6 +85,10 @@ a, button{
 }
 
 /* Utility Classes */
+.hl-margin-x{
+    margin-left: 1rem;
+    margin-right: 1rem;
+}
 .hl-margin-right{
     margin-right: 1rem;
 }
@@ -151,6 +155,12 @@ a, button{
 .hl-color-text{
     color: #333;
 }
+
+.hl-text-center { text-align: center; }
+.hl-text-muted { color: #6c757d; }
+
+
+/* Teplate */
 
 .responsive--image{
     width: 100%;

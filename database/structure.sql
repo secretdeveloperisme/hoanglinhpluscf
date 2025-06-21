@@ -53,7 +53,7 @@ CREATE TABLE `posts` (
   `post_id` int(11) NOT NULL AUTO_INCREMENT,
   `title` varchar(255) NOT NULL,
   `description` varchar(1000) DEFAULT NULL,
-  `content` text NOT NULL,
+  `content` mediumtext NOT NULL,
   `cover_image` varchar(255) DEFAULT NULL,
   `slug` varchar(255) DEFAULT NULL,
   `author_id` int(11) DEFAULT NULL,

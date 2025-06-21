@@ -142,6 +142,33 @@ function callUploadFile(file, method = 'POST', url = UPLOAD_FILE_API_URL, async 
   xhr.send(form);
 }
 
+// Calculate reading time for a given text
+export function calculateReadingTime(text) {
+  const wordsPerMinute = 200; // Average reading speed
+  const words = text.split(/\s+/).filter(word => word.length > 0).length;
+  const minutes = words / wordsPerMinute;
+  if (minutes < 1) {
+    const seconds = Math.ceil(minutes * 60);
+    return `${seconds} second${seconds !== 1 ? 's' : ''}`;
+  }
+  return `${Math.ceil(minutes)} minute${Math.ceil(minutes) !== 1 ? 's' : ''}`;
+}
+
+// Display time from now in a human-readable format
+export function timeFromNow(date) {
+  const now = new Date();
+  const diff = now - new Date(date);
+  const seconds = Math.floor(diff / 1000);
+  const minutes = Math.floor(seconds / 60);
+  const hours = Math.floor(minutes / 60);
+  const days = Math.floor(hours / 24);
+
+  if (days > 0) return `${days} day${days > 1 ? 's' : ''} ago`;
+  if (hours > 0) return `${hours} hour${hours > 1 ? 's' : ''} ago`;
+  if (minutes > 0) return `${minutes} minute${minutes > 1 ? 's' : ''} ago`;
+  return `${seconds} second${seconds > 1 ? 's' : ''} ago`;
+}
+
 // display login response  from server
 function toast($toast,type, title, content){
   if(type === "success"){
