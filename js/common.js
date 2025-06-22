@@ -10,6 +10,7 @@ function removeAd(){
     console.log(document.getElementsByTagName("body")[0].removeChild(divsOfBody));
 }
 
+
 function objectifyForm(formArray) {
   let duplicateArray = countDuplicateArray(formArray);
   //serialize data function
@@ -76,6 +77,18 @@ export function makeElementSticky(elementId) {
       stickyElement.classList.remove("sticky");
     }
   };
+}
+
+export function getQueryParams() {
+  const params = {};
+  window.location.search.replace(/[?&]+([^=&]+)=([^&]*)/gi, function(m, key, value) {
+    params[key] = decodeURIComponent(value);
+  });
+  return params;
+}
+
+export function isEmptyString(str){
+  return str === null || str === undefined || str.trim() === '';
 }
 
 export function deepClone(obj) {

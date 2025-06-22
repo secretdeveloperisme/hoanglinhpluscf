@@ -17,18 +17,20 @@
 <body>
     <nav class="post-navbar">
         <div class="container">
-            <div class="post-navbar-brand"><a href="#">Linh's Blog</a></div>
-            <div class="post-navbar-search">
+            <div class="post-navbar-brand"><a href="/">Linh's Blog</a></div>
+            <div class="post-navbar-search search-group">
                 <input id="searchInput" class="form-control" type="search" placeholder="Search posts..." aria-label="Search">
+                <button id="btnSearch" class="btn-search" type="button">
+                    <img src="../assets/icons/search-icon.svg" alt="search icon">
+                </button>
             </div>
-            <div class="post-navbar-brand"><a href="/">Home</a></div>
         </div>
     </nav>
 
     <div class="posts-container">
         <div class="filter-container">
             <select id="filterSelect" class="form-select filter-select" name="category">
-                <option value="">All Categories</option>
+                <option value="">Popular Categories</option>
             </select>
             <select id="sortSelect" class="form-select filter-select" style="margin-left: 10px;" name="sort">
                 <option value="latest">Latest</option>

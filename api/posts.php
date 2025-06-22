@@ -130,7 +130,14 @@ switch ($method) {
 
             $where_sql = implode(' AND ', $where);
             $select_columns = implode(",", Post::$SELECT_COLUMNS);
-            $sql = "SELECT $select_columns FROM posts WHERE $where_sql ORDER BY created_at DESC LIMIT ? OFFSET ?";
+
+            // Add sort support
+            $order_by = "created_at DESC"; 
+            if (isset($_GET['sort']) && strtolower($_GET['sort']) === 'oldest') {
+                $order_by = "created_at ASC";
+            }
+
+            $sql = "SELECT $select_columns FROM posts WHERE $where_sql ORDER BY $order_by LIMIT ? OFFSET ?";
             $params[] = $limit;
             $params[] = $offset;
             $types .= 'ii';
