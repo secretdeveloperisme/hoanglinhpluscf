@@ -196,6 +196,7 @@ switch ($method) {
         $cover_image = $data['cover_image'] ?? null;
         $author_id = $data['author_id'] ?? 1;
         $post_status_str = $data['post_status'] ?? 'DRAFT';
+        $reading_time = $data['reading_time'] ?? 0;
 
         $post_status = null;
         try {
@@ -285,9 +286,9 @@ switch ($method) {
         }
         
 
-        $stmt = $connection->prepare("INSERT INTO posts (title, description, content, cover_image, slug, author_id, post_status) VALUES (?, ?, ?, ?, ?, ?, ?)");
+        $stmt = $connection->prepare("INSERT INTO posts (title, description, content, cover_image, slug, author_id, post_status, reading_time) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
         $post_status_str = $post_status->toString();
-        $stmt->bind_param("sssssss", $title, $description, $content, $cover_image, $slug, $author_id, $post_status_str);
+        $stmt->bind_param("sssssssi", $title, $description, $content, $cover_image, $slug, $author_id, $post_status_str, $reading_time);
         if ($stmt->execute()) {
             $post_id = $stmt->insert_id;
             // Handle tags

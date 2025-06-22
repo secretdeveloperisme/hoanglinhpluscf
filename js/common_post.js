@@ -6,6 +6,19 @@ const POSTS_PAGES = "/pages/posts.html";
 const FALLBACK_IMAGE = 'https://dummyimage.com/600x400/10b981/fff&text=HLP';
 const DEBOUNCE_TIMEOUT = 300;
 
+export function formatReadingTime(seconds) {
+  if (seconds < 60) {
+    const s = Math.ceil(seconds);
+    return `${s} second${s === 1 ? '' : 's'}`;
+  } else if (seconds < 3600) {
+    const m = Math.ceil(seconds / 60);
+    return `${m} minute${m === 1 ? '' : 's'}`;
+  } else {
+    const h = Math.ceil(seconds / 3600);
+    return `${h} hour${h === 1 ? '' : 's'}`;
+  }
+}
+
 export function buildDefaultApiUrl(page = 1, itemsPerPage = 6) {
   const params = [];
   params.push(`page=${page}`);
@@ -43,7 +56,7 @@ export function createPostElement(post) {
   const cardWrapper = document.createElement('div');
   const coverImage = post.cover_image && post.cover_image.trim() ? post.cover_image : FALLBACK_IMAGE;
   const post_detail_url = `${POST_DETAIL_URL}?id=${post.post_id}`;
-  const readingTime = post.reading_time || '0 min';
+  const readingTime = formatReadingTime(post.reading_time || '0');
   const fallbackImage = FALLBACK_IMAGE;
 
   cardWrapper.className = 'col c-12 m-6 l-4';

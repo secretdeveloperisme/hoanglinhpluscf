@@ -43,12 +43,16 @@ CREATE TABLE quotes (
  * - cover_image: a string for the cover image URL
  * - slug: a string for the post slug (URL-friendly identifier)
  * - author_id: an integer foreign key referencing the user who authored the post
+ * - post_status: an enum to define the status of the post (DRAFT, PUBLISHED, ARCHIVED, DELETED)
+ * - reading_time: an integer to estimate the reading time in seconds
  * - is_pulished: a boolean to indicate if the post is published
  * - created_at: a timestamp for when the post was created
  * - updated_at: a timestamp for when the post was last updated
  * - deleted_at: a timestamp for soft deletion of the post
  */
 DROP TABLE IF EXISTS posts;
+-- hoanglinhpluscf.posts definition
+
 CREATE TABLE `posts` (
   `post_id` int(11) NOT NULL AUTO_INCREMENT,
   `title` varchar(255) NOT NULL,
@@ -57,14 +61,15 @@ CREATE TABLE `posts` (
   `cover_image` varchar(255) DEFAULT NULL,
   `slug` varchar(255) DEFAULT NULL,
   `author_id` int(11) DEFAULT NULL,
-  `post_status` enum('DRAFT','PUBLISH','ARCHIVED','DELETED') NOT NULL DEFAULT 'DRAFT' COMMENT 'ENUM(''DRAFT'', ''PUBLISH'', ''ARCHIVED'', ''DELETED'' )',
+  `post_status` enum('DRAFT','PUBLISHED','ARCHIVED','DELETED') NOT NULL DEFAULT 'DRAFT' COMMENT 'ENUM(''DRAFT'', ''PUBLISHED'', ''ARCHIVED'', ''DELETED'' )',
+  `reading_time` smallint(5) unsigned DEFAULT 0  COMMENT 'Estimated reading time in seconds',
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
   `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
   `deleted_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`post_id`),
   KEY `FK_AUTHOR` (`author_id`),
   CONSTRAINT `FK_AUTHOR` FOREIGN KEY (`author_id`) REFERENCES `users` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=28 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 
 -- This SQL script creates a table named 'tags' to categorize posts with the following fields:

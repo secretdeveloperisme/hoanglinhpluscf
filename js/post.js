@@ -1,4 +1,4 @@
-import {UPLOAD_FILE_API_URL, objectifyForm, callUploadFile, makeElementSticky} from "./common.js";
+import {UPLOAD_FILE_API_URL, objectifyForm, callUploadFile, makeElementSticky, calculateReadingTime} from "./common.js";
 import {quillOptions, attachments} from "./editor_configurations.js";
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -16,6 +16,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const createPostForm = document.querySelector("#createPostForm");
   const postImagePath = document.querySelector("#postImagePath");
   const postContent = document.querySelector("#postContent");
+  const readingTime = document.querySelector("#postReadingTime");
   const btnCreatePost = document.querySelector("#btnCreatePost");
   const btnResetPost = document.querySelector("#btnResetPost");
 
@@ -24,6 +25,8 @@ document.addEventListener("DOMContentLoaded", () => {
   quillOptions.customEvents.doAfterInsertImage = addAttachment;
 
   let editor = new Quill("#editor", quillOptions);
+  window.editor = editor; // Make editor globally accessible
+  window.calculateReadingTime = calculateReadingTime; // Make function globally accessible
 
   postImageInput.addEventListener("change", function (event) {
     let fileReader = new FileReader();
@@ -148,6 +151,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function callCreatePost(){
     postImagePath.value = callUploadPostImageCover();
+   
+    readingTime.value = calculateReadingTime(editor.getText());
     postContent.value = JSON.stringify(editor.getContents());
 
     // Serialize form data
@@ -156,10 +161,11 @@ document.addEventListener("DOMContentLoaded", () => {
     if(dataObject.tags !== undefined &&  !Array.isArray(dataObject.tags)) {
       dataObject.tags = [dataObject.tags];
     }
+    dataObject.reading_time = parseInt(readingTime.value);
     if(attachments.length > 0) {
       dataObject.attachments = attachments.map(file => ({ file_name: file.name, file_type: file.type, file_url: file.url }));
     }
-    console.log("postPayload:", dataObject);
+    console.log("[callCreatePost] postPayload:", dataObject);
 
     fetch(POST_API_URL, {
       method: "POST",
@@ -191,6 +197,7 @@ document.addEventListener("DOMContentLoaded", () => {
     postTitle.value = "";
     postDescription.value = "";
     postContent.value = "";
+    readingTime.value = "0";
     postImagePath.value = "";
   }
   // Add event listeners

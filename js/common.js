@@ -155,16 +155,12 @@ function callUploadFile(file, method = 'POST', url = UPLOAD_FILE_API_URL, async 
   xhr.send(form);
 }
 
-// Calculate reading time for a given text
+// Calculate reading time in seconds unit for a given text
 export function calculateReadingTime(text) {
   const wordsPerMinute = 200; // Average reading speed
   const words = text.split(/\s+/).filter(word => word.length > 0).length;
-  const minutes = words / wordsPerMinute;
-  if (minutes < 1) {
-    const seconds = Math.ceil(minutes * 60);
-    return `${seconds} second${seconds !== 1 ? 's' : ''}`;
-  }
-  return `${Math.ceil(minutes)} minute${Math.ceil(minutes) !== 1 ? 's' : ''}`;
+  const seconds = Math.ceil((words / wordsPerMinute) * 60);
+  return seconds;
 }
 
 // Display time from now in a human-readable format

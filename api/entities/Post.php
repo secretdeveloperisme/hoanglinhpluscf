@@ -14,6 +14,7 @@ class Post {
     public $slug;
     public $author_id;
     public $post_status;
+    public $reading_time; // in minutes
     public $created_at;
     public $updated_at;
     public $deleted_at;
@@ -42,5 +43,5 @@ class Post {
 }
 Post::$SELECT_COLUMNS = [
     "post_id", "title", "description", "cover_image",
-    "slug", "author_id", "post_status", "created_at", "updated_at"
+    "slug", "author_id", "post_status", "reading_time", "created_at", "updated_at"
 ];
