@@ -77,10 +77,10 @@
     top: 0;
     left: 0;
     bottom: 0;
-    width: 320px;
+    width: 250px;
     max-width: 100%;
     background-color: white;
-    transform: translate(-320px,0);
+    transform: translate(-250px,0);
     transition: all linear .5s;
     list-style-type: none;
     overflow-y: scroll;

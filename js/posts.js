@@ -19,7 +19,6 @@ const noPostsMessage = document.getElementById('noPostsMessage');
 const filterSelect = document.getElementById('filterSelect');
 const sortSelect = document.getElementById('sortSelect');
 const searchInput = document.getElementById('searchInput');
-const searchButton = document.getElementById('btnSearch');
 const pagination = document.getElementById('pagination');
 
 let allTags = new Set();
@@ -170,16 +169,7 @@ function init() {
   setPageAndFetch(1);
 }
 
-// Event listeners
-if (searchButton) {
-  searchButton.addEventListener('click', () => {
-    const searchValue = searchInput.value.trim();
-    if (searchValue !== filterCriteria.search) {
-      filterCriteria.search = searchValue;
-      setPageAndFetch(1);
-    }
-  });
-}
+
 if (filterSelect) {
   filterSelect.addEventListener('change', () => {
     filterCriteria.tag = filterSelect.value;

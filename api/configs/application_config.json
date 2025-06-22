@@ -1,4 +1,5 @@
 {
     "defaultPageStart": 1,
-    "defaultPageSize": 3
+    "defaultPageSize": 3,
+    "searchPageSize": 5
 }

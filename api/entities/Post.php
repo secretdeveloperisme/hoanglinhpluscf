@@ -2,6 +2,10 @@
 // Entity class for the 'posts' table
 class Post {
     public static $SELECT_COLUMNS;
+    public static $SEARCH_COLUMNS = [
+        "post_id", "title", "slug"
+    ];
+
     public $post_id;
     public $title;
     public $description;
@@ -22,6 +26,18 @@ class Post {
                 $this->$key = $value;
             }
         }
+    }
+
+    public function get_object_without_null_property($ignore_null = true) {
+        $data = [];
+        foreach ($this as $key => $value) {
+            if ($ignore_null && is_null($value) || is_array($value) && empty($value)) {
+                continue;
+            }
+            $data[$key] = $value;
+        }
+        return ($data);
+
     }
 }
 Post::$SELECT_COLUMNS = [
