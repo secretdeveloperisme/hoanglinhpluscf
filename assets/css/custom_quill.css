@@ -3,10 +3,11 @@
 }
 .ql-editor{
     font-size: 1.8rem;
+    overflow-x: hidden;
 }
 
 .ql-code-block-container {
-    padding-top: 20px !important;
+    padding-top: 25px !important;
 }
 
 .ql-font-roboto {
@@ -29,15 +30,23 @@
 @media (max-width: 480px) {
     .ql-editor{
         padding: 0 !important;
-        font-size: 1.6rem;
+        font-size: 1.4rem;
     }
     .ql-code-block{
-        font-size: 1.4rem !important;
+        font-size: 1.3rem !important;
         line-height: 1.6;
     }
     .ql-code-block-container {
-        overflow-x: auto;
+        position: relative;
+        overflow-x: auto !important;
         white-space: pre;
-        -webkit-overflow-scrolling: touch; /* smooth on iOS */
+        -webkit-overflow-scrolling: touch;
     }
+
+    .ql-code-block-container .ql-ui{
+        left: 5px !important;
+        right: unset !important;
+    }
+    
+
 }

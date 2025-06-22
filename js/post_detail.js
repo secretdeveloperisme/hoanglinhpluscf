@@ -26,12 +26,11 @@ function buildTOC(contentEl, tocContainer) {
   const headings = Array.from(contentEl.querySelectorAll('h1, h2, h3, h4, h5'));
   if (!headings.length) return;
 
-  let currentLevel = 1;
+  let currentLevel = parseInt(headings[0].tagName[1]);
   let stack = [document.createElement('ul')];
 
   headings.forEach(heading => {
     const level = parseInt(heading.tagName[1]);
-    // Ensure heading has an id
     if (!heading.id) {
       heading.id = heading.textContent.trim().toLowerCase().replace(/\s+/g, '-');
     }
@@ -42,10 +41,11 @@ function buildTOC(contentEl, tocContainer) {
     li.appendChild(a);
 
     if (level > currentLevel) {
-      // Create a new nested ul
-      const newUl = document.createElement('ul');
-      stack[stack.length - 1].lastElementChild.appendChild(newUl);
-      stack.push(newUl);
+      for (let i = currentLevel; i < level; i++) {
+        const newUl = document.createElement('ul');
+        stack[stack.length - 1].lastElementChild.appendChild(newUl);
+        stack.push(newUl);
+      }
       currentLevel = level;
     } else if (level < currentLevel) {
       while (currentLevel > level) {
