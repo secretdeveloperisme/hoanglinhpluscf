@@ -1,5 +1,8 @@
+.ql-container{
+    font-size: 1.6rem;
+}
 .ql-editor{
-    font-size: 1.4rem;
+    font-size: 1.8rem;
 }
 
 .ql-code-block-container {
@@ -26,6 +29,7 @@
 @media (max-width: 480px) {
     .ql-editor{
         padding: 0 !important;
+        font-size: 1.6rem;
     }
     .ql-code-block{
         font-size: 1.4rem !important;

@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Hoang Linh Plus Posts</title>
+    <title>Linh Blog</title>
     <meta name="author" content="Linh Nguyen">
     <meta name="copyright" content="Hoang Linh Plus">
     <meta name="keywords" content="HLP,hoanglinhplus,plus">
@@ -11,19 +11,21 @@
     <meta charset="UTF-8">
     <link rel="stylesheet" href="../assets/css/base.css">
     <link rel="stylesheet" href="../assets/css/grid.css">
+    <link rel="stylesheet" href="../assets/css/common_post.css">
     <link rel="stylesheet" href="../assets/css/posts.css">
 </head>
 <body>
-    <nav class="navbar">
+    <nav class="post-navbar">
         <div class="container">
-            <div class="navbar-brand"><a href="#">My Posts</a></div>
-            <div class="navbar-search">
+            <div class="post-navbar-brand"><a href="#">Linh's Blog</a></div>
+            <div class="post-navbar-search">
                 <input id="searchInput" class="form-control" type="search" placeholder="Search posts..." aria-label="Search">
             </div>
+            <div class="post-navbar-brand"><a href="/">Home</a></div>
         </div>
     </nav>
 
-    <div class="container">
+    <div class="posts-container">
         <div class="filter-container">
             <select id="filterSelect" class="form-select filter-select" name="category">
                 <option value="">All Categories</option>
@@ -35,9 +37,7 @@
         </div>
 
         <div id="postsContainer" class="row posts-container"></div>
-        
         <div id="noPostsMessage" class="hl-text-center hl-text-muted" style="display: none; width: 100%;">No posts found.</div>
-
         <nav>
             <ul id="pagination" class="pagination"></ul>
         </nav>

@@ -186,3 +186,41 @@ for (let i = 0; i < carouselItems.length; i++) {
 btnNextImg.addEventListener("click", () => plusDiv(1));
 btnPrevImg.addEventListener("click", () => plusDiv(-1));
 
+/**
+ * Section 5:Get Posts
+*/ 
+
+import { fetchPostData, createPostElement } from './common_post.js';
+const postsContainer = document.getElementById('postsContainer');
+const noPostsMessage = document.getElementById('noPostsMessage');
+
+function renderPosts(posts) {
+  postsContainer.innerHTML = '';
+  noPostsMessage.style.display = 'none';
+
+  if (posts.length === 0) {
+    noPostsMessage.style.display = 'block';
+    return;
+  }
+
+  posts.forEach(post => {
+    const postElement = createPostElement(post);
+    postsContainer.appendChild(postElement);
+  });
+}
+
+async function fetchAndRenderPosts() {
+  try {
+    let { posts } = await fetchPostData(1, 6);
+
+    renderPosts(posts);
+
+  } catch (e) {
+    console.error('Error fetching or rendering posts:', e);
+    postsContainer.innerHTML = '<div class="hl-text-center hl-text-danger">Failed to load posts.</div>';
+    pagination.innerHTML = '';
+  }
+}
+
+fetchAndRenderPosts();
+

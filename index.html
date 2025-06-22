@@ -16,6 +16,7 @@
    <link rel="stylesheet" href="assets/css/base.css">
    <link rel="stylesheet" href="assets/css/grid.css">
    <link rel="stylesheet" href="assets/css/main.css">
+   <link rel="stylesheet" href="assets/css/common_post.css">
    <link rel="icon" href="assets/icons/hlp_icon.png">
    <script type="module" src="js/common.js"></script>
    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/js/all.min.js"></script>
@@ -333,93 +334,8 @@
          </div>
          <div id="posts" class="section">
             <h1 class="section-title">My Posts <i class="fa-solid fa-book"></i></h1>
-            <div class="row">
-               <div class="col l-6 m-6 c-12">   
-                  <div class="post">
-                     <div class="post-image responsive--image">
-                     <img src="https://www.w3schools.com/w3images/woods.jpg" alt="woods">
-                  </div>
-                  <div class="card__text">
-                     <h2 class="post-title">Patient</h2>
-                     <h6 class="post-created-date">Monday January 1 2020</h6>
-                     <p>We all know the old adage: Patience is a virtue. But it's true! Patience can help us achieve
-                        our goals, maintain a more positive outlook on life, and make us less reactive, which in turn
-                        will make us less prone to bad decisions. Stress, regret, and anger don't help anything. So
-                        when you're facing an uncertain future, a negative event, or something scary, take a minute.
-                        Don't do anything. Just sit a spell. And if you find your brain veering in a negative
-                        direction, take note of some positive quotes about life to get yourself back in the right
-                        frame of mind to make better decisions.</p>
-                     <div class="post-tags">
-                        <span class="tag">Motivation</span>
-                        <span class="tag">Patience</span>
-                        <span class="tag">Self-Improvement</span>
-                     </div>
-                  </div>
-                  <div class="post-footer">
-                     <button class="button primary-button btn-read-more">read more <i
-                           class="fa-solid fa-angles-right"></i></button>
-                     <p class="reading-time">Reading Time: 3 minutes</p>
-                  </div>
-                  </div>
-               </div>
-               <div class="col l-6 m-6 c-12">
-                  <div class="post">
-                     <div class="post-image responsive--image">
-                        <img src="assets/images/posts/RE4wwtq.jpg" alt="flower and mountain">
-                     </div>
-                     <div class="card__text">
-                        <h2 class="post-title">Passion</h2>
-                        <h6 class="post-created-date">Tuesday January 2 2020</h6>
-                        <p>"You can do anything as long as you have the passion, the drive, the focus, and the support."
-                           —Sabrina Bryan.</p>
-                        <div class="post-tags">
-                           <span class="tag">Inspiration</span>
-                           <span class="tag">Passion</span>
-                           <span class="tag">Motivation</span>
-                        </div>
-                     </div>
-                     <div class="post-footer">
-                        <button class="button primary-button btn-read-more">read more <i
-                              class="fa-solid fa-angles-right"></i></button>
-                        <p class="reading-time">Reading Time: 1 minute</p>
-                     </div>
-                  </div>
-               </div>
-               <div class="col l-6 m-6 c-12">
-                  <div class="post">
-                     <div class="post-image responsive--image">
-                        <img src="assets/images/posts/universal.jpg" alt="flower and mountain">
-                     </div>
-
-                     <div class="card__text">
-                        <h2 class="post-title">Universal</h2>
-                        <h6 class="post-created-date">Wednesday January 3 2020</h6>
-                        <p>"Wisdom is not a product of schooling but of the lifelong attempt to acquire it." —Albert
-                           Einstein.</p>
-                        <div class="post-tags">
-                           <span class="tag">Wisdom</span>
-                           <span class="tag">Knowledge</span>
-                           <span class="tag">Philosophy</span>
-                        </div>
-                     </div>
-                     <div class="post-footer">
-                        <button class="button primary-button btn-read-more">read more <i
-                              class="fa-solid fa-angles-right"></i></button>
-                        <p class="reading-time">Reading Time: 2 minutes</p>
-                     </div>
-                  </div>
-               </div>
-            </div>
-            <div class="pagination">
-               <a class="pagination__item" href="">&laquo;</a>
-               <a class="pagination__item active" href="">1</a>
-               <a class="pagination__item" href="">2</a>
-               <a class="pagination__item" href="">3</a>
-               <a class="pagination__item" href="">4</a>
-               <a class="pagination__item" href="">5</a>
-               <a class="pagination__item" href="">6</a>
-               <a class="pagination__item" href="">7</a>
-               <a class="pagination__item" href="">&raquo;</a>
+            <div id="postsContainer" class="row">
+               <div id="noPostsMessage" class="hl-text-center hl-text-muted" style="display: none; width: 100%;">No posts found.</div>
             </div>
             
          </div>
@@ -807,7 +723,7 @@
       </div>
 
    </div>
-   <script src="js/main.js"></script>
+   <script type="module" src="js/main.js"></script>
    <div></div>
 </body>
 
