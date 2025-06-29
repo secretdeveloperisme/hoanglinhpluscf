@@ -1,4 +1,4 @@
-import {callUploadFile, UPLOAD_FILE_API_URL, deepClone} from "./common.js";
+import {callUploadFile, UPLOAD_FILE_API_URL, deepClone, isObject} from "./common.js";
 const Image = Quill.import('formats/image');
 const Font = Quill.import('formats/font');
 
@@ -8,20 +8,26 @@ Font.whitelist = [
 
 
 class CustomImage extends Image {
+  static RESIZABLE_CLASS = 'resizeable-image';
   static create(value) {
     let node = super.create(value);
-
     // Add custom classes or attributes
-    node.setAttribute('src', value);
-    node.setAttribute('class', 'resizeable-image');
-    node.setAttribute('style', 'max-width: 100%; height: auto;');
-    node.setAttribute('loading', 'lazy');
-
+    node.setAttribute('class', this.RESIZABLE_CLASS);
+    if(isObject(value)){
+      node.setAttribute('src', value.src);
+      node.setAttribute('style', value.style || "");
+      node.setAttribute('loading', value.loading || "lazy");
+    }
     return node;
   }
 
   static value(node) {
-    return node.getAttribute('src');
+    return {
+      src : node.getAttribute('src'),
+      class : node.getAttribute('class'),
+      style : node.getAttribute('style'),
+      loading : node.getAttribute('loading'),
+    }
   }
 }
 
@@ -58,50 +64,80 @@ let quillOptionsWithoutToolBar = {
         { key: 'markdown', label: 'Markdown' },
       ]
     },
-    toolbar: false
+    toolbar: false,
+    clipboard: {
+      matchers: [
+        ['img', pasteImageMatcher]
+      ]
+    }
   },
   placeholder: "Write your Post Here!",
   readOnly: false,
   theme: "snow",
   customEvents: {
-    doAfterInsertImage: null
+    doAfterInsertImage: null,
+    doAfterPasteContent,
   }
 }
 
 let quillOptions = deepClone(quillOptionsWithoutToolBar);
 quillOptions.modules.toolbar = toolbarOption;
 
-function addResizeHandleToImage() {
-    let images = document.querySelectorAll(".resizeable-image");
-    images.forEach((image) => {
-      if (!image.classList.contains('resizable')) {
-        image.classList.add('resizable');
-        interact(image).resizable({
-          edges: { left: true, right: true, bottom: true, top: true },
-          listeners: {
-            move(event) {
-              let target = event.target;
-              let x = (parseFloat(target.getAttribute('data-x')) || 0) + event.deltaRect.left;
-              let y = (parseFloat(target.getAttribute('data-y')) || 0) + event.deltaRect.top;
+let interactConfigs = {
+  edges: { left: true, right: true, bottom: true, top: true },
+  listeners: {
+    move(event) {
+      let target = event.target;
+      let x = (parseFloat(target.getAttribute('data-x')) || 0) + event.deltaRect.left;
+      let y = (parseFloat(target.getAttribute('data-y')) || 0) + event.deltaRect.top;
 
-              target.style.width = `${event.rect.width}px`;
-              target.style.height = `${event.rect.height}px`;
-              target.style.transform = `translate(${x}px, ${y}px)`;
+      target.style.width = `${event.rect.width}px`;
+      target.style.height = `${event.rect.height}px`;
+      target.style.transform = `translate(${x}px, ${y}px)`;
 
-              target.setAttribute('data-x', x);
-              target.setAttribute('data-y', y);
-            }
-          },
-          modifiers: [
-            interact.modifiers.restrictSize({
-              min: { width: 100, height: 100 },
-            })
-          ],
-        });
-      }
-    });
+      target.setAttribute('data-x', x);
+      target.setAttribute('data-y', y);
+    }
+  },
+  modifiers: [
+    interact.modifiers.restrictSize({
+      min: { width: 100, height: 100 },
+    })
+  ],
+};
+
+
+function pasteImageMatcher(node, delta) {
+  console.log("node:", node);
+  console.log("delta: ", delta);
+  const imgTags = node.querySelectorAll('img');
+  delta.ops.forEach(op => {
+    if (op.insert && typeof op.insert === 'object') {
+      op.attributes.class = CustomImage.RESIZABLE_CLASS;
+    }
+  });
+  imgTags.forEach(img =>{
+    interact(img).resizable(interactConfigs);
+  })
+  return delta;
+};
+
+
+function addResizeHandleToImages() {
+  let images = document.querySelectorAll(".resizeable-image");
+  images.forEach((image) => {
+    if (!image.classList.contains('resizable')) {
+      addResizeHandleToImage(image)
+    }
+  });
 }
 
+function addResizeHandleToImage(imgElement) {
+  if(imgElement === undefined || imgElement === null)
+    return;
+  imgElement.classList.add('resizable');
+  interact(imgElement).resizable(interactConfigs);
+}
 
 function imageHandler() {
   if (!this.quill) return;
@@ -116,9 +152,14 @@ function imageHandler() {
       quill.insertEmbed(
         quill.getSelection().index,
         'image',
-        imagePath,
+        {
+          src: imagePath,
+          class: "resizeable-image",
+          style: "",
+          loading: "lazy"
+        },
       );
-      addResizeHandleToImage();
+      addResizeHandleToImages();
 
       if(quillOptions.customEvents.doAfterInsertImage !== null){
         quillOptions.customEvents.doAfterInsertImage(res.filename, res.fileType, res.filePath);
@@ -130,4 +171,21 @@ function imageHandler() {
   });
 }
 
-export {quillOptions, quillOptionsWithoutToolBar, attachments}
+
+function doAfterPasteContent(quill) {
+  setTimeout(() => {
+    const contents = quill.getContents();
+    console.log("Editor contents after paste:", contents);
+
+    if (containsImage(contents)) {
+      console.log("An image was pasted!");
+      addResizeHandleToImages(); 
+    }
+  }, 1);
+}
+
+function containsImage(delta) {
+  return delta.ops.some(op => typeof op.insert === 'object' && op.insert.image);
+}
+
+export {quillOptions, quillOptionsWithoutToolBar, attachments, addResizeHandleToImages}

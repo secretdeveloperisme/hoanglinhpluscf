@@ -1,5 +1,5 @@
 import { UPLOAD_FILE_API_URL, objectifyForm, callUploadFile, calculateReadingTime, makeHttpRequest, isEmptyString, showToast } from "./common.js";
-import { quillOptions, attachments } from "./editor_configurations.js";
+import { quillOptions, attachments,  addResizeHandleToImages} from "./editor_configurations.js";
 
 document.addEventListener("DOMContentLoaded", async () => {
   const POST_API_URL = "/api/posts.php";
@@ -27,6 +27,10 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   let editor = new Quill("#editor", quillOptions);
 
+  editor.root.addEventListener('paste', ()=>{
+    quillOptions.customEvents.doAfterPasteContent(editor);
+  });
+
   postImageInput.addEventListener("change", function (event) {
     let fileReader = new FileReader();
     fileReader.onload = (event) => {
@@ -34,6 +38,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
     fileReader.readAsDataURL(this.files[0]);
   });
+  
 
 
   function setCaretToEnd(target) {
@@ -164,6 +169,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       }
 
       editor.setContents(post.content ? JSON.parse(post.content) : []);
+      addResizeHandleToImages();
       readingTime.value = post.reading_time;
       postImagePath.value = post.cover_image || "";
       displayPostImage.src = post.cover_image || defaultUploadIconUrl;
@@ -276,7 +282,6 @@ document.addEventListener("DOMContentLoaded", async () => {
           showToast("success", "Update Post", "Post updated successfully!");
           resetPostForm();
           loadPostData(postId);
-          window.scrollTo({ top: 0, behavior: "smooth" });
         } else {
           showToast('error', "Update Post", "Failed to update post: " + body.message);
         }

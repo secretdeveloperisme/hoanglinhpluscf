@@ -105,6 +105,10 @@ export function deepClone(obj) {
   return clone;
 }
 
+export function isObject(target){
+  return target != null && (typeof target) === "object";
+}
+
 async function makeHttpRequest(method = 'GET', url, data, onError = () => {}) {
   if(url === null || url === ""){
     return;
