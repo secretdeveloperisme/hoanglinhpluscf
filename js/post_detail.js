@@ -22,23 +22,37 @@ document.addEventListener('DOMContentLoaded', async () => {
   }
 
 
+function createLiHeading(heading) {
+  if (!heading.id) {
+    heading.id = heading.textContent.trim().toLowerCase().replace(/\s+/g, '-');
+  }
+  const li = document.createElement('li');
+  const a = document.createElement('a');
+  a.href = `#${heading.id}`;
+  a.textContent = heading.textContent;
+  li.appendChild(a);
+  return li;
+}  
+
 function buildTOC(contentEl, tocContainer) {
-  const headings = Array.from(contentEl.querySelectorAll('h1, h2, h3, h4, h5'));
+  let headings = Array.from(contentEl.querySelectorAll('h1, h2, h3, h4, h5'));
   if (!headings.length) return;
+
+  // Remove first header if it is level 3
+  if (headings[0] && headings[0].tagName.toLowerCase() === 'h3') {
+    headings.shift();
+    const li = createLiHeading(headings[0]);
+    tocContainer.innerHTML = '';
+    tocContainer.appendChild(li);
+    if (!headings.length) return;
+  }
 
   let currentLevel = parseInt(headings[0].tagName[1]);
   let stack = [document.createElement('ul')];
 
   headings.forEach(heading => {
     const level = parseInt(heading.tagName[1]);
-    if (!heading.id) {
-      heading.id = heading.textContent.trim().toLowerCase().replace(/\s+/g, '-');
-    }
-    const li = document.createElement('li');
-    const a = document.createElement('a');
-    a.href = `#${heading.id}`;
-    a.textContent = heading.textContent;
-    li.appendChild(a);
+    const li = createLiHeading(heading);
 
     if (level > currentLevel) {
       for (let i = currentLevel; i < level; i++) {

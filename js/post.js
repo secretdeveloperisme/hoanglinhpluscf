@@ -1,9 +1,10 @@
-import {UPLOAD_FILE_API_URL, objectifyForm, callUploadFile, makeElementSticky, calculateReadingTime} from "./common.js";
+import {UPLOAD_FILE_API_URL, objectifyForm, callUploadFile, calculateReadingTime, makeHttpRequest, isEmptyString} from "./common.js";
 import {quillOptions, attachments} from "./editor_configurations.js";
 
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", async () => {
   const POST_API_URL = "/api/posts.php";
   const POST_DETAIL_URL = "/pages/post_detail.html?id=";
+  const A_POST_URL = "/api/posts.php?id=";
   const defaultUploadIconUrl = "/assets/icons/upload.svg"
 
   // post form elements
@@ -11,22 +12,20 @@ document.addEventListener("DOMContentLoaded", () => {
   const displayPostImage = document.querySelector("#displayPostImage");
   const tagsContainer = document.querySelector("#tags");
   const publishedStatusRadio = document.querySelector('#publishedStatusRadio');
+  const draftStatusRadio = document.querySelector('#draftStatusRadio');
   const postTitle = document.querySelector("#postTitle");
   const postDescription = document.querySelector("#postDescription");
   const createPostForm = document.querySelector("#createPostForm");
   const postImagePath = document.querySelector("#postImagePath");
-  const postContent = document.querySelector("#postContent");
   const readingTime = document.querySelector("#postReadingTime");
   const btnCreatePost = document.querySelector("#btnCreatePost");
+  const btnSavePost = document.querySelector("#btnSavePost");
   const btnResetPost = document.querySelector("#btnResetPost");
-
   const attachmentContainer = document.getElementById('attachmentContainer');
 
   quillOptions.customEvents.doAfterInsertImage = addAttachment;
 
   let editor = new Quill("#editor", quillOptions);
-  window.editor = editor; // Make editor globally accessible
-  window.calculateReadingTime = calculateReadingTime; // Make function globally accessible
 
   postImageInput.addEventListener("change", function (event) {
     let fileReader = new FileReader();
@@ -98,8 +97,14 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
 
-  function addAttachment(name, type, url) {
+  function addAttachment(name, type, url, id = null) {
     const attachment = { name: name, type: type , url: url};
+    if(id !== null) {
+      attachment.id = id;
+    }
+    if (attachments.some(file => file.name === attachment.name && file.type === attachment.type)){
+      return; // Prevent duplicate attachments
+    }
     attachments.push(attachment);
     renderAttachments();
   }
@@ -129,6 +134,61 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
 
+  async function loadPostData(postId){
+    if (!postId) {
+      console.error("No post ID provided for loading post data.");
+      return;
+    }
+    document.title = "Edit Post";
+    try {
+      let post = await makeHttpRequest("GET", A_POST_URL + postId)
+      if (post === null) {
+        console.error(`Failed to get post with id ${postId}`);
+        return;
+      }
+      postTitle.value = post.title;
+      postDescription.value = post.description;
+      switch (post.post_status) {
+        case 'PUBLISHED':
+          publishedStatusRadio.checked = true;
+          draftStatusRadio.checked = false;
+          break;
+        case 'DRAFT':
+          publishedStatusRadio.checked = false;
+          draftStatusRadio.checked = true;
+          break;
+        default:
+          publishedStatusRadio.checked = false;
+          draftStatusRadio.checked = false;
+          break;
+      }
+      
+      editor.setContents(post.content ? JSON.parse(post.content) : []);
+      readingTime.value = post.reading_time;
+      postImagePath.value = post.cover_image || "";
+      displayPostImage.src = post.cover_image || defaultUploadIconUrl;
+
+      // Fill tags
+      if (post.tags && Array.isArray(post.tags)) {
+        post.tags.forEach(tag => {
+          let tagElement = createTagElement(tag.name);
+          tagsContainer.appendChild(tagElement);
+        });
+      }
+
+      // Fill attachments
+      if (post.attachments && Array.isArray(post.attachments)) {
+        post.attachments.forEach(file => {
+          addAttachment(file.file_name, file.file_type, file.file_url, file.attachment_id);
+        });
+      }
+    }
+    catch (error) {
+      console.error("Error fetching post data:", error);
+    }
+  }
+
+
   function callUploadPostImageCover(){
     let postImageFile = postImageInput.files[0];
     if(!postImageFile) {
@@ -149,11 +209,9 @@ document.addEventListener("DOMContentLoaded", () => {
     return uploadImageResponse.filePath;
   }
 
-  function callCreatePost(){
+  function preparePostPayload(){
     postImagePath.value = callUploadPostImageCover();
-   
     readingTime.value = calculateReadingTime(editor.getText());
-    postContent.value = JSON.stringify(editor.getContents());
 
     // Serialize form data
     const formData = new FormData(createPostForm);
@@ -163,9 +221,27 @@ document.addEventListener("DOMContentLoaded", () => {
     }
     dataObject.reading_time = parseInt(readingTime.value);
     if(attachments.length > 0) {
-      dataObject.attachments = attachments.map(file => ({ file_name: file.name, file_type: file.type, file_url: file.url }));
+      dataObject.attachments = attachments.map(file => {
+        let attachment = { file_name: file.name, file_type: file.type, file_url: file.url }
+        if(file.id !== undefined) {
+          attachment.file_id = file.id;
+        }
+        return attachment;
+      }
+      );
     }
-    console.log("[callCreatePost] postPayload:", dataObject);
+    if(dataObject.cover_image != undefined && isEmptyString(dataObject.cover_image)){
+      delete dataObject.cover_image;
+    }
+    dataObject.content = JSON.stringify(editor.getContents());
+    // remove unnecessary fields
+    delete dataObject.postImage;
+    console.log("[preparePostPayload] postPayload:", dataObject);
+    return dataObject;
+  }
+
+  function callCreatePost(){
+    let dataObject = preparePostPayload();
 
     fetch(POST_API_URL, {
       method: "POST",
@@ -186,6 +262,30 @@ document.addEventListener("DOMContentLoaded", () => {
       });
     
   };
+
+  function callUpdatePost(postId){
+    let dataObject = preparePostPayload();
+    fetch(A_POST_URL + postId, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(dataObject)
+    })
+      .then(response => response.json().then(data => ({ status: response.status, post: data.Post })))
+      .then(({ status, post }) => {
+        if (status === 200) {
+          alert("Post updated successfully!");
+          resetPostForm();
+          loadPostData(postId);
+        } else {
+          alert("Failed to create post: " + body.message);
+        }
+      })
+      .catch(err => {
+        alert("Error creating post: " + err.message);
+      });
+  }
+  
+
   function resetPostForm() {
     displayPostImage.src = defaultUploadIconUrl;
     tagsContainer.innerHTML = "";
@@ -196,13 +296,17 @@ document.addEventListener("DOMContentLoaded", () => {
 
     postTitle.value = "";
     postDescription.value = "";
-    postContent.value = "";
     readingTime.value = "0";
     postImagePath.value = "";
   }
-  // Add event listeners
 
-  makeElementSticky("toolbar")
+  const urlParams = new URLSearchParams(window.location.search);
+  const postId = urlParams.get('id');
+  if (postId) {
+    loadPostData(postId);
+  }
+
+  // Add event listeners
 
   btnResetPost.addEventListener("click", resetPostForm);
 
@@ -212,5 +316,14 @@ document.addEventListener("DOMContentLoaded", () => {
         callCreatePost();
     });
   }
-    
+
+  if(btnSavePost != undefined){
+    btnSavePost.addEventListener("click", (event) => {
+      event.preventDefault();
+      callUpdatePost(postId);
+    });
+  }
+
+
+ 
 });

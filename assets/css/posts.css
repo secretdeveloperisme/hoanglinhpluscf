@@ -432,11 +432,14 @@ body {
         box-shadow: none;
     }
     .main-content{
-        font-size: 1.6px;
+        font-size: 1.6rem;
         padding: 0 0.5rem;
     }
     .content {
         padding: 0.5rem;
+    }
+    .content-section{
+        padding: 0.5rem 0.4rem;
     }
     .form-section:last-of-type{
         margin-bottom: 4rem;

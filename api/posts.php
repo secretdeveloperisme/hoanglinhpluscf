@@ -9,7 +9,9 @@ require_once 'entities/Post.php';
 require_once 'entities/Tag.php';
 require_once 'entities/Attachment.php';
 require_once 'services/FileService.php';
+require_once 'services/PostService.php';
 require_once 'utilities/Logger.php';
+require_once 'utilities/CommonUtility.php';
 require_once 'utilities/HttpUtility.php';
 require_once 'utilities/ConfigUtility.php';
 
@@ -20,11 +22,6 @@ header('Content-Type: application/json');
 $connection = getMariaDBConnection();
 $method = $_SERVER['REQUEST_METHOD'];
 
-function generateSlug($title) {
-    // Generate a URL-friendly slug from the title
-    $slug = strtolower(trim(preg_replace('/[^A-Za-z0-9-]+/', '-', $title)));
-    return $slug;
-}
 
 function getPostTags($connection, $post_id) {
     $stmt = $connection->prepare("SELECT t.tag_id, t.name, t.created_at FROM post_tags pt JOIN tags t ON pt.tag_id = t.tag_id WHERE pt.post_id = ?");
@@ -72,6 +69,22 @@ function getPostBySlug($connection, $slug) {
     }
     $post = $result->fetch_assoc();
     return new Post($post);
+}
+
+
+function isTagsChanged($connection, $post_id, $new_tags) {
+    if (!is_array($new_tags)) return true;
+    $existing_tags = getPostTags($connection, $post_id);
+    if (count($existing_tags) !== count($new_tags)) return true;
+
+    $existing_tag_names = array_column(array_map(function($tag) {
+        return ['name' => $tag->name];
+    }, $existing_tags), 'name');
+
+    if (array_diff($existing_tag_names, $new_tags) || array_diff($new_tags, $existing_tag_names)) {
+        return true;
+    }
+    return false;
 }
 
 
@@ -268,7 +281,7 @@ switch ($method) {
             }  
         }
         
-        $slug = generateSlug($title);
+        $slug = PostUtility::generateSlug($title);
         if($has_attachments){
             $content = PostUtility::replaceText($content, PostUtility::$FILE_IS_TEMP_SEARCHING_TEXT, 'isTemp=false');
         }
@@ -345,110 +358,194 @@ switch ($method) {
             exit;
         }
         $post_id = intval($_GET['id']);
+        $post = getPostById($connection, $post_id);
+        if (!$post) {
+            respond_to_client(404, "Post not found");
+            exit;
+        }
+        $orginal_post_map = $post->get_object();
         $data = json_decode(file_get_contents('php://input'), true);
         $fields = [];
         $params = [];
-        $types = '';
+        $types = [];
         // Only update provided fields
         foreach ([
             'title' => 's',
             'description' => 's',
             'content' => 's',
             'cover_image' => 's',
-            'slug' => 's',
             'author_id' => 'i',
             'post_status' => 's'
         ] as $field => $type) {
-            if (isset($data[$field])) {
-                $fields[] = "$field = ?";
-                $params[] = $data[$field];
-                $types .= $type;
+            if (isset($data[$field]) && PostUtility::isEqual($data[$field], $orginal_post_map[$field]) === false) {
+                $fields[$field] = "?";
+                $params[$field] = $data[$field];
+                $types[$field] = $type;
             }
         }
-        if (empty($fields)) {
-            http_response_code(400);
-            echo json_encode(["error" => "No fields to update"]);
+        // Check request has changes to update
+        $has_attachments = isset($data['attachments']) && is_array($data['attachments']) && count($data['attachments']) > 0;
+        $new_attachments = [];
+        $original_attachments = [];
+        $has_attachments_change = false;
+        if($has_attachments){
+            $original_attachments = getPostAttachments($connection, $post_id);
+            // Remove old attachments that are not in the new data
+
+            $new_attachments = array_filter($data['attachments'], function($att){
+                return !isset($att['file_id']);
+            });
+            if(!empty($new_attachments) || count($original_attachments) != count($data['attachments'])){
+                $has_attachments_change = true;
+            }
+        }
+
+        $is_tags_changed = isTagsChanged($connection, $post_id, $data['tags']);
+        
+        if (empty($fields) && $has_attachments_change && $is_tags_changed) {
+            respond_to_client(400, "No fields to update");
             exit;
         }
-        $params[] = $post_id;
-        $types .= 'i';
-        $sql = "UPDATE posts SET ".implode(", ", $fields).", updated_at = CURRENT_TIMESTAMP WHERE post_id = ? AND deleted_at IS NULL";
-        $stmt = $connection->prepare($sql);
-        $stmt->bind_param($types, ...$params);
-        if ($stmt->execute()) {
-            // Validation for update post
-            $errors = [];
-            if (isset($data['title']) && (empty($data['title']) || strlen($data['title']) > 255)) {
-                $errors[] = "Title must be non-empty and less than 255 characters.";
-            }
-            if (isset($data['description']) && strlen($data['description']) > 1000) {
-                $errors[] = "Description must be less than 1000 characters.";
-            }
-            if (isset($data['content']) && empty($data['content'])) {
-                $errors[] = "Content must be non-empty if provided.";
-            }
-            if (isset($data['cover_image']) && strlen($data['cover_image']) > 255) {
-                $errors[] = "Cover image URL must be less than 255 characters.";
-            }
-            if (isset($data['slug']) && strlen($data['slug']) > 255) {
-                $errors[] = "Slug must be less than 255 characters.";
-            }
-            if (isset($data['author_id']) && !is_numeric($data['author_id'])) {
-                $errors[] = "Author ID must be numeric if provided.";
-            }
-            if (isset($data['tags']) && is_array($data['tags'])) {
-                foreach ($data['tags'] as $tag_name) {
-                    if (empty($tag_name) || strlen($tag_name) > 50) {
-                        $errors[] = "Each tag name must be non-empty and less than 50 characters.";
-                        break;
-                    }
+        // Validate post fiedls before updating
+        $errors = PostService::validatePostdata($data);
+        if (!empty($errors)) { 
+            respond_to_client(422, "Validation errors", null, $errors);
+            exit;
+        }
+
+        if (isset($data['title']) && !PostUtility::isEqual($data['title'], $orginal_post_map['title'])) {
+            $data['slug'] = PostUtility::generateSlug($data['title']);
+            $fields['slug']  = '?';
+            $params['slug'] = $data['slug'];
+            $types ['slug']= 's';
+        } else {
+            $data['slug'] = $orginal_post_map['slug'];
+        }
+
+        
+        $to_delete_ids = [];
+
+        if($has_attachments){   
+            // Remove old attachments that are not in the new data
+            $existing_attachment_ids = array_map(function($att) {
+                return $att->attachment_id;
+            }, $original_attachments);
+
+            $update_attachment_ids = array_map(function($att) {
+                return $att['file_id'] ?? null; // Use file_id if exists, otherwise null
+            }, $data['attachments']);
+
+            $existing_attachment_ids = CommonUtility::findExistenceIds($update_attachment_ids, $existing_attachment_ids);
+
+            $to_delete_ids = $existing_attachment_ids["diff"] ?? [];
+            $logger->debug("Delete attachments: ".implode(', ', $to_delete_ids));
+
+            // Move files from temp to upload directory
+            $filenames = [];
+            foreach ($new_attachments as $att) {
+                if (isset($att['file_name'])) {
+                    $filenames[] = basename($att['file_name']);
                 }
             }
-            if (isset($data['attachments']) && is_array($data['attachments'])) {
-                foreach ($data['attachments'] as $att) {
-                    if (empty($att['file_name']) || strlen($att['file_name']) > 255) {
-                        $errors[] = "Attachment file name must be non-empty and less than 255 characters.";
-                        break;
-                    }
-                    if (empty($att['file_url']) || strlen($att['file_url']) > 500) {
-                        $errors[] = "Attachment file URL must be non-empty and less than 500 characters.";
-                        break;
-                    }
-                    if (empty($att['file_type']) || strlen($att['file_type']) > 50) {
-                        $errors[] = "Attachment file type must be non-empty and less than 50 characters.";
-                        break;
-                    }
-                }
-            }
-            if (!empty($errors)) {
-                http_response_code(422);
-                echo json_encode(["errors" => $errors]);
+            if (!empty($filenames)) {
+                $logger->debug("Files need to move to upload folder: ", implode(", ", $filenames));
+                $move_result = FileService::moveFilesToUpload($filenames);
+                if (!$move_result) {
+                    $connection->close();
+                    $logger->error("Failed to move files: " . json_encode($filenames));
+                    respond_to_client(500, "Failed to move files from temp to upload directory");
+                    exit;
+                }                
+
+            }  
+            $params['content'] = PostUtility::replaceText($data['content'], PostUtility::$FILE_IS_TEMP_SEARCHING_TEXT, 'isTemp=false');
+            $types['content'] = 's';
+            $fields['content'] = '?';
+        }
+        
+        $cover_image = $data['cover_image'] ?? null;
+        if(!PostUtility::isNullOrEmptyString($cover_image)){
+            $logger->info("Cover image provided: $cover_image");
+            $cover_image_filename = PostUtility::extractFileNameFromUrl($cover_image);
+            $move_result = FileService::moveFilesToUpload([$cover_image_filename]);
+            if (!$move_result) {
+                $connection->close();
+                $logger->error("Failed to move cover image: $cover_image_filename");
+                respond_to_client(500, "Failed to move cover image from temp to upload directory");
                 exit;
             }
-            // Update tags
+            $cover_image = PostUtility::replaceText($cover_image, PostUtility::$FILE_IS_TEMP_SEARCHING_TEXT, 'isTemp=false');
+            $logger->debug("Cover image after replacement: $cover_image");
+            $params['cover_image'] = $cover_image;
+            $types['cover_image'] = 's';
+            $fields['cover_image'] = '?';
+        }
+
+        $connection->begin_transaction();   
+        $params['post_id'] = $post_id;
+        $types ['post_id'] = 'i';
+
+        $fields_strings = [];
+        array_map(function($key, $value) use (&$fields_strings) {
+            $fields_strings[]= "$key = $value";
+        }, array_keys($fields), array_values($fields));
+        $sql = "UPDATE posts SET ".implode(", ", $fields_strings).", updated_at = CURRENT_TIMESTAMP WHERE post_id = ? AND deleted_at IS NULL";
+        $logger->debug("[updatePost] SQL: $sql");
+        $logger->debug("[updatePost] type: ".implode("", $types));
+        $stmt = $connection->prepare($sql);
+        
+        $stmt->bind_param(implode("", array_values($types)), ...array_values($params));
+
+        $post_update_result = $stmt->execute();
+        if (!$post_update_result || $stmt->affected_rows === 0) {
+            $logger->error("Failed to update post with ID: $post_id. No rows affected.");
+            respond_to_client(500, "Failed to update post");
+            $connection->rollback();
+            $connection->close();
+            exit;
+        }
+        // Update tags
+        try{
             if (isset($data['tags']) && is_array($data['tags'])) {
-                // Remove old tags
-                $connection->query("DELETE FROM post_tags WHERE post_id = $post_id");
-                foreach ($data['tags'] as $tag_name) {
-                    $tag_stmt = $connection->prepare("INSERT IGNORE INTO tags (name) VALUES (?)");
-                    $tag_stmt->bind_param("s", $tag_name);
-                    $tag_stmt->execute();
-                    $tag_id_stmt = $connection->prepare("SELECT tag_id FROM tags WHERE name = ?");
-                    $tag_id_stmt->bind_param("s", $tag_name);
-                    $tag_id_stmt->execute();
-                    $tag_id_result = $tag_id_stmt->get_result();
-                    if ($tag_row = $tag_id_result->fetch_assoc()) {
-                        $tag_id = $tag_row['tag_id'];
-                        $pt_stmt = $connection->prepare("INSERT INTO post_tags (post_id, tag_id) VALUES (?, ?)");
-                        $pt_stmt->bind_param("ii", $post_id, $tag_id);
-                        $pt_stmt->execute();
-                    }
+            // Remove old tags
+            $connection->query("DELETE FROM post_tags WHERE post_id = $post_id");
+            foreach ($data['tags'] as $tag_name) {
+                $tag_stmt = $connection->prepare("INSERT IGNORE INTO tags (name) VALUES (?)");
+                $tag_stmt->bind_param("s", $tag_name);
+                $tag_stmt->execute();
+                $tag_id_stmt = $connection->prepare("SELECT tag_id FROM tags WHERE name = ?");
+                $tag_id_stmt->bind_param("s", $tag_name);
+                $tag_id_stmt->execute();
+                $tag_id_result = $tag_id_stmt->get_result();
+                if ($tag_row = $tag_id_result->fetch_assoc()) {
+                    $tag_id = $tag_row['tag_id'];
+                    $pt_stmt = $connection->prepare("INSERT INTO post_tags (post_id, tag_id) VALUES (?, ?)");
+                    $pt_stmt->bind_param("ii", $post_id, $tag_id);
+                    $pt_stmt->execute();
                 }
             }
+        }
+        } catch (Exception $e) {
+            $logger->error("Failed to update tags for post ID: $post_id. Error: " . $e->getMessage());
+            respond_to_client(500, "Failed to update tags");
+            $connection->rollback();
+            $connection->close();
+            exit;
+        }
+        try{
             // Update attachments
-            if (isset($data['attachments']) && is_array($data['attachments'])) {
-                $connection->query("DELETE FROM attachments WHERE post_id = $post_id");
-                foreach ($data['attachments'] as $att) {
+            if ($has_attachments) {
+                // Remove old attachments
+                if (!empty($to_delete_ids)) {
+                    $delete_ids = implode(',', array_map('intval', $to_delete_ids));
+                    $connection->query("DELETE FROM attachments WHERE attachment_id IN ($delete_ids)");
+                }
+        
+                $new_attachments = array_filter($data['attachments'], function($att) {
+                    return !isset($att['file_id']);
+                });
+                // Insert new attachments
+                foreach ($new_attachments as $att) {
                     if (isset($att['file_name'], $att['file_url'], $att['file_type'])) {
                         $att_stmt = $connection->prepare("INSERT INTO attachments (post_id, file_name, file_url, file_type) VALUES (?, ?, ?, ?)");
                         $att_stmt->bind_param("isss", $post_id, $att['file_name'], $att['file_url'], $att['file_type']);
@@ -456,11 +553,26 @@ switch ($method) {
                     }
                 }
             }
-            echo json_encode(["message" => "Post updated"]);
-        } else {
-            http_response_code(500);
-            echo json_encode(["error" => "Failed to update post"]);
+        } catch (Exception $e) {
+            $logger->error("Failed to update tags for post ID: $post_id. Error: " . $e->getMessage());
+            respond_to_client(500, "Failed to update tags");
+            $connection->rollback();
+            $connection->close();
+            exit;
         }
+        
+        $updated_post = getPostById($connection, $post_id);
+        if (!$updated_post) {
+            $logger->error("Failed to retrieve newly updated post with ID: $post_id");
+            respond_to_client(500, "Failed to retrieve newly updated post");
+            $connection->rollback();
+            $connection->close();
+            exit;
+        }
+        $connection->commit();
+        $connection->close();
+
+        echo json_encode(["message" => "Post updated", "Post" => $updated_post]);
         break;
     case 'DELETE':
         // Delete a post: soft delete by default, hard delete if isHard=true

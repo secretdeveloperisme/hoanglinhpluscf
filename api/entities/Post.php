@@ -28,6 +28,16 @@ class Post {
             }
         }
     }
+    public function get_object() {
+        $data = [];
+        foreach ($this as $key => $value) {
+            if (is_array($value) && empty($value)) {
+                continue;
+            }
+            $data[$key] = $value;
+        }
+        return ($data);
+    }
 
     public function get_object_without_null_property($ignore_null = true) {
         $data = [];
