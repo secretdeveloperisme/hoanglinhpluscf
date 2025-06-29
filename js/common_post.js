@@ -66,7 +66,7 @@ export function createPostElement(post) {
             <div class="post-card-body">
                 <h5 class="post-card-title"><a target="_blank" href='${post_detail_url}'>${post.title}</a></h5>
                 <div class="post-tags">
-                    ${post.tags.map(tag => `<span class="badge">#${tag.name}</span>`).join('')}
+                  ${post.tags.map(tag => `<a class="badge" href='${POSTS_PAGES}?tag=${tag.name}'>#${tag.name}</a>`).join('')}
                 </div>
                 <p class="post-card-text">${post.description}</p>
                 <div class="post-meta">

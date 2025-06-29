@@ -88,6 +88,7 @@ function buildTOC(contentEl, tocContainer) {
       postCoverImage.src = post.cover_image;
     }
     if (postTitle) postTitle.textContent = post.title;
+    document.title = post.title;
     if (postCreatedAt) postCreatedAt.textContent = timeFromNow(post.created_at);
     if (postUpdatedAt) postUpdatedAt.textContent = timeFromNow(post.updated_at);
     if (tagsContainer && Array.isArray(post.tags)) {
@@ -101,7 +102,6 @@ function buildTOC(contentEl, tocContainer) {
     }
     if (postDescription) postDescription.textContent = post.description;
     if (postContent && post.content) {
-
       quillOptionsWithoutToolBar.readOnly = true;
       const quillEditor = new Quill(postContent, quillOptionsWithoutToolBar);
       quillEditor.setContents(JSON.parse(post.content));
