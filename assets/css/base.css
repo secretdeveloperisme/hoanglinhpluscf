@@ -210,6 +210,102 @@ a, button{
   transition: opacity 0.2s ease-in-out;
 }
 
+/* Toast style */
+#toastContainer {
+    position: fixed;
+    top: 1rem;
+    right: 1rem;
+    z-index: 1001;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    max-width: 300px;
+    width: 100%;
+}
+
+.toast {
+    padding: 1rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    color: white;
+    position: relative;
+    max-width: 300px;
+    width: 100%;
+    transition: all 0.3s ease-in-out, transform 0.5s ease-in-out, opacity 0.3s ease-in-out;
+    transform: translateY(-100%);
+    opacity: 0;
+}
+
+.toast.show {
+    transform: translateY(0);
+    opacity: 1;
+}
+
+.toast.success {
+    background-color: #22c55e;
+}
+
+.toast.error {
+    background-color: #ef4444;
+}
+
+.toast.warning {
+    background-color: #eab308;
+}
+
+.toast-content {
+    display: flex;
+    align-items: flex-start;
+}
+
+.toast-icon{
+    color: white;
+    width:  1.4rem;
+    height: 1.4rem;
+    margin-right: 0.75rem;
+}
+
+.toast-content .text-content {
+    flex: 1;
+}
+
+.toast-content h3 {
+    font-size: 1.6rem;
+    font-weight: bold;
+    margin: 0;
+}
+
+.toast-content p {
+    font-size: 1.4rem;
+    margin: 0;
+}
+
+.toast-content button {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 1rem;
+    cursor: pointer;
+    margin-left: 1rem;
+}
+
+.toast-content button:hover {
+    color: #e5e7eb;
+}
+
+@media (max-width: 768px) {
+    #toast-container {
+        left: 0;
+        right: 0;
+        margin: 0 auto;
+        max-width: 300px;
+    }
+
+    .toast {
+        margin: 0 auto;
+    }
+}
+
 #modal{
     display: none;  
     position: fixed;

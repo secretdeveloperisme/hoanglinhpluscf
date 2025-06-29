@@ -1,5 +1,5 @@
-import {UPLOAD_FILE_API_URL, objectifyForm, callUploadFile, calculateReadingTime, makeHttpRequest, isEmptyString} from "./common.js";
-import {quillOptions, attachments} from "./editor_configurations.js";
+import { UPLOAD_FILE_API_URL, objectifyForm, callUploadFile, calculateReadingTime, makeHttpRequest, isEmptyString, showToast } from "./common.js";
+import { quillOptions, attachments } from "./editor_configurations.js";
 
 document.addEventListener("DOMContentLoaded", async () => {
   const POST_API_URL = "/api/posts.php";
@@ -71,19 +71,19 @@ document.addEventListener("DOMContentLoaded", async () => {
     tagSpan.appendChild(tagInput);
     return tagSpan;
   }
-  function generateTags(){
+  function generateTags() {
     let text = tagsContainer.textContent;
-      let tags = text.match(/\w+/g);
-      if (tags !== null) {
-        tagsContainer.innerHTML = "";
-        tags.forEach((value, index) => {
-          let tagElement = createTagElement(value);
-          tagsContainer.appendChild(tagElement);
-          setCaretToEnd(tagsContainer);
-        });
-      }
+    let tags = text.match(/\w+/g);
+    if (tags !== null) {
+      tagsContainer.innerHTML = "";
+      tags.forEach((value, index) => {
+        let tagElement = createTagElement(value);
+        tagsContainer.appendChild(tagElement);
+        setCaretToEnd(tagsContainer);
+      });
+    }
   }
-  
+
   tagsContainer.addEventListener("keyup", (event) => {
     if (event.which === 32 || event.which === 13) {
       generateTags();
@@ -98,11 +98,11 @@ document.addEventListener("DOMContentLoaded", async () => {
 
 
   function addAttachment(name, type, url, id = null) {
-    const attachment = { name: name, type: type , url: url};
-    if(id !== null) {
+    const attachment = { name: name, type: type, url: url };
+    if (id !== null) {
       attachment.id = id;
     }
-    if (attachments.some(file => file.name === attachment.name && file.type === attachment.type)){
+    if (attachments.some(file => file.name === attachment.name && file.type === attachment.type)) {
       return; // Prevent duplicate attachments
     }
     attachments.push(attachment);
@@ -134,7 +134,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   });
 
 
-  async function loadPostData(postId){
+  async function loadPostData(postId) {
     if (!postId) {
       console.error("No post ID provided for loading post data.");
       return;
@@ -162,7 +162,7 @@ document.addEventListener("DOMContentLoaded", async () => {
           draftStatusRadio.checked = false;
           break;
       }
-      
+
       editor.setContents(post.content ? JSON.parse(post.content) : []);
       readingTime.value = post.reading_time;
       postImagePath.value = post.cover_image || "";
@@ -189,9 +189,9 @@ document.addEventListener("DOMContentLoaded", async () => {
   }
 
 
-  function callUploadPostImageCover(){
+  function callUploadPostImageCover() {
     let postImageFile = postImageInput.files[0];
-    if(!postImageFile) {
+    if (!postImageFile) {
       return null;
     }
     let uploadImageResponse = null;
@@ -209,28 +209,28 @@ document.addEventListener("DOMContentLoaded", async () => {
     return uploadImageResponse.filePath;
   }
 
-  function preparePostPayload(){
+  function preparePostPayload() {
     postImagePath.value = callUploadPostImageCover();
     readingTime.value = calculateReadingTime(editor.getText());
 
     // Serialize form data
     const formData = new FormData(createPostForm);
     let dataObject = objectifyForm(Array.from(formData.entries()).map(([name, value]) => ({ name, value })));
-    if(dataObject.tags !== undefined &&  !Array.isArray(dataObject.tags)) {
+    if (dataObject.tags !== undefined && !Array.isArray(dataObject.tags)) {
       dataObject.tags = [dataObject.tags];
     }
     dataObject.reading_time = parseInt(readingTime.value);
-    if(attachments.length > 0) {
+    if (attachments.length > 0) {
       dataObject.attachments = attachments.map(file => {
         let attachment = { file_name: file.name, file_type: file.type, file_url: file.url }
-        if(file.id !== undefined) {
+        if (file.id !== undefined) {
           attachment.file_id = file.id;
         }
         return attachment;
       }
       );
     }
-    if(dataObject.cover_image != undefined && isEmptyString(dataObject.cover_image)){
+    if (dataObject.cover_image != undefined && isEmptyString(dataObject.cover_image)) {
       delete dataObject.cover_image;
     }
     dataObject.content = JSON.stringify(editor.getContents());
@@ -240,7 +240,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     return dataObject;
   }
 
-  function callCreatePost(){
+  function callCreatePost() {
     let dataObject = preparePostPayload();
 
     fetch(POST_API_URL, {
@@ -251,19 +251,19 @@ document.addEventListener("DOMContentLoaded", async () => {
       .then(response => response.json().then(data => ({ status: response.status, post: data.Post })))
       .then(({ status, post }) => {
         if (status === 200) {
-          alert("Post created successfully!");
+          showToast("success", "Create Post", "Post created successfully!");
           window.open(POST_DETAIL_URL + post.post_id, '_blank').focus();
         } else {
-          alert("Failed to create post: " + body.message);
+          showToast("error", "Create Post", "Failed to create post: " + body.message);
         }
       })
       .catch(err => {
-        alert("Error creating post: " + err.message);
+        showToast("error", "Create Post", "Error creating post: " + err.message);
       });
-    
+
   };
 
-  function callUpdatePost(postId){
+  function callUpdatePost(postId) {
     let dataObject = preparePostPayload();
     fetch(A_POST_URL + postId, {
       method: "PUT",
@@ -273,18 +273,18 @@ document.addEventListener("DOMContentLoaded", async () => {
       .then(response => response.json().then(data => ({ status: response.status, post: data.Post })))
       .then(({ status, post }) => {
         if (status === 200) {
-          alert("Post updated successfully!");
+          showToast("success", "Update Post", "Post updated successfully!");
           resetPostForm();
           loadPostData(postId);
+          window.scrollTo({ top: 0, behavior: "smooth" });
         } else {
-          alert("Failed to create post: " + body.message);
+          showToast('error', "Update Post", "Failed to update post: " + body.message);
         }
       })
       .catch(err => {
-        alert("Error creating post: " + err.message);
+        showToast('error', "Update Post", "Error update post: " + err.message);
       });
   }
-  
 
   function resetPostForm() {
     displayPostImage.src = defaultUploadIconUrl;
@@ -310,14 +310,14 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   btnResetPost.addEventListener("click", resetPostForm);
 
-  if(btnCreatePost != undefined){
+  if (btnCreatePost != undefined) {
     btnCreatePost.addEventListener("click", (event) => {
-        event.preventDefault();
-        callCreatePost();
+      event.preventDefault();
+      callCreatePost();
     });
   }
 
-  if(btnSavePost != undefined){
+  if (btnSavePost != undefined) {
     btnSavePost.addEventListener("click", (event) => {
       event.preventDefault();
       callUpdatePost(postId);
@@ -325,5 +325,5 @@ document.addEventListener("DOMContentLoaded", async () => {
   }
 
 
- 
+
 });

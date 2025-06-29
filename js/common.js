@@ -178,19 +178,52 @@ export function timeFromNow(date) {
   return `${seconds} second${seconds > 1 ? 's' : ''} ago`;
 }
 
-// display login response  from server
-function toast($toast,type, title, content){
-  if(type === "success"){
-    $toast.find(".toast-icon").attr("class","toast-icon fas fa-check text-primary")
-  }
-  else if(type === "failed"){
-    $toast.find(".toast-icon").attr("class","toast-icon fas fa-exclamation-circle text-danger");
-  }
-  $toast.find(".toast-title").text(title);
-  $toast.find(".toast-body").text(content);
-  $toast.toast("show");
+function initToast(){
+  let toastContainer = document.createElement('div');
+  toastContainer.id = 'toastContainer';
+  document.body.prepend(toastContainer);
+  window.closeToast = closeToast;
 }
 
-export {UPLOAD_FILE_API_URL, objectifyForm, callUploadFile, makeHttpRequest };
+function showToast(type, title, message, duration = 5000) {
+  const toastContainer = document.getElementById('toastContainer');
+  const toast = document.createElement('div');
+  toast.className = `toast ${type}`;
+  const iconSrc = type === 'success' ? 'circle-check.svg' :
+                  type === 'error' ? 'circle-exclamation.svg' :
+                  'triangle-exclamation.svg';
 
-document.addEventListener("DOMContentLoaded", removeAd);
+  toast.innerHTML = `
+      <div class="toast-content">
+          <img src="/assets/icons/${iconSrc}" class="toast-icon">
+          <div class="text-content">
+              <h3>${title}</h3>
+              <p>${message}</p>
+          </div>
+          <button onclick="closeToast(this.parentElement.parentElement)">✕</button>
+      </div>
+  `;
+  toastContainer.appendChild(toast);
+
+  setTimeout(() => {
+      toast.classList.add('show');
+  }, 100);
+
+  setTimeout(() => {
+    closeToast(toast);
+  }, duration);
+}
+
+function closeToast(toast) {
+  toast.classList.remove('show');
+  setTimeout(() => {
+    toast.remove();
+  }, 300); 
+}
+
+document.addEventListener("DOMContentLoaded", ()=>{
+  removeAd();
+  initToast();
+});
+
+export {UPLOAD_FILE_API_URL, objectifyForm, callUploadFile, makeHttpRequest, showToast };
