@@ -10,9 +10,13 @@ $ENTRY_POINT = '/api/files.php';
 
 
 $logger = Logger::getInstance();
+$method = $_SERVER['REQUEST_METHOD'];
+$action = isset($_GET['action'])?$_GET['action']:'default';
+$method_action = strtoupper($method.'_'.$action);
+
 
 // Handle get file
-if ($_SERVER['REQUEST_METHOD'] === 'GET') {
+if ($method_action === 'GET_DEFAULT') {
     $filename = isset($_GET['fileName']) ? basename($_GET['fileName']) : null;
 
     if (!$filename) {
@@ -36,7 +40,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
 }
 
 // Handle file upload
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+if ($method_action === 'POST_DEFAULT') {
     $logger->debug("File upload request received");
 
     if (!isset($_FILES['file'])) {
@@ -64,7 +68,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 
 // Handle file delete using JSON request body
-if ($_SERVER['REQUEST_METHOD'] === 'DELETE') {
+if ($method_action === 'POST_DELETE') {
     $input = file_get_contents("php://input");
     $data = json_decode($input, true);
 

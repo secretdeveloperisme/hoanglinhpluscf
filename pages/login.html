@@ -71,7 +71,7 @@
             const password = formData.get('password');
 
             try {
-                const response = await fetch('../api/auth.php', {
+                const response = await fetch('/api/auth.php', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',

@@ -21,6 +21,8 @@ header('Content-Type: application/json');
 
 $connection = getMariaDBConnection();
 $method = $_SERVER['REQUEST_METHOD'];
+$action = isset($_GET['action'])?$_GET['action']:'default';
+$method_action = strtoupper($method.'_'.$action);
 
 
 function getPostTags($connection, $post_id) {
@@ -87,9 +89,8 @@ function isTagsChanged($connection, $post_id, $new_tags) {
     return false;
 }
 
-
-switch ($method) {
-    case 'GET':
+switch ($method_action) {
+    case 'GET_DEFAULT': // GET METHOD
         if (isset($_GET['id']) || isset($_GET['slug'])) {
             $post = [];
             if(isset($_GET['slug'])) {
@@ -195,7 +196,7 @@ switch ($method) {
             ]);
         }
         break;
-    case 'POST':
+    case 'POST_DEFAULT': // POST_METHOD
         // Create a new post
         $data = json_decode(file_get_contents('php://input'), true);
         if (!isset($data['title'], $data['content'])) {
@@ -350,7 +351,7 @@ switch ($method) {
             exit;
         }
         break;
-    case 'PUT':
+    case 'POST_UPDATE': // PUT METHOD
         // Update a post
         if (!isset($_GET['id'])) {
             http_response_code(400);
@@ -574,7 +575,7 @@ switch ($method) {
 
         echo json_encode(["message" => "Post updated", "Post" => $updated_post]);
         break;
-    case 'DELETE':
+    case 'POST_DELETE': // DELETE METHOD
         // Delete a post: soft delete by default, hard delete if isHard=true
         if (!isset($_GET['id'])) {
             http_response_code(400);
@@ -623,7 +624,6 @@ switch ($method) {
         }
         break;
     default:
-        http_response_code(405);
-        echo json_encode(["error" => "Method not allowed"]);
+        respond_to_client(405, "Method not allowed");
         break;
 }

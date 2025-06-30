@@ -271,8 +271,8 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   function callUpdatePost(postId) {
     let dataObject = preparePostPayload();
-    fetch(A_POST_URL + postId, {
-      method: "PUT",
+    fetch(`${A_POST_URL}${postId}&action=update`, {
+      method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(dataObject)
     })

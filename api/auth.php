@@ -7,8 +7,12 @@ header("Content-Type: application/json");
 $method = $_SERVER['REQUEST_METHOD'];
 $connection = getMariaDBConnection();
 
-switch ($method) {
-    case 'POST':
+$method = $_SERVER['REQUEST_METHOD'];
+$action = isset($_GET['action'])?$_GET['action']:'default';
+$method_action = strtoupper($method.'_'.$action);
+
+switch ($method_action) {
+    case 'POST_DEFAULT':
         // Login function
         $data = json_decode(file_get_contents("php://input"), true);
         $username = $data['username'];
@@ -45,7 +49,7 @@ switch ($method) {
         }
         break;
 
-    case 'GET':
+    case 'GET_DEFAULT':
         // Authenticate using token and return current user information
         if (isset($_SESSION['token']) && isset($_SESSION['user_id']) && isset($_SESSION['role'])) {
             echo json_encode([
@@ -60,7 +64,7 @@ switch ($method) {
         }
         break;
 
-    case 'DELETE':
+    case 'POST_DELETE':
         // Logout function
         session_unset();
         session_destroy();

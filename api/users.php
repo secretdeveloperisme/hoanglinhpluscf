@@ -6,8 +6,12 @@ header("Content-Type: application/json");
 $method = $_SERVER['REQUEST_METHOD'];
 $connection = getMariaDBConnection();
 
-switch ($method) {
-    case 'GET':
+$method = $_SERVER['REQUEST_METHOD'];
+$action = isset($_GET['action'])?$_GET['action']:'default';
+$method_action = strtoupper($method.'_'.$action);
+
+switch ($method_action) {
+    case 'GET_DEFAULT':
         if (isset($_GET['id'])) {
             // Get a single user by ID
             $id = intval($_GET['id']);
@@ -25,7 +29,7 @@ switch ($method) {
         }
         break;
 
-    case 'POST':
+    case 'POST_DEFAULT':
         // Create a new user with a password
         $data = json_decode(file_get_contents("php://input"), true);
         $hashedPassword = password_hash($data['password'], PASSWORD_BCRYPT);
@@ -39,7 +43,7 @@ switch ($method) {
         }
         break;
 
-    case 'PUT':
+    case 'POST_UPDATE':
         // Update an existing user
         if (isset($_GET['id'])) {
             $id = intval($_GET['id']);
@@ -58,7 +62,7 @@ switch ($method) {
         }
         break;
 
-    case 'DELETE':
+    case 'POST_DELETE':
         // Delete a user
         if (isset($_GET['id'])) {
             $id = intval($_GET['id']);
