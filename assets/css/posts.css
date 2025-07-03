@@ -333,7 +333,10 @@ input[type="radio"].btn-check:checked+.btn.btn-outline-danger {
 .description {
     font-size: 1.8rem;
     margin-bottom: 24px;
-    color: #444;
+    text-align: center;
+    padding: 0.5rem;
+    background-color: #f1f3f5;
+    color: #222;
 }
 .content {
     font-size: 1.6rem;
@@ -350,6 +353,7 @@ input[type="radio"].btn-check:checked+.btn.btn-outline-danger {
 .toc-wrapper {
     padding: 1rem 0.5rem;
     overflow-y: auto;
+    max-height: 90vh;
 }
 
 .toc h3 {
@@ -398,9 +402,7 @@ body {
 
 /* Basic media queries for mobile and tablet */
 @media (max-width: 768px) {
-    html {
-        font-size: 13px;
-    }
+
     .sidebar {
         padding: 16px 8px;
     }
@@ -435,8 +437,24 @@ body {
         font-size: 1.6rem;
         padding: 0 0.5rem;
     }
+    .title {
+        font-size: 2.2rem;
+    }
+    .description{
+        font-size: 1.6rem;
+    }
     .content {
         padding: 0.5rem;
+    }
+
+    .content img{
+        max-width: 100% !important;
+        height: auto !important;
+        margin: 1.5rem 0;
+        border: 0;
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
     }
     .content-section{
         padding: 0.5rem 0.4rem;
