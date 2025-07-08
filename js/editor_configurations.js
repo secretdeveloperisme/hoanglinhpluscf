@@ -3,7 +3,7 @@ const Image = Quill.import('formats/image');
 const Font = Quill.import('formats/font');
 
 Font.whitelist = [
-  'sans-serif', 'serif', 'roboto', 'inter', 'lora', 'playfair'
+  'sans-serif', 'serif', 'roboto', 'inter', 'lora', 'jetbrain-mono', 'playfair'
 ];
 
 

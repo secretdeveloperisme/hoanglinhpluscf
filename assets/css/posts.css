@@ -447,6 +447,10 @@ body {
         padding: 0.5rem;
     }
 
+    #editor{
+        padding: 4px;
+    }
+
     .content img{
         max-width: 100% !important;
         height: auto !important;
