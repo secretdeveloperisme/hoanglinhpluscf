@@ -1,4 +1,4 @@
-import { makeHttpRequest, makeElementSticky, timeFromNow } from "./common.js"
+import { makeHttpRequest, makeElementSticky, timeFromNow, isEmptyString } from "./common.js"
 
 import { quillOptionsWithoutToolBar } from "./editor_configurations.js"
 document.addEventListener('DOMContentLoaded', async () => {
@@ -99,8 +99,15 @@ function buildTOC(contentEl, tocContainer) {
         span.textContent = `#${tag.name}`;
         tagsContainer.appendChild(span);
       });
+    }else{
+      tagsContainer.classList.add('hl-display-none');
     }
-    if (postDescription) postDescription.textContent = post.description;
+    if (isEmptyString(postDescription.textContent)) {
+      postDescription.textContent = post.description;
+    }
+    else{
+      postDescription.classList.add('hl-display-none');
+    }
     if (postContent && post.content) {
       quillOptionsWithoutToolBar.readOnly = true;
       const quillEditor = new Quill(postContent, quillOptionsWithoutToolBar);

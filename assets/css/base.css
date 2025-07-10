@@ -159,6 +159,10 @@ a, button{
 .hl-text-center { text-align: center; }
 .hl-text-muted { color: #6c757d; }
 
+.hl-display-none{
+    display: none;
+}
+
 
 /* Teplate */
 
