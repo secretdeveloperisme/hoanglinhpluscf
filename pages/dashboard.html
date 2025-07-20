@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+   <title>Admin Dashboard</title>
+   <meta name="author" content="Linh Nguyen">
+   <meta name="copyright" content="Hoang Linh Plus">
+   <meta name="keywords" content="HLP,hoanglinhplus,plus">
+   <meta name="description" content="Hoang Linh Plus's Portfolio">
+   <meta name="viewport" content="initial-scale=1.0">
+   <meta charset="UTF-8">
+   <link rel="preconnect" href="https://fonts.gstatic.com">
+   <link rel="preconnect" href="https://rsms.me/">
+   <link rel="stylesheet" href="https://rsms.me/inter/inter.css">
+   <link rel="stylesheet" href="/assets/css/base.css">
+   <link rel="stylesheet" href="/assets/css/grid.css">
+   <link rel="stylesheet" href="/assets/css/dashboard.css">
+   <link rel="stylesheet" href="/assets/libs/tablerenderer.css">
+   <link rel="icon" href="/assets/icons/hlp_icon.png">
+   <script type="module" src="/js/common.js"></script>
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/js/all.min.js"></script>
+   <script type="module" src="/js/dashboard.js"></script>
+</head>
+<body>
+    <div class="dashboard-container">
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <h2>Dashboard</h2>
+            </div>
+            <nav class="sidebar-nav">
+                <ul>
+                    <li><a href="#" data-target="usersSection" class="active">Users</a></li>
+                    <li><a href="#" data-target="postsSection">Posts</a></li>
+                    <li><a href="#" data-target="quotesSection">Quotes</a></li>
+                </ul>
+            </nav>
+        </aside>
+
+        <main class="main-content">
+            <header class="main-header">
+                <button class="menu-toggle" id="menu-toggle">
+                    &#9776; <!-- Hamburger Icon -->
+                </button>
+                <h1>Hoang Linh Plus</h1>
+            </header>
+            <section id="usersSection" class="content-section active" >
+                <h1>Users Management</h1>
+                <p>Here you can manage all the users on your platform. You can add, edit, or remove users as needed.</p>
+            </section>
+            <section id="postsSection" class="content-section">
+                <h1>Posts Management</h1>
+                <div id="tableContainer"></div>
+            </section>
+            <section id="quotesSection" class="content-section">
+                <h1>Quotes Management</h1>
+                <p>Manage the collection of quotes displayed on your site. Add new quotes or update the existing ones.</p>
+            </section>
+        </main>
+    </div>
+</body>
+</html>

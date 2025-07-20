@@ -102,7 +102,7 @@ function buildTOC(contentEl, tocContainer) {
     }else{
       tagsContainer.classList.add('hl-display-none');
     }
-    if (isEmptyString(postDescription.textContent)) {
+    if (!isEmptyString(post.description)) {
       postDescription.textContent = post.description;
     }
     else{

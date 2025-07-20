@@ -84,6 +84,13 @@ a, button{
     list-style-type: none;
 }
 
+.text-underline{
+    text-decoration: underline;
+}
+.text-underline:hover{
+    text-decoration: none;
+}
+
 /* Utility Classes */
 .hl-margin-x{
     margin-left: 1rem;
