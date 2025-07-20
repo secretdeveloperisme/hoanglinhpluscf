@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Use Table Renderer Lib</title>
+    <link rel="stylesheet" href="/src/assets/table_renderer.css">
+    <style>
+        html{
+            font-size: 62.5%;
+        }
+        .container {
+            max-width: 100rem;
+            margin-left: auto;
+            margin-right: auto;
+            background-color: #ffffff;
+            padding: 2rem;
+            border-radius: 0.5rem;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div id="tableContainer" class="table-container"></div>
+    </div>
+
+    <script type="module">
+        import TableRenderer from '../TableRenderer.js';
+
+
+        // --- Example Usage ---
+        // Define some mock data
+        const mockData = [
+            { p_id: 1, name: 'Alice Smith', age: 30, city: 'New York', email: 'alice@example.com Lorem ipsum dolor sit amet consectetur adipisicing elit. Vero cum error natus non a, debitis libero amet in ullam aliquid maxime, molestias minus obcaecati. Inventore, nulla odit? Deleniti, est excepturi.'  },
+            { p_id: 2, name: 'Bob Johnson', age: 24, city: 'Los Angeles', email: 'bob@example.com' },
+            { p_id: 3, name: 'Charlie Brown', age: 35, city: 'Chicago', email: 'charlie@example.com' },
+            { p_id: 4, name: 'Diana Prince', age: 29, city: 'Miami', email: 'diana@example.com' },
+            { p_id: 5, name: 'Eve Adams', age: 42, city: 'Seattle', email: 'eve@example.com' },
+            { p_id: 6, name: 'Frank White', age: 28, city: 'Houston', email: 'frank@example.com' },
+            { p_id: 7, name: 'Grace Lee', age: 31, city: 'San Francisco', email: 'grace@example.com' },
+            { p_id: 8, name: 'Henry King', age: 45, city: 'Dallas', email: 'henry@example.com' },
+            { p_id: 9, name: 'Ivy Chen', age: 22, city: 'Boston', email: 'ivy@example.com' },
+            { p_id: 10, name: 'Jack Green', age: 38, city: 'Denver', email: 'jack@example.com' },
+            { p_id: 11, name: 'Karen Hall', age: 27, city: 'Phoenix', email: 'karen@example.com' },
+            { p_id: 12, name: 'Liam Scott', age: 33, city: 'Philadelphia', email: 'liam@example.com' },
+            { p_id: 13, name: 'Mia Baker', age: 26, city: 'Atlanta', email: 'mia@example.com' },
+            { p_id: 14, name: 'Noah Davis', age: 40, city: 'Orlando', email: 'noah@example.com' },
+            { p_id: 15, name: 'Olivia Clark', age: 23, city: 'Portland', email: 'olivia@example.com' }
+        ];
+
+        // Define the columns for the table
+        const tableColumns = [
+            { key: 'p_id', label: 'ID', type: 'number', sortable: true },
+            { key: 'name', label: 'Full Name', type: 'text', sortable: true },
+            { key: 'age', label: 'Age', type: 'number', sortable: true },
+            { key: 'city', label: 'City', type: 'text', sortable: true },
+            {
+                key: 'email',
+                width: "80px",
+                label: 'Email Address',
+                type: 'text',
+                sortable: false, // Example: make email column not sortable
+                formatter: (email) => email.toLowerCase() // Example formatter: convert email to lowercase
+            }
+        ];
+
+        // --- Example of a custom data handler (for API integration) ---
+        // This handler would simulate fetching data from a backend API
+        // It's responsible for applying pagination and sorting itself.
+        async function myCustomDataHandler(options) {
+            console.log("Custom Data Handler called with options:", options);
+            const { page, itemsPerPage, sortColumn, sortDirection } = options;
+
+            // Simulate API call delay
+            await new Promise(resolve => setTimeout(resolve, 300));
+
+            let filteredAndSortedData = [...mockData]; // Start with full data for simulation
+
+            // Apply sorting if requested
+            if (sortColumn && sortDirection) {
+                filteredAndSortedData.sort((a, b) => {
+                    const valA = a[sortColumn];
+                    const valB = b[sortColumn];
+                    if (typeof valA === 'string' && typeof valB === 'string') {
+                        return sortDirection === 'asc' ? valA.localeCompare(valB) : valB.localeCompare(valA);
+                    }
+                    if (valA < valB) return sortDirection === 'asc' ? -1 : 1;
+                    if (valA > valB) return sortDirection === 'asc' ? 1 : -1;
+                    return 0;
+                });
+            }
+
+            // Apply pagination
+            const total = filteredAndSortedData.length;
+            const startIndex = (page - 1) * itemsPerPage;
+            const endIndex = startIndex + itemsPerPage;
+            const paginatedData = filteredAndSortedData.slice(startIndex, endIndex);
+
+            return {
+                data: paginatedData,
+                totalItems: total
+            };
+        }
+
+        // --- Example of a custom delete handler (for API integration) ---
+        // This handler would simulate deleting data on a backend API
+        async function myCustomDeleteSingleHandler(id) {
+            console.log("Custom Delete Handler called for IDs:", id);
+            // Simulate API call delay for deletion
+            await new Promise(resolve => setTimeout(resolve, 500));
+
+            console.log(`Simulating deletion of ID: ${id} from backend.`);
+        }
+
+        // --- Example of a custom add handler (for API integration) ---
+        // This handler would simulate adding data to a backend API
+        async function myCustomAddHandler(newRow) {
+            console.log("Custom Add Handler called for new row:", newRow);
+            // Simulate API call delay for addition
+            await new Promise(resolve => setTimeout(resolve, 500));
+
+            // In a real app, you'd send this newRow to your backend for addition
+            // For this example, we'll just log it and add it to mockData.
+            // If using a customDataHandler, you'd typically expect the backend
+            // to handle the actual storage and the next fetch to reflect the change.
+            // For this simulation, we'll manually add it to mockData
+            // so myCustomDataHandler can pick it up.
+            mockData.push(newRow);
+            console.log("Simulating addition of new row to backend (mockData):", newRow);
+        }
+
+        async function myCustomUpdateRowHandler(idToUpdate, row){
+            console.log("Custom Update Handler called for ID:", idToUpdate);
+            // Simulate API call delay for updating
+            await new Promise(resolve => setTimeout(resolve, 500));
+
+        }
+
+
+        // Initialize the TableRenderer
+        const myTable = new TableRenderer({
+            title: 'My Data Table',
+            idKeyName: 'p_id', // Use 'p_id' as the unique identifier for each row
+            targetWrapperElementId: 'tableContainer',
+            columns: tableColumns,
+            pagination: {
+                itemsPerPage: 5 // Set default items per page
+            },
+            // Uncomment one of the following blocks to test different modes:
+
+            // --- Mode 1: Internal Data Management (default) ---
+            // The library handles sorting, pagination, and deletion on the client-side
+            // using the initial data provided via setInitialData.
+            // No customDataHandler or deleteRowHandler needed.
+            // addRowHandler: myCustomAddHandler, // You can still use customAddHandler with internal data
+
+            // --- Mode 2: Custom Data Handler (for API-driven tables) ---
+            // The library delegates data fetching, sorting, and pagination to your handler.
+            // It expects your handler to return the correct slice of data and total count.
+            customDataHandler: myCustomDataHandler,
+            deleteSingleRowHandler: myCustomDeleteSingleHandler, // Also use custom delete handler
+            updateRowHandler: myCustomUpdateRowHandler,
+            addRowHandler: myCustomAddHandler,       // Use custom add handler for AI-generated rows
+
+            styles: {
+                // You can still override custom CSS class names here if needed
+                // table: 'my-custom-table-style',
+                // th: 'my-custom-header-cell',
+            }
+        });
+
+        // Load data and set it to the TableRenderer
+        document.addEventListener('DOMContentLoaded', async () => {
+            try {
+                // If using customDataHandler, you don't call setInitialData with mockData.
+                // The customDataHandler will be called automatically on initial render.
+                if (myTable.config.customDataHandler) {
+                    console.log("Using customDataHandler. Initial data will be fetched by the handler.");
+                    await myTable._fetchAndRenderData(); // Trigger initial fetch via handler
+                } else {
+                    // If not using customDataHandler, provide the full mockData
+                    console.log("Using internal data management. Setting initial data.");
+                    myTable.setInitialData(mockData);
+                }
+
+            } catch (error) {
+                console.error("Error during table initialization or data loading:", error);
+                // Error message is already displayed by loadData function
+            }
+        });
+    </script>
+</body>
+</html>

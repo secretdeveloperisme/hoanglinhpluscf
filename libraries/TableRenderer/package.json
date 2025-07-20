@@ -1,0 +1,21 @@
+{
+  "name": "tablerenderer",
+  "version": "1.0.0",
+  "main": "TableRenderer.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "vite build",
+    "clean": "rimraf dist"
+  },
+  "files": [
+    "dist"
+  ],
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "devDependencies": {
+    "rimraf": "^6.0.1",
+    "vite": "^7.0.4"
+  }
+}
