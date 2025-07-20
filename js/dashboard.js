@@ -1,6 +1,8 @@
 import { makeHttpRequest, showToast } from "./common.js"
 import { TableRenderer } from "../assets/libs/table_renderer_v1.0.0.es.js";
+const USERS_API_URL = "/api/users.php";
 const POSTS_API_URL = "/api/posts.php";
+const QUOTES_API_URL = "/api/quotes.php";
 
 document.addEventListener('DOMContentLoaded', () => {
     const menuToggle = document.getElementById('menu-toggle');
@@ -65,9 +67,49 @@ document.addEventListener('DOMContentLoaded', () => {
             sidebar.classList.remove('open');
         }
     });
+
+    openUsersManagement();
     function openUsersManagement() {
         if (!firstLoads.users) {
             return;
+        }
+
+        const tableColumns = [
+            { key: 'id', label: 'ID', type: 'number', sortable: true },
+            {
+                key: 'username', label: 'USERNAME', type: 'text', sortable: true, 
+            },
+            {
+                key: 'role', label: 'ROLE', type: 'text', 
+                formatter: (role, _) => {
+                    if (!role) {
+                        return `<span class="warning-pill">Unknown</span>`;
+                    }
+                    let roleClass = role.toLocaleLowerCase() === 'admin' ? 'warning-pill' : 'success-pill';
+                    return `<span class="${roleClass}">${role}</span>`;
+                }
+            },
+            {
+                key: 'email', label: 'EMAIL', type: 'text', sortable: true, 
+            }
+        ];
+
+        const postsTable = new TableRenderer({
+            title: 'Users Table',
+            targetWrapperElementId: 'tableUsersContainer',
+            columns: tableColumns,
+            pagination: {
+                itemsPerPage: 5
+            },
+            customDataHandler: loadUsersData,
+            deleteSingleRowHandler: deleteSingleUserHandler,
+        });
+        console.log(postsTable);
+        try {
+            postsTable._fetchAndRenderData();
+        }
+        catch (error) {
+            console.error("Error during table initialization or data loading:", error);
         }
 
     }
@@ -131,7 +173,75 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!firstLoads.quotes) {
             return;
         }
+        const tableColumns = [
+            { key: 'id', label: 'ID', type: 'number', sortable: true },
+            {
+                key: 'content', label: 'CONTENT', type: 'text', sortable: true, 
+            },
+            {
+                key: 'created_at', label: 'CREATED_AT', type: 'text', sortable: true, 
+            }
+        ];
+
+        const postsTable = new TableRenderer({
+            title: 'Quotes Table',
+            targetWrapperElementId: 'tableQuotesContainer',
+            columns: tableColumns,
+            pagination: {
+                itemsPerPage: 5
+            },
+            customDataHandler: loadQuotesData,
+            deleteSingleRowHandler: deleteSingleQuoteHandler,
+        });
+        console.log(postsTable);
+        try {
+            postsTable._fetchAndRenderData();
+        }
+        catch (error) {
+            console.error("Error during table initialization or data loading:", error);
+        }
     }
+
+    async function getUsersFromServer(page, itemsPerPage, sortColumn, sortDirection) {
+        let request_users_url = new URLSearchParams();
+        request_users_url.set('page', page);
+        request_users_url.set('limit', itemsPerPage);
+        request_users_url.set('sort', sortColumn);
+        request_users_url.set('direction', sortDirection);
+
+        let response = await makeHttpRequest("GET", `${USERS_API_URL}?${request_users_url.toString()}`);
+        return response || {};
+    }
+    async function loadUsersData(options) {
+        const { page, itemsPerPage, sortColumn, sortDirection } = options;
+        let users = await getUsersFromServer(page, itemsPerPage, sortColumn, sortDirection);
+        let filteredAndSortedData = [...users?.data || []];
+        if (sortColumn && sortDirection) {
+
+        }
+        const total = users.paging?.total;
+        const totalPages = users.paging?.pages;
+
+        return {
+            data: filteredAndSortedData,
+            totalItems: total,
+            totalPages
+        };
+    }
+
+    async function deleteSingleUserHandler(id) {
+        let delete_user_params = new URLSearchParams({
+            action: 'delete',
+            id
+        });
+        let response = await makeHttpRequest("POST", `${USERS_API_URL}?${delete_user_params.toString()}`);
+        if (response) {
+            showToast("success", "Delete User", "User deleted successfully!");
+        } else {
+            showToast("error", "Delete User", "Failed to delete User. Please try again.");
+        }
+    }
+
     async function getPostsFromServer(page, itemsPerPage, sortColumn, sortDirection) {
         let request_posts_url = new URLSearchParams();
         request_posts_url.set('page', page);
@@ -182,4 +292,48 @@ document.addEventListener('DOMContentLoaded', () => {
     async function myCustomUpdateRowHandler(idToUpdate, row) {
         window.location.href = `/pages/edit_post.html?id=${idToUpdate}`;
     }
+
+
+
+    async function getQuotesFromServer(page, itemsPerPage, sortColumn, sortDirection) {
+        let request_quotes_url = new URLSearchParams();
+        request_quotes_url.set('page', page);
+        request_quotes_url.set('limit', itemsPerPage);
+        request_quotes_url.set('sort', sortColumn);
+        request_quotes_url.set('direction', sortDirection);
+
+        let response = await makeHttpRequest("GET", `${QUOTES_API_URL}?${request_quotes_url.toString()}`);
+        return response || {};
+    }
+    async function loadQuotesData(options) {
+        console.log("Custom Data Handler called with options:", options);
+        const { page, itemsPerPage, sortColumn, sortDirection } = options;
+        let quotes = await getQuotesFromServer(page, itemsPerPage, sortColumn, sortDirection);
+        let filteredAndSortedData = [...quotes?.data || []];
+        if (sortColumn && sortDirection) {
+
+        }
+        const total = quotes.paging?.total;
+        const totalPages = quotes.paging?.pages;
+
+        return {
+            data: filteredAndSortedData,
+            totalItems: total,
+            totalPages
+        };
+    }
+
+    async function deleteSingleQuoteHandler(id) {
+        let delete_quote_params = new URLSearchParams({
+            action: 'delete',
+            id
+        });
+        let response = await makeHttpRequest("POST", `${QUOTES_API_URL}?${delete_quote_params.toString()}`);
+        if (response) {
+            showToast("success", "Delete Quote", "Quote deleted successfully!");
+        } else {
+            showToast("error", "Delete Quote", "Failed to delete Quote. Please try again.");
+        }
+    }
+
 });

@@ -1,5 +1,10 @@
 <?php
 require_once 'connect_db.php';
+require_once 'entities/User.php';
+require_once 'utilities/HttpUtility.php';
+require_once 'utilities/ConfigUtility.php';
+
+
 
 header("Content-Type: application/json");
 
@@ -19,13 +24,40 @@ switch ($method_action) {
             $stmt->bind_param("i", $id);
             $stmt->execute();
             $result = $stmt->get_result();
-            $user = $result->fetch_assoc();
+            if ($result->num_rows == 0) {
+                respond_to_client(404, "User not found");
+                exit;
+            }
+            $user = new User($result->fetch_assoc());
             echo json_encode($user);
         } else {
-            // Get all users
-            $result = $connection->query("SELECT id, username, role, email FROM users");
-            $users = $result->fetch_all(MYSQLI_ASSOC);
-            echo json_encode($users);
+            // Get all users with pagination
+            $default_page_start = ConfigUtility::get("defaultPageStart", 1);
+            $default_page_size = ConfigUtility::get("defaultPageSize", 10);
+            $page = isset($_GET['page']) ? max(1, intval($_GET['page'])) : $default_page_start;
+            $limit = isset($_GET['limit']) ? max(1, intval($_GET['limit'])) : $default_page_size;
+            $offset = ($page - 1) * $limit;
+
+            $total_result = $connection->query("SELECT COUNT(*) as total FROM users");
+            $total_users = $total_result->fetch_assoc()['total'];
+
+            $stmt = $connection->prepare("SELECT id, username, role, email FROM users LIMIT ? OFFSET ?");
+            $stmt->bind_param("ii", $limit, $offset);
+            $stmt->execute();
+            $result = $stmt->get_result();
+            $users = [];
+            while ($row = $result->fetch_assoc()) {
+                $users[] = new User($row);
+            }
+            echo json_encode([
+                "data" => $users,
+                "paging" => [
+                    "page" => $page,
+                    "limit" => $limit,
+                    "total" => intval($total_users),
+                    "pages" => ceil($total_users / $limit)
+                ]
+            ]);
         }
         break;
 
