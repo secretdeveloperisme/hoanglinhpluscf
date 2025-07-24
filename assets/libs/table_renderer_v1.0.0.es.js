@@ -6,6 +6,7 @@ class y {
    * @property {string} [type='text'] - The type of data (e.g., 'text', 'number', 'date').
    * @property {Function} [formatter] - Optional function to format the cell value.
    * @property {boolean} [sortable=true] - Whether the column is sortable.
+   * @property {boolean} [center=false] - Whether to center the text in this column.
    * @property {string} [width] - The CSS width for this column (e.g., '150px', '20%').
    */
   /**
@@ -56,8 +57,7 @@ class y {
       title: e.title,
       idKeyName: e.idKeyName || "id",
       // Default to 'id' if not provided
-      columns: e.columns.map((t) => ({ ...t, sortable: t.sortable !== !1 })),
-      // Default sortable to true
+      columns: e.columns.map((t) => ({ ...t, sortable: t.sortable !== !1, center: t.center === !0 })),
       pagination: {
         itemsPerPage: e.pagination?.itemsPerPage || 10
       },
@@ -180,8 +180,8 @@ class y {
     this._displayedData.forEach((t) => {
       const a = t[this.config.idKeyName];
       e ? this.selectedRowIds.add(a) : this.selectedRowIds.delete(a);
-      const d = this.targetElement.querySelector(`input[type="checkbox"][data-row-id="${a}"]`);
-      d && (d.checked = e);
+      const l = this.targetElement.querySelector(`input[type="checkbox"][data-row-id="${a}"]`);
+      l && (l.checked = e);
     }), this._updateDeleteButtonState();
   }
   /**
@@ -267,8 +267,8 @@ class y {
         this._displayedData = e, this.totalItems = t;
       } else {
         let e = [...this._fullData];
-        this.sortColumn && this.sortDirection && e.sort((d, r) => {
-          const i = d[this.sortColumn], o = r[this.sortColumn];
+        this.sortColumn && this.sortDirection && e.sort((l, r) => {
+          const i = l[this.sortColumn], o = r[this.sortColumn];
           return typeof i == "string" && typeof o == "string" ? this.sortDirection === "asc" ? i.localeCompare(o) : o.localeCompare(i) : i < o ? this.sortDirection === "asc" ? -1 : 1 : i > o ? this.sortDirection === "asc" ? 1 : -1 : 0;
         });
         const t = (this.currentPage - 1) * this.itemsPerPage, a = t + this.itemsPerPage;
@@ -295,55 +295,55 @@ class y {
     e.className = this.config.styles.table;
     const t = document.createElement("thead");
     t.className = this.config.styles.thead;
-    const a = document.createElement("tr"), d = document.createElement("colgroup"), r = document.createElement("th");
+    const a = document.createElement("tr"), l = document.createElement("colgroup"), r = document.createElement("th");
     r.scope = "col", r.className = this.config.styles.th;
     const i = document.createElement("input");
     i.type = "checkbox", i.id = "select-all-checkbox", i.className = this.config.styles.checkboxInput, i.checked = this._displayedData.every((s) => this.selectedRowIds.has(s.id)) && this._displayedData.length > 0, i.disabled = this._displayedData.length === 0, i.addEventListener("change", (s) => this.toggleSelectAll(s.target.checked)), r.appendChild(i);
     const o = document.createElement("col");
-    o.setAttribute("data-dt-column", 0), d.appendChild(o), a.appendChild(r), this.config.columns.forEach((s) => {
+    o.setAttribute("data-dt-column", 0), l.appendChild(o), a.appendChild(r), this.config.columns.forEach((s) => {
       const n = document.createElement("th");
       n.scope = "col", n.className = this.config.styles.th;
-      const h = document.createElement("col");
-      s.width && (h.style.width = s.width), s.sortable && (n.classList.add("sortable-header"), n.addEventListener("click", () => this.sortData(s.key)));
-      const l = document.createElement("div");
-      if (l.className = "flex items-center", l.textContent = s.label, this.sortColumn === s.key) {
+      const g = document.createElement("col");
+      s.width && (g.style.width = s.width), s.sortable && (n.classList.add("sortable-header"), n.addEventListener("click", () => this.sortData(s.key)));
+      const d = document.createElement("div");
+      if (d.className = "text-center", d.textContent = s.label, this.sortColumn === s.key) {
         const c = document.createElement("span");
-        c.className = "sort-indicator", c.innerHTML = this.sortDirection === "asc" ? "&uarr;" : "&darr;", l.appendChild(c);
+        c.className = "sort-indicator", c.innerHTML = this.sortDirection === "asc" ? "&uarr;" : "&darr;", d.appendChild(c);
       }
-      n.appendChild(l), d.appendChild(h), a.appendChild(n);
+      n.appendChild(d), l.appendChild(g), a.appendChild(n);
     });
     const E = document.createElement("col");
-    E.setAttribute("data-dt-column", this.config.columns.length), d.appendChild(E);
-    const m = document.createElement("th");
-    m.scope = "col", m.className = this.config.styles.th, m.textContent = "Actions", a.appendChild(m), t.appendChild(a), e.appendChild(d), e.appendChild(t);
-    const u = document.createElement("tbody");
-    if (u.className = this.config.styles.tbody, this._displayedData.length === 0) {
+    E.setAttribute("data-dt-column", this.config.columns.length), l.appendChild(E);
+    const u = document.createElement("th");
+    u.scope = "col", u.className = this.config.styles.th, u.textContent = "Actions", a.appendChild(u), t.appendChild(a), e.appendChild(l), e.appendChild(t);
+    const m = document.createElement("tbody");
+    if (m.className = this.config.styles.tbody, this._displayedData.length === 0) {
       const s = document.createElement("tr"), n = document.createElement("td");
-      n.colSpan = this.config.columns.length + 2, n.className = `${this.config.styles.td} text-center py-8`, n.textContent = "No data to display.", s.appendChild(n), u.appendChild(s);
+      n.colSpan = this.config.columns.length + 2, n.className = `${this.config.styles.td} text-center py-8`, n.textContent = "No data to display.", s.appendChild(n), m.appendChild(s);
     } else
       this._displayedData.forEach((s) => {
         const n = document.createElement("tr");
         n.className = this.config.styles.tr;
-        const h = document.createElement("td");
-        h.className = this.config.styles.checkboxTd;
-        const l = document.createElement("input");
-        l.type = "checkbox", l.className = this.config.styles.checkboxInput, l.setAttribute("data-row-id", s[this.config.idKeyName]), l.checked = this.selectedRowIds.has(s[this.config.idKeyName]), l.addEventListener(
+        const g = document.createElement("td");
+        g.className = this.config.styles.checkboxTd;
+        const d = document.createElement("input");
+        d.type = "checkbox", d.className = this.config.styles.checkboxInput, d.setAttribute("data-row-id", s[this.config.idKeyName]), d.checked = this.selectedRowIds.has(s[this.config.idKeyName]), d.addEventListener(
           "change",
-          (g) => this.toggleRowSelection(s[this.config.idKeyName], g.target.checked)
-        ), h.appendChild(l), n.appendChild(h), this.config.columns.forEach((g) => {
+          (h) => this.toggleRowSelection(s[this.config.idKeyName], h.target.checked)
+        ), g.appendChild(d), n.appendChild(g), this.config.columns.forEach((h) => {
           const C = document.createElement("td");
-          C.className = this.config.styles.td;
-          let p = s[g.key];
-          g.formatter && typeof g.formatter == "function" && (p = g.formatter(p, s)), C.innerHTML = p ?? "", n.appendChild(C);
+          C.className = this.config.styles.td, h.center == !0 && C.classList.add("text-center");
+          let p = s[h.key];
+          h.formatter && typeof h.formatter == "function" && (p = h.formatter(p, s)), C.innerHTML = p ?? "", n.appendChild(C);
         });
         const c = document.createElement("td");
         c.className = this.config.styles.actionTd;
         const f = document.createElement("button");
         f.textContent = "Update", f.className = `${this.config.styles.actionButton} ${this.config.styles.updateRowButton}`, f.addEventListener("click", () => this.updateSingleRow(s[this.config.idKeyName], s)), c.appendChild(f);
         const P = document.createElement("button");
-        P.textContent = "Delete", P.className = `${this.config.styles.actionButton} ${this.config.styles.deleteRowButton}`, P.addEventListener("click", () => this.deleteSingleRow(s[this.config.idKeyName])), c.appendChild(P), n.appendChild(c), u.appendChild(n);
+        P.textContent = "Delete", P.className = `${this.config.styles.actionButton} ${this.config.styles.deleteRowButton}`, P.addEventListener("click", () => this.deleteSingleRow(s[this.config.idKeyName])), c.appendChild(P), n.appendChild(c), m.appendChild(n);
       });
-    e.appendChild(u), this.targetElement.appendChild(e), this._updatePaginationControls(), this._updateDeleteButtonState();
+    e.appendChild(m), this.targetElement.appendChild(e), this._updatePaginationControls(), this._updateDeleteButtonState();
   }
 }
 export {

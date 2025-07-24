@@ -75,12 +75,12 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         const tableColumns = [
-            { key: 'id', label: 'ID', type: 'number', sortable: true },
+            { key: 'id', label: 'ID', type: 'number', sortable: true, center: true},
             {
-                key: 'username', label: 'USERNAME', type: 'text', sortable: true, 
+                key: 'username', label: 'USERNAME', type: 'text', sortable: true, center: true
             },
             {
-                key: 'role', label: 'ROLE', type: 'text', 
+                key: 'role', label: 'ROLE', type: 'text', center: true,
                 formatter: (role, _) => {
                     if (!role) {
                         return `<span class="warning-pill">Unknown</span>`;
@@ -120,7 +120,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         const tableColumns = [
-            { key: 'post_id', label: 'ID', type: 'number', sortable: true },
+            { key: 'post_id', label: 'ID', type: 'number', sortable: true, center: true },
             {
                 key: 'title', label: 'Title', type: 'text', sortable: true, width: "400px",
                 formatter: (title, row) => {
@@ -134,7 +134,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             },
             {
-                key: 'post_status', label: 'Status', type: 'text', sortable: true,
+                key: 'post_status', label: 'Status', type: 'text', sortable: true, center: true,
                 formatter: (post_status, _) => {
                     if (!post_status) {
                         return `<span class="warning-pill">Unknown</span>`;
@@ -143,7 +143,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     return `<span class="${statusClass}">${post_status}</span>`
                 }
             },
-            { key: 'created_at', label: 'Created At', type: 'date', sortable: true },
+            { key: 'created_at', label: 'Created At', type: 'date', sortable: true, center: true},
         ];
 
         const postsTable = new TableRenderer({
@@ -174,12 +174,15 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
         const tableColumns = [
-            { key: 'id', label: 'ID', type: 'number', sortable: true },
+            { key: 'id', label: 'ID', type: 'number', sortable: true, center: true },
             {
-                key: 'content', label: 'CONTENT', type: 'text', sortable: true, 
+                key: 'content', label: 'CONTENT', type: 'text', sortable: true, width: "500px",
             },
             {
-                key: 'created_at', label: 'CREATED_AT', type: 'text', sortable: true, 
+                key: 'author', label: 'AUTHOR', type: 'text', sortable: true, center: true,
+            },
+            {
+                key: 'created_at', label: 'CREATED_AT', type: 'text', sortable: true, center: true, 
             }
         ];
 

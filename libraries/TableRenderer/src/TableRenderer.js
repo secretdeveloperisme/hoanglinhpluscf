@@ -6,6 +6,7 @@ class TableRenderer {
      * @property {string} [type='text'] - The type of data (e.g., 'text', 'number', 'date').
      * @property {Function} [formatter] - Optional function to format the cell value.
      * @property {boolean} [sortable=true] - Whether the column is sortable.
+     * @property {boolean} [center=false] - Whether to center the text in this column.
      * @property {string} [width] - The CSS width for this column (e.g., '150px', '20%').
      */
 
@@ -62,7 +63,7 @@ class TableRenderer {
             targetWrapperElementId: config.targetWrapperElementId,
             title: config.title,
             idKeyName: config.idKeyName || 'id', // Default to 'id' if not provided
-            columns: config.columns.map(col => ({ ...col, sortable: col.sortable !== false })), // Default sortable to true
+            columns: config.columns.map(col => ({ ...col, sortable: col.sortable !== false, center: col.center === true})), 
             pagination: {
                 itemsPerPage: config.pagination?.itemsPerPage || 10,
             },
@@ -630,7 +631,7 @@ class TableRenderer {
             }
 
             const headerContent = document.createElement('div');
-            headerContent.className = 'flex items-center';
+            headerContent.className = 'text-center';
             headerContent.textContent = col.label;
 
             // Add sort indicator
@@ -699,6 +700,10 @@ class TableRenderer {
                 this.config.columns.forEach(col => {
                     const td = document.createElement('td');
                     td.className = this.config.styles.td;
+
+                    if (col.center == true) {
+                        td.classList.add('text-center'); // Add center class if specified
+                    }
 
                     // Get the raw value
                     let value = rowData[col.key];

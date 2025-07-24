@@ -182,6 +182,10 @@
     color: #111827;
 }
 
+.text-center {
+    text-align: center;
+}
+
 .table-data-cell.checkbox-cell {
     text-align: center;
     width: 3rem;
