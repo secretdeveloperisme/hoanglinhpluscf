@@ -249,7 +249,7 @@
 
 @media (max-width: 480px) {
     .post-card-img {
-        height: 120px;
+        height: 140px;
         border-top-left-radius: 0.5rem;
         border-top-right-radius: 0.5rem;
     }
@@ -388,5 +388,9 @@
     .posts-container {
         padding-left: 5px;
         padding-right: 5px;
+    }
+    .btn-read-more{
+        font-size: 1.4rem;
+        padding: 0.25rem 0.5rem;
     }
 }
