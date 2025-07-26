@@ -31,7 +31,7 @@ const QUOTES_API_URL = "api/quotes.php";
 let quoteSentenceTag = document.querySelector("#quoteSentence");
 let quoteAuthorTag = document.querySelector("#quoteAuthor")
 
-fetch(QUOTES_API_URL)
+fetch(`${QUOTES_API_URL}/?type=random`)
   .then(response => {
     try {
       let isJsonRes = response.headers.get("Content-Type").includes("application/json");

@@ -46,8 +46,16 @@ body{
     background-image: linear-gradient(to right ,#1c92d2,#f2fcfe);
     border-radius: 3px;
     box-shadow: 0,0,5px,rgba(0, 0, 0, 1);
-    animation: appear .5s  linear;
 }
+
+.annimate_appear{
+    animation: appear .5s linear;
+}
+
+.annimate_disappear{
+    animation: disappear .5s linear;
+}
+
 .modal__close{
     cursor: pointer;
     user-select: none;
@@ -221,6 +229,7 @@ body{
 @media only screen and (max-width:768px){
     .modal__body{
         width: 90%;
+        max-width: unset;
     }
 }
 @keyframes appear{
@@ -231,5 +240,16 @@ body{
     to{
         transform: scale(1);
         opacity : 1;
+    }
+}
+
+@keyframes disappear{
+    from{
+        transform: scale(1);
+        opacity: 1;
+    }
+    to{
+        transform: scale(0);
+        opacity : 0;
     }
 }

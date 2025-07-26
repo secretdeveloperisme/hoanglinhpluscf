@@ -25,15 +25,19 @@ document.addEventListener("DOMContentLoaded", function () {
 
     if (headerTitle && modal) {
         headerTitle.addEventListener("click", function () {
+            modalBody.classList.remove("annimate_disappear");
             modal.classList.add("modal-appear");
+            modalBody.classList.add("annimate_appear");
+            modalBody.style.opacity = 1;
         });
     }
     function closeModal() {
-        modalBody.style.opacity = 0;
+        modalBody.classList.remove("modal-appear");
+        modalBody.classList.add("annimate_disappear");
         setTimeout(() => {
             modal.classList.remove("modal-appear");
-            modalBody.style.opacity = 1;
-        }, 800);
+            modalBody.style.opacity = 0;
+        }, 500);
     }
 
     if (modalClose && modalBody) {

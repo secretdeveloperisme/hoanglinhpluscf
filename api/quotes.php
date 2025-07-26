@@ -25,7 +25,17 @@ switch ($method_action) {
             }
             $quote = new Quote($result->fetch_assoc());
             echo json_encode($quote);
-        } else {
+        }  else if(isset($_GET['type']) && $_GET['type'] === 'random') {
+            // Get a random quote
+            $result = $connection->query("SELECT id, content, author, created_at FROM quotes ORDER BY RAND() LIMIT 1");
+            if ($result->num_rows == 0) {
+                respond_to_client(404, "No quotes found");
+                exit;
+            }
+            $quote = new Quote($result->fetch_assoc());
+            echo json_encode($quote);
+        }
+        else {
             // Get all quotes with pagination
             $default_page_start = 1;
             $default_page_size = 10;

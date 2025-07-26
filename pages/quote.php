@@ -27,11 +27,11 @@
                 <h2 class="input__title">Add A Quote</h2>
                 <div class="input__content">
                     <span class="input__label">Content:</span>
-                    <input type="text" name="inputContent" class="input__content-text" placeholder="input quote">
+                    <input type="text" name="inputContent" class="input__content-text" placeholder="input a quote content">
                 </div>
                 <div class="input__content">
                     <span class="input__label">Author</span>
-                    <input type="text" name="inputAuthor" class="input__content-text" placeholder="input author">
+                    <input type="text" name="inputAuthor" class="input__content-text" placeholder="input a quote author">
                 </div>
                 <div class="input-btn-group">
                     <button class="input__add">ADD</button>
