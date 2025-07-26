@@ -373,6 +373,111 @@ a, button{
     z-index: 1000;
 }
 
+.loader{
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1000;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    background-color: transparent;
+    overflow: hidden;
+}
+.loader-content{
+    z-index: 1001;
+}
+
+.loader-text {
+  font-size: 48px;
+  display: inline-block;
+  font-family: 'Roboto', serif;
+  font-weight: bold;
+  color: #263238;
+  box-sizing: border-box;
+  text-shadow: 0 0 2px #FFF, 0 0 1px #FFF, 0 0 1px #FFF;
+  letter-spacing: 2px;
+  position: relative;
+}
+
+.loader-door {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.loader-left-door, .loader-right-door {
+  position: absolute;
+  width: 50%;
+  height: 100%;
+  background-color: #263238;
+  top: 0;
+}
+
+.loader-left-door {
+  left: 0;
+  transform-origin: left;
+}
+.loader-right-door {
+  right: 0;
+  transform-origin: right;
+}
+
+.loader-text::after {
+  content: 'HoangLinhPlus';
+  position: absolute;
+  left: 0;
+  top: 0;
+  color: var(--primary-color);
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  box-sizing: border-box;
+  animation: animloader 6s linear infinite;
+}
+
+
+.loader-icon-container {
+  width: 60px;
+  height: 40px;
+  position: relative;
+  display: inline-block;
+  --base-color: #263238; /*use your base color*/
+}
+.loader-icon::before {
+  content: '';  
+  left: 0;
+  top: 0;
+  position: absolute;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background-color: var(--primary-color);
+  background-image: radial-gradient(circle 8px at 18px 18px, var(--base-color) 100%, transparent 0), radial-gradient(circle 4px at 18px 0px, var(--base-color) 100%, transparent 0), radial-gradient(circle 4px at 0px 18px, var(--base-color) 100%, transparent 0), radial-gradient(circle 4px at 36px 18px, var(--base-color) 100%, transparent 0), radial-gradient(circle 4px at 18px 36px, var(--base-color) 100%, transparent 0), radial-gradient(circle 4px at 30px 5px, var(--base-color) 100%, transparent 0), radial-gradient(circle 4px at 30px 5px, var(--base-color) 100%, transparent 0), radial-gradient(circle 4px at 30px 30px, var(--base-color) 100%, transparent 0), radial-gradient(circle 4px at 5px 30px, var(--base-color) 100%, transparent 0), radial-gradient(circle 4px at 5px 5px, var(--base-color) 100%, transparent 0);
+  background-repeat: no-repeat;
+  box-sizing: border-box;
+  animation: rotationBack 3s linear infinite;
+}
+.loader-icon::after {
+  content: '';  
+  left: 35px;
+  top: 15px;
+  position: absolute;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background-color: var(--primary-color);
+  background-image: radial-gradient(circle 5px at 12px 12px, var(--base-color) 100%, transparent 0), radial-gradient(circle 2.5px at 12px 0px, var(--base-color) 100%, transparent 0), radial-gradient(circle 2.5px at 0px 12px, var(--base-color) 100%, transparent 0), radial-gradient(circle 2.5px at 24px 12px, var(--base-color) 100%, transparent 0), radial-gradient(circle 2.5px at 12px 24px, var(--base-color) 100%, transparent 0), radial-gradient(circle 2.5px at 20px 3px, var(--base-color) 100%, transparent 0), radial-gradient(circle 2.5px at 20px 3px, var(--base-color) 100%, transparent 0), radial-gradient(circle 2.5px at 20px 20px, var(--base-color) 100%, transparent 0), radial-gradient(circle 2.5px at 3px 20px, var(--base-color) 100%, transparent 0), radial-gradient(circle 2.5px at 3px 3px, var(--base-color) 100%, transparent 0);
+  background-repeat: no-repeat;
+  box-sizing: border-box;
+  animation: rotationBack 4s linear infinite reverse;
+}
+
 
 /* Tablet */
 @media screen and (min-width: 740px) and (max-width: 1023px) {
@@ -390,10 +495,40 @@ a, button{
         top: 5px;
         right: 5px;
     }
+
+    .loader-icon::before{
+        scale: 0.8;
+
+    }
+    .loader-icon::after{
+        scale: 0.8;
+        left: 28px
+    }
+    
+    .loader-text {
+        font-size: 32px;
+    }
 }
 
 
 /* Animations */
+
+.translateLeftOut{
+    transform: tramslateX(-100%);
+    animation: translateLeftOut 2s ease-in-out;
+}
+.translateRightOut{
+    transform: translateX(100%);
+    animation: translateRightOut 2s ease-in-out;
+}
+
+.animate-zoom-in {
+    animation: zoomIn 0.4s ease forwards;
+}
+.animate-zoom-out {
+    animation: zoomOut 0.4s ease forwards;
+}
+
 @keyframes zoomOut {
     from {
         transform: scale(1);
@@ -431,9 +566,37 @@ a, button{
     }
 }
 
-.animate-zoom-in {
-    animation: zoomIn 0.4s ease forwards;
+@keyframes translateLeftOut {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-100%);
+  }
 }
-.animate-zoom-out {
-    animation: zoomOut 0.4s ease forwards;
+@keyframes translateRightOut {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+@keyframes rotationBack {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(-360deg);
+  }
+}  
+
+@keyframes animloader {
+  0% {
+    width: 0%;
+  }
+  100% {
+    width: 100%;
+  }
 }

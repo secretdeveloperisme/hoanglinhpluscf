@@ -10,6 +10,25 @@ function removeAd(){
     console.log(document.getElementsByTagName("body")[0].removeChild(divsOfBody));
 }
 
+function renderLoader() {
+  let loaderContainer = document.createElement("div");
+  loaderContainer.classList.add("loader");
+  loaderContainer.innerHTML = `
+    <div class="loader-content">
+      <div class="loader-icon-container">
+          <span class="loader-icon"></span>
+      </div>
+      <span class="loader-text">HoangLinhPlus</span>
+    </div>
+    <div class="loader-door">
+      <div class="loader-left-door"></div>
+      <div class="loader-right-door"></div>
+    </div>
+  `;
+
+  document.body.prepend(loaderContainer)
+}
+
 
 function objectifyForm(formArray) {
   let duplicateArray = countDuplicateArray(formArray);
@@ -225,9 +244,39 @@ function closeToast(toast) {
   }, 300); 
 }
 
+function removeLoader() {
+  let leftDoorLoaderElement = document.querySelector(".loader-left-door");
+  let rightDoorLoaderElement = document.querySelector(".loader-right-door");
+  let loaderContent = document.querySelector(".loader-content");
+  let loaderContentContainer = document.querySelector(".loader-content");
+  if (loaderContent) {
+    loaderContent.classList.add("animate-zoom-out");
+  }
+
+  if (leftDoorLoaderElement && rightDoorLoaderElement) {
+    leftDoorLoaderElement.classList.add("translateLeftOut");
+    rightDoorLoaderElement.classList.add("translateRightOut");
+    setTimeout(() => {
+      leftDoorLoaderElement.remove();
+      rightDoorLoaderElement.remove();
+      if (loaderContentContainer) {
+        loaderContentContainer.remove();
+      }
+      let loaderContainer = document.querySelector(".loader");
+      loaderContainer.remove();;
+    }, 2000);
+  }
+}
+window.removeLoader = removeLoader;
+
+// Initialize loader
+renderLoader();
+
+
 document.addEventListener("DOMContentLoaded", ()=>{
   removeAd();
   initToast();
+  // removeLoader();
 });
 
 export {UPLOAD_FILE_API_URL, objectifyForm, callUploadFile, makeHttpRequest, showToast };
