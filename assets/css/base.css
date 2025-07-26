@@ -9,6 +9,10 @@
     --2-palette: #98BAE7;
     --3-palette: #B8E4F0;
 
+    --lighter--color--primary: #0ABF53;
+    --lighter--color--primary-hover: #07853a;
+    --lighter--color--primary-alpha: #0abf531a;
+    
     --cursor-default: url('../icons/cursors/default_cursor.svg'), default;
     --cursor-pointer: url('../icons/cursors/hand_cursor.svg'), pointer;
     --cursor-link: url('../icons/cursors/link_cursor.svg'), pointer;
@@ -45,6 +49,15 @@ a, button{
    cursor: var(--cursor-pointer);
 }
 
+p::selection, p::selection, 
+h1::selection, h2::selection, 
+h3::selection, h4::selection, 
+h5::selection, h6::selection, 
+a::selection, button::selection,
+span::selection{
+    color: var(--lighter--color--primary);
+    background-color: var(--lighter--color--primary-alpha);
+}
 
 .cursor-default{
     cursor: var(--cursor-default);
