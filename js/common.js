@@ -276,7 +276,7 @@ renderLoader();
 document.addEventListener("DOMContentLoaded", ()=>{
   removeAd();
   initToast();
-  // removeLoader();
+  removeLoader();
 });
 
 export {UPLOAD_FILE_API_URL, objectifyForm, callUploadFile, makeHttpRequest, showToast };
