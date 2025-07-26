@@ -190,6 +190,11 @@
 .header__nav-btn-bars .bars-icon  *{
     transition: all linear .5s;
 }
+
+#cbx-nav-bar:checked ~ .header__nav-btn-bars .bars-icon *{
+    background: red;
+}
+
 #cbx-nav-bar:checked ~ .header__nav-btn-bars .bar-1{
     transform-origin: 50% 50%;
     transform: translate(0,6px) rotate(45deg);
@@ -212,7 +217,7 @@
 .bars-icon *{
     margin: 3px;
     height: 6px;
-    background: red;
+    background: var(--primary-color);
 }
 @keyframes dropdown_appear{
     from{
