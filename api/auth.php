@@ -1,5 +1,6 @@
 <?php
 require_once 'connect_db.php';
+require_once 'services/AuthService.php';
 session_start();
 
 header("Content-Type: application/json");
@@ -10,6 +11,7 @@ $connection = getMariaDBConnection();
 $method = $_SERVER['REQUEST_METHOD'];
 $action = isset($_GET['action'])?$_GET['action']:'default';
 $method_action = strtoupper($method.'_'.$action);
+$authService = AuthService::get_instance();
 
 switch ($method_action) {
     case 'POST_DEFAULT':
@@ -26,16 +28,27 @@ switch ($method_action) {
         if ($result->num_rows === 1) {
             $user = $result->fetch_assoc();
             if (password_verify($password, $user['password'])) {
-                // Generate a token
-                $token = bin2hex(random_bytes(32));
-                $_SESSION['token'] = $token;
+                // Generate access and refresh tokens using AuthService
+                $userPayload = [
+                    'id' => $user['id'],
+                    'username' => $username,
+                    'role' => $user['role']
+                ];
+                $accessToken = $authService->generateAccessToken($userPayload);
+                $refreshToken = $authService->generateRefreshToken($userPayload);
+
+                // Set cookies for both tokens
+                setcookie("access_token", $accessToken, time() + $authService->getAccessTokenExpiry(), "/", "", false, true);
+                setcookie("refresh_token", $refreshToken, time() + $authService->getRefreshTokenExpiry(), "/", "", false, true);
+
+                // Optionally, store user info in session if needed
                 $_SESSION['user_id'] = $user['id'];
                 $_SESSION['role'] = $user['role'];
 
-                setcookie("token", $token, time() + 3600, "/", "", false, true);
                 echo json_encode([
                     "message" => "Login successful",
-                    "token" => $token,
+                    "access_token" => $accessToken,
+                    "refresh_token" => $refreshToken,
                     "user_id" => $user['id'],
                     "role" => $user['role']
                 ]);
@@ -50,20 +63,54 @@ switch ($method_action) {
         break;
 
     case 'GET_DEFAULT':
-        // Authenticate using token and return current user information
-        if (isset($_SESSION['token']) && isset($_SESSION['user_id']) && isset($_SESSION['role'])) {
-            echo json_encode([
-                "message" => "Authenticated",
-                "user_id" => $_SESSION['user_id'],
-                "role" => $_SESSION['role'],
-                "token" => $_SESSION['token']
-            ]);
+        // Authenticate using access token from cookie and return current user information
+        if (isset($_COOKIE['access_token'])) {
+            $accessToken = $_COOKIE['access_token'];
+            $payload = $authService->verifyToken($accessToken);
+            if ($payload !== false && isset($payload['id']) && isset($payload['role'])) {
+                echo json_encode([
+                    "message" => "Authenticated",
+                    "user_id" => $payload['id'],
+                    "role" => $payload['role'],
+                    "access_token" => $accessToken
+                ]);
+            } else {
+                http_response_code(401);
+                echo json_encode(["error" => "Invalid or expired token"]);
+            }
         } else {
             http_response_code(401);
-            echo json_encode(["error" => "Unauthorized"]);
+            echo json_encode(["error" => "No access token"]);
         }
         break;
 
+    case 'POST_REFRESH':
+        // Generate new access token from refresh token
+        if (isset($_COOKIE['refresh_token'])) {
+            $refreshToken = $_COOKIE['refresh_token'];
+            $payload = $authService->verifyToken($refreshToken);
+            if ($payload !== false && isset($payload['id']) && isset($payload['username']) && isset($payload['role']) && isset($payload['type']) && $payload['type'] === 'refresh') {
+                // Remove iat, exp, type from payload for new access token
+                $userPayload = [
+                    'id' => $payload['id'],
+                    'username' => $payload['username'],
+                    'role' => $payload['role']
+                ];
+                $newAccessToken = $authService->generateAccessToken($userPayload);
+                setcookie("access_token", $newAccessToken, time() + $authService->getAccessTokenExpiry(), "/", "", false, true);
+                echo json_encode([
+                    "message" => "Access token refreshed",
+                    "access_token" => $newAccessToken
+                ]);
+            } else {
+                http_response_code(401);
+                echo json_encode(["error" => "Invalid or expired refresh token"]);
+            }
+        } else {
+            http_response_code(401);
+            echo json_encode(["error" => "No refresh token"]);
+        }
+        break;
     case 'POST_DELETE':
         // Logout function
         session_unset();
