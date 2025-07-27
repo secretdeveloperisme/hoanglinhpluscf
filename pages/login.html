@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <title>Login</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../assets/css/base.css">
     <link rel="stylesheet" href="../assets/css/components/login.css">
 </head>
 <body> <!-- partial:index.partial.html -->
@@ -60,7 +61,8 @@
             </div>
         </div>
     </section> 
-    <script>
+    <script type="module">
+        import { showToast } from '/js/common.js';
         const loginForm = document.getElementById('loginForm');
         const errorMessage = document.getElementById('errorMessage');
         
@@ -82,8 +84,10 @@
                 const result = await response.json();
 
                 if (response.ok) {
-                    alert('Login successful!');
-                    window.location.href = '/'; // Example redirection
+                    showToast('Login', 'success', "Login successful!");
+                    setTimeout(() => {
+                        window.location.href = '/'; // Example redirection
+                    }, 2000);
                 } else {
                     errorMessage.textContent = result.error || 'Login failed!';
                 }

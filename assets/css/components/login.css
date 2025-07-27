@@ -87,7 +87,7 @@ section .signin .content
 }
 section .signin .content h2 
 {
-  font-size: 2em;
+  font-size: 3rem;
   color: #0f0;
   text-transform: uppercase;
 }
@@ -114,7 +114,7 @@ section .signin .content .form .inputBox input
   border-radius: 4px;
   color: #fff;
   font-weight: 500;
-  font-size: 1em;
+  font-size: 1.6rem;
 }
 section .signin .content .form .inputBox i 
 {
@@ -125,12 +125,13 @@ section .signin .content .form .inputBox i
   color: #aaa;
   transition: 0.5s;
   pointer-events: none;
+  font-size: 1.4rem;;
 }
 .signin .content .form .inputBox input:focus ~ i,
 .signin .content .form .inputBox input:valid ~ i
 {
   transform: translateY(-7.5px);
-  font-size: 0.8em;
+  font-size: 1.6rem;
   color: #fff;
 }
 .signin .content .form .links 
@@ -156,7 +157,7 @@ section .signin .content .form .inputBox i
   background: #0f0;
   color: #000;
   font-weight: 600;
-  font-size: 1.35em;
+  font-size: 1.6rem;
   letter-spacing: 0.05em;
   cursor: pointer;
 }
