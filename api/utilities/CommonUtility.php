@@ -1,5 +1,6 @@
 <?php
 
+require_once 'JwtUtility.php';
 class CommonUtility
 {
     public static function findExistenceIds($ids, $allIds){
@@ -33,6 +34,14 @@ class CommonUtility
         $data['not_existing'] = $notExistingIds;
         return $data;
        
+    }
+
+    public static function getUserFromTokenCookie(): JwtUser|null {
+        $user = null;
+        if (isset($_COOKIE['access_token']) && !empty($_COOKIE['access_token'])) {
+            $user = JwtUtility::get_instance()->decode($_COOKIE['access_token']);
+        }
+        return $user;
     }
 }
 ?>

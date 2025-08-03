@@ -1,5 +1,29 @@
 const UPLOAD_FILE_API_URL = "/api/files.php";
+const AUTH_API_URL = "/api/auth.php";
 
+class USER_ROLE {
+  static ADMIN = "admin";
+  static USER = "user";
+  static GUEST = "guest";
+  static isAdmin(role){
+    if (role === null || role === undefined) {
+      return false;
+    }
+    if (typeof role !== "string") {
+      return false;
+    }
+    return role.toLowerCase() === USER_ROLE.ADMIN;
+  }
+  static isUser(role){
+    if (role === null || role === undefined) {
+      return false;
+    }
+    if (typeof role !== "string") {
+      return false;
+    }
+    return role.toLowerCase() === USER_ROLE.USER;
+  }
+}
 
 function removeAd(){
     let hostname = window.location.hostname;
@@ -73,6 +97,15 @@ function objectifyForm(formArray) {
   return returnArray;
 }
 
+export function parseJson(rawText) {
+  try {
+    return JSON.parse(rawText);
+  } catch (error) {
+    console.error("Invalid JSON string:", rawText, error);
+    return null;
+  }
+}
+
 function countDuplicateArray(arr){
   const counts = {};
   arr.forEach(function (x) { counts[x.name] = (counts[x.name] || 0) + 1; });
@@ -133,14 +166,21 @@ async function makeHttpRequest(method = 'GET', url, data, onError = () => {}) {
     return;
   }
   try{
-    let response = await fetch(url, {
+    let requestOptions = {
       method,
       headers: {
         "Content-Type": "application/json" 
       },
-      body: JSON.stringify(data)
+    };
+    if(method === 'GET' || method === 'HEAD'){
+      let queryString = new URLSearchParams(data).toString();
+      if (queryString) {
+        url += (url.includes('?') ? '&' : '?') + queryString;
       }
-    );
+    }else{
+      requestOptions.body = JSON.stringify(data);
+    }
+    let response = await fetch(url, requestOptions); ;
     let responseObject = await response.json();
     if(!response.ok){
       onError(responseObject);
@@ -177,6 +217,38 @@ function callUploadFile(file, method = 'POST', url = UPLOAD_FILE_API_URL, async 
   };
   xhr.send(form);
 }
+
+
+export async function getLoginUser() {
+  let verifyResp = await makeHttpRequest('GET', AUTH_API_URL, {}, (err) => {
+    console.error("Error verifying user:", err);
+  });
+  if (verifyResp === null || verifyResp === undefined) {
+    return null;
+  }
+  return verifyResp.data;
+}
+
+async function verifyUserAccess(){
+  let user = await getLoginUser();
+  if (user === null || user === undefined) {
+    return false;
+  }
+  return true;
+}
+
+async function verifyAdminAccess(){
+  let user = await getLoginUser();
+  if (user === null || user === undefined) {
+    return false;
+  }
+
+  if(USER_ROLE.isAdmin(user.role)){
+    return true;
+  }
+  return false;
+}
+
 
 // Calculate reading time in seconds unit for a given text
 export function calculateReadingTime(text) {
@@ -279,4 +351,4 @@ document.addEventListener("DOMContentLoaded", ()=>{
   removeLoader();
 });
 
-export {UPLOAD_FILE_API_URL, objectifyForm, callUploadFile, makeHttpRequest, showToast };
+export {UPLOAD_FILE_API_URL, objectifyForm, callUploadFile, makeHttpRequest, showToast, verifyAdminAccess, verifyUserAccess };

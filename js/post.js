@@ -1,7 +1,27 @@
-import { UPLOAD_FILE_API_URL, objectifyForm, callUploadFile, calculateReadingTime, makeHttpRequest, isEmptyString, showToast } from "./common.js";
+import { UPLOAD_FILE_API_URL, objectifyForm, callUploadFile, calculateReadingTime, makeHttpRequest, isEmptyString, showToast, getLoginUser,verifyUserAccess, parseJson } from "./common.js";
 import { quillOptions, attachments,  addResizeHandleToImages} from "./editor_configurations.js";
 
+
+
 document.addEventListener("DOMContentLoaded", async () => {
+  let user = await getLoginUser();
+  if (!user || !user.user_id) {
+    window.location.href = "/pages/login.html?redirect=" + encodeURIComponent(window.location.href);
+  }
+
+  console.log("User logged in:", user);
+  function checkOwnership(post) {
+    if (user.role === "ADMIN") {
+      return true; 
+    }
+    if (post.author_id !== user.user_id) {
+      console.error(`User ${user.user_id} does not own post ${post.post_id}`);
+      showToast("error", "Access Denied", "You do not have permission to edit this post.");
+      window.location.href = "/pages/login.html?redirect=" + encodeURIComponent(window.location.href);
+      return false;
+    }
+    return true;
+  }
   const POST_API_URL = "/api/posts.php";
   const POST_DETAIL_URL = "/pages/post_detail.html?id=";
   const A_POST_URL = "/api/posts.php?id=";
@@ -151,6 +171,12 @@ document.addEventListener("DOMContentLoaded", async () => {
         console.error(`Failed to get post with id ${postId}`);
         return;
       }
+
+      if(!checkOwnership(post)){
+        showToast("error", "Access Denied", "You do not have permission to edit this post.");
+        window.location.href = "/pages/login.html?redirect=" + encodeURIComponent(window.location.href);
+        return;
+      }
       postTitle.value = post.title;
       postDescription.value = post.description;
       switch (post.post_status) {
@@ -254,13 +280,20 @@ document.addEventListener("DOMContentLoaded", async () => {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(dataObject)
     })
-      .then(response => response.json().then(data => ({ status: response.status, post: data.Post })))
-      .then(({ status, post }) => {
+      .then(response => response.text().then(rawBody => {
+        console.log("Response from server:", rawBody);
+        let jsonResp = parseJson(rawBody);
+        if (jsonResp === null) {
+          throw new Error("Invalid JSON response from server: " + rawBody);
+        }
+        return { status: jsonResp.status, message: jsonResp.message, post: jsonResp.Post }
+      }))
+      .then(({ status, message, post }) => {
         if (status === 200) {
           showToast("success", "Create Post", "Post created successfully!");
           window.open(POST_DETAIL_URL + post.post_id, '_blank').focus();
         } else {
-          showToast("error", "Create Post", "Failed to create post: " + body.message);
+          showToast("error", "Create Post", "Failed to create post: " + message);
         }
       })
       .catch(err => {
@@ -276,14 +309,24 @@ document.addEventListener("DOMContentLoaded", async () => {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(dataObject)
     })
-      .then(response => response.json().then(data => ({ status: response.status, post: data.Post })))
-      .then(({ status, post }) => {
-        if (status === 200) {
+      .then(response => response.text().then(rawBody => {
+        let jsonResp = parseJson(rawBody);
+        if (jsonResp === null) {
+          throw new Error("Invalid JSON response from server: " + rawBody);
+        }
+        return { status: jsonResp.status, message: jsonResp.message, post: jsonResp.Post }
+      }))
+      .then(({ status, message, post }) => {
+        if (status == 200) {
           showToast("success", "Update Post", "Post updated successfully!");
           resetPostForm();
           loadPostData(postId);
-        } else {
-          showToast('error', "Update Post", "Failed to update post: " + body.message);
+        } 
+        else if(status === 403) {
+          showToast('error', "Update Post", "You do not have permission to update this post.");
+        }
+        else {
+          showToast('error', "Update Post", "Failed to update post: " + message);
         }
       })
       .catch(err => {

@@ -1,5 +1,6 @@
 <?php
 require_once 'connect_db.php';
+require_once 'utilities/HttpUtility.php';
 require_once 'services/AuthService.php';
 session_start();
 
@@ -45,20 +46,22 @@ switch ($method_action) {
                 $_SESSION['user_id'] = $user['id'];
                 $_SESSION['role'] = $user['role'];
 
-                echo json_encode([
+                respond_to_client(200, message: "Login successful", data: [
                     "message" => "Login successful",
                     "access_token" => $accessToken,
                     "refresh_token" => $refreshToken,
                     "user_id" => $user['id'],
                     "role" => $user['role']
                 ]);
+                exit;
+                
             } else {
-                http_response_code(401);
-                echo json_encode(["error" => "Invalid credentials"]);
+                respond_to_client(401, message: "Invalid credentials");
+                exit;
             }
         } else {
-            http_response_code(401);
-            echo json_encode(["error" => "Invalid credentials"]);
+            respond_to_client(401, message: "Invalid credentials");
+            exit;
         }
         break;
 
@@ -66,21 +69,21 @@ switch ($method_action) {
         // Authenticate using access token from cookie and return current user information
         if (isset($_COOKIE['access_token'])) {
             $accessToken = $_COOKIE['access_token'];
-            $payload = $authService->verifyToken($accessToken);
-            if ($payload !== false && isset($payload['id']) && isset($payload['role'])) {
-                echo json_encode([
-                    "message" => "Authenticated",
-                    "user_id" => $payload['id'],
-                    "role" => $payload['role'],
+            $jwtUser = $authService->verifyToken($accessToken);
+            if ($jwtUser !== false && isset($jwtUser->id) && isset($jwtUser->role)) {
+                respond_to_client(200, "Authentication successful", data: [
+                    "user_id" => $jwtUser->id,
+                    "role" => $jwtUser->role,
                     "access_token" => $accessToken
                 ]);
+                exit;
             } else {
-                http_response_code(401);
-                echo json_encode(["error" => "Invalid or expired token"]);
+                respond_to_client(401, message: "Invalid or expired access token");
+                exit;
             }
         } else {
-            http_response_code(401);
-            echo json_encode(["error" => "No access token"]);
+            respond_to_client(401, message: "No access token found");
+            exit;
         }
         break;
 
@@ -103,24 +106,22 @@ switch ($method_action) {
                     "access_token" => $newAccessToken
                 ]);
             } else {
-                http_response_code(401);
-                echo json_encode(["error" => "Invalid or expired refresh token"]);
+                respond_to_client(401, message: "Invalid or expired refresh token");
+                exit;
             }
         } else {
-            http_response_code(401);
-            echo json_encode(["error" => "No refresh token"]);
+            respond_to_client(401, message: "No refresh token found");
         }
         break;
     case 'POST_DELETE':
         // Logout function
         session_unset();
         session_destroy();
-        echo json_encode(["message" => "Logout successful"]);
+        respond_to_client(200, "Logout successful");
         break;
 
     default:
-        http_response_code(405);
-        echo json_encode(["error" => "Method not allowed"]);
+        respond_to_client(405, message: "Method not allowed");
         break;
 }
 

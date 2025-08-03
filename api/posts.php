@@ -14,6 +14,7 @@ require_once 'utilities/Logger.php';
 require_once 'utilities/CommonUtility.php';
 require_once 'utilities/HttpUtility.php';
 require_once 'utilities/ConfigUtility.php';
+require_once 'utilities/JwtUtility.php';
 
 $logger = Logger::getInstance();
 
@@ -50,7 +51,7 @@ function getPostAttachments($connection, $post_id) {
 }
 
 function getPostById($connection, $post_id) {
-    $stmt = $connection->prepare("SELECT * FROM posts WHERE post_id = ? AND deleted_at IS NULL");
+    $stmt = $connection->prepare("SELECT * FROM posts WHERE post_id = ?");
     $stmt->bind_param("i", $post_id);
     $stmt->execute();
     $result = $stmt->get_result();
@@ -88,6 +89,33 @@ function isTagsChanged($connection, $post_id, $new_tags) {
     }
     return false;
 }
+
+
+function checkUserAuthentication($user, $method_action) {
+    if ($method_action === 'GET_DEFAULT') {
+        return true;
+    }
+    if ($user == null) {
+        return false;
+    }
+    return true;
+}
+
+function checkOwnerPermission($user, $post) {
+    if ($user->id !== $post->author_id) {
+        respond_to_client(403, "You are not the owner of this post");
+        exit;
+    }
+}
+$user = CommonUtility::getUserFromTokenCookie();
+
+$logger->debug("User from token cookie: ".json_encode($user));
+
+if(!checkUserAuthentication($user, $method_action)) {
+    respond_to_client(401, "Unauthenticated: Please login to access this resource");
+    exit;
+}
+
 
 switch ($method_action) {
     case 'GET_DEFAULT': // GET METHOD
@@ -208,7 +236,7 @@ switch ($method_action) {
         $description = $data['description'] ?? null;
         $content = $data['content'];
         $cover_image = $data['cover_image'] ?? null;
-        $author_id = $data['author_id'] ?? 1;
+        $author_id = $user->id;
         $post_status_str = $data['post_status'] ?? 'DRAFT';
         $reading_time = $data['reading_time'] ?? 0;
 
@@ -364,6 +392,7 @@ switch ($method_action) {
             respond_to_client(404, "Post not found");
             exit;
         }
+        checkOwnerPermission($user, $post); // exit if user is not the owner of the post
         $orginal_post_map = $post->get_object();
         $data = json_decode(file_get_contents('php://input'), true);
         $fields = [];
@@ -573,7 +602,7 @@ switch ($method_action) {
         $connection->commit();
         $connection->close();
 
-        echo json_encode(["message" => "Post updated", "Post" => $updated_post]);
+        respond_to_client(200, "Post updated successfully", ["Post" => $updated_post]);
         break;
     case 'POST_DELETE': // DELETE METHOD
         // Delete a post: soft delete by default, hard delete if isHard=true
@@ -583,6 +612,8 @@ switch ($method_action) {
             exit;
         }
         $post_id = intval($_GET['id']);
+        $post = getPostById($connection, $post_id);
+        checkOwnerPermission($user, $post); // exit if user is not the owner of the post
         $is_hard = isset($_GET['isHard']) && ($_GET['isHard'] === 'true' || $_GET['isHard'] === '1');
 
         if ($is_hard) {

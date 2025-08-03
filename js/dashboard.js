@@ -1,10 +1,16 @@
-import { makeHttpRequest, showToast } from "./common.js"
+import { makeHttpRequest, showToast, verifyAdminAccess } from "./common.js"
 import { TableRenderer } from "../assets/libs/table_renderer_v1.0.0.es.js";
 const USERS_API_URL = "/api/users.php";
 const POSTS_API_URL = "/api/posts.php";
 const QUOTES_API_URL = "/api/quotes.php";
 
-document.addEventListener('DOMContentLoaded', () => {
+
+document.addEventListener('DOMContentLoaded', async () => {
+    
+    if(await verifyAdminAccess() === false) {
+        window.location.href = "/pages/login.html";
+    }
+
     const menuToggle = document.getElementById('menu-toggle');
     const sidebar = document.getElementById('sidebar');
     const sidebarLinks = document.querySelectorAll('.sidebar-nav a');

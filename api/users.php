@@ -3,6 +3,7 @@ require_once 'connect_db.php';
 require_once 'entities/User.php';
 require_once 'utilities/HttpUtility.php';
 require_once 'utilities/ConfigUtility.php';
+require_once 'utilities/CommonUtility.php';
 
 
 
@@ -15,11 +16,31 @@ $method = $_SERVER['REQUEST_METHOD'];
 $action = isset($_GET['action'])?$_GET['action']:'default';
 $method_action = strtoupper($method.'_'.$action);
 
+function checkUserOwnerPermission($user, $user_id){
+    if($user === null) {
+        return false;
+    }
+    if($user->id !== $user_id && $user->role !== 'ADMIN') {
+        return false;
+    }
+    return true;
+}
+
+function isAdmin($user) {
+    return $user && $user->role === 'ADMIN';
+}
+
+$user = CommonUtility::getUserFromTokenCookie();
+
 switch ($method_action) {
     case 'GET_DEFAULT':
         if (isset($_GET['id'])) {
             // Get a single user by ID
             $id = intval($_GET['id']);
+            if (!checkUserOwnerPermission($user, $id)) {
+                respond_to_client(403, "Forbidden: You do not have permission to access this user");
+                exit;
+            }
             $stmt = $connection->prepare("SELECT id, username, role, email FROM users WHERE id = ?");
             $stmt->bind_param("i", $id);
             $stmt->execute();
@@ -32,6 +53,10 @@ switch ($method_action) {
             echo json_encode($user);
         } else {
             // Get all users with pagination
+            if (!isAdmin($user)) {
+                respond_to_client(403, "Forbidden: You do not have permission to access this resource");
+                exit;
+            }
             $default_page_start = ConfigUtility::get("defaultPageStart", 1);
             $default_page_size = ConfigUtility::get("defaultPageSize", 10);
             $page = isset($_GET['page']) ? max(1, intval($_GET['page'])) : $default_page_start;
@@ -79,6 +104,10 @@ switch ($method_action) {
         // Update an existing user
         if (isset($_GET['id'])) {
             $id = intval($_GET['id']);
+            if (!checkUserOwnerPermission($user, $id)) {
+                respond_to_client(403, "Forbidden: You do not have permission to update this user");
+                exit;
+            }
             $data = json_decode(file_get_contents("php://input"), true);
             $stmt = $connection->prepare("UPDATE email = ? WHERE id = ?");
             $stmt->bind_param("si", $data['email'], $id);
@@ -98,6 +127,10 @@ switch ($method_action) {
         // Delete a user
         if (isset($_GET['id'])) {
             $id = intval($_GET['id']);
+            if (!checkUserOwnerPermission($user, $id)) {
+                respond_to_client(403, "Forbidden: You do not have permission to delete this user");
+                exit;
+            }
             $stmt = $connection->prepare("DELETE FROM users WHERE id = ?");
             $stmt->bind_param("i", $id);
             if ($stmt->execute()) {

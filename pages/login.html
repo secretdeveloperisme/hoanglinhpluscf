@@ -65,6 +65,7 @@
         import { showToast } from '/js/common.js';
         const loginForm = document.getElementById('loginForm');
         const errorMessage = document.getElementById('errorMessage');
+        let redirectUrl = new URLSearchParams(window.location.search).get('redirect');
         
         loginForm.addEventListener('submit', async (e) => {
             e.preventDefault();
@@ -86,7 +87,11 @@
                 if (response.ok) {
                     showToast('Login', 'success', "Login successful!");
                     setTimeout(() => {
-                        window.location.href = '/'; // Example redirection
+                        if (redirectUrl) {
+                            window.location.href = redirectUrl;
+                        } else {    
+                            window.location.href = '/'; // Redirect to home page
+                        }
                     }, 2000);
                 } else {
                     errorMessage.textContent = result.error || 'Login failed!';

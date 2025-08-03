@@ -2,6 +2,8 @@
 
 require_once __DIR__. "/../utilities/ConfigUtility.php";
 
+require_once __DIR__.'/../dtos/JwtUser.php';
+
 
 class JWTUtility
 {
@@ -44,7 +46,7 @@ class JWTUtility
      * Decode and verify a JWT token.
      * Returns the payload as an array if valid, or false if invalid.
      */
-    public function decode(string $token): array|false
+    public function decode(string $token): JwtUser|false
     {
         $parts = explode('.', $token);
         if (count($parts) !== 3) {
@@ -63,12 +65,13 @@ class JWTUtility
         $payload_json = $this->base64urlDecode($payload_encoded);
         $payload = json_decode($payload_json, true);
 
+
         // Optional: Check expiry
         if (isset($payload['exp']) && time() >= $payload['exp']) {
             return false; // Token expired
         }
 
-        return $payload;
+        return new JwtUser($payload);
     }
 
     /**
