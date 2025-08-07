@@ -1,6 +1,6 @@
 <?php
 
-require_once __DIR__. "/../utilities/ConfigUtility.php";
+require_once __DIR__ . '/ConfigUtility.php';
 
 require_once __DIR__.'/../dtos/JwtUser.php';
 
@@ -94,3 +94,4 @@ class JWTUtility
         return base64_decode(strtr($data, '-_', '+/'));
     }
 }
+?>

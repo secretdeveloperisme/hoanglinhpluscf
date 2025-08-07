@@ -1,9 +1,9 @@
 <?php
-require_once 'connect_db.php';
-require_once 'entities/User.php';
-require_once 'utilities/HttpUtility.php';
-require_once 'utilities/ConfigUtility.php';
-require_once 'utilities/CommonUtility.php';
+require_once __DIR__.'/connect_db.php';
+require_once __DIR__.'/entities/User.php';
+require_once __DIR__.'/utilities/HttpUtility.php';
+require_once __DIR__.'/utilities/ConfigUtility.php';
+require_once __DIR__.'/utilities/CommonUtility.php';
 
 
 

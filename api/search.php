@@ -1,10 +1,10 @@
 <?php
 
-require_once 'connect_db.php';
-require_once 'entities/Post.php';
-require_once 'entities/Tag.php';
-require_once 'utilities/ConfigUtility.php';
-require_once 'utilities/Logger.php';
+require_once __DIR__.'/connect_db.php';
+require_once __DIR__.'/entities/Post.php';
+require_once __DIR__.'/entities/Tag.php';
+require_once __DIR__.'/utilities/ConfigUtility.php';
+require_once __DIR__.'/utilities/Logger.php';
 
 $logger = Logger::getInstance();
 header('Content-Type: application/json');

@@ -1,8 +1,8 @@
 
 <?php
-require_once "connect_db.php";
-require_once "entities/Quote.php";
-require_once "utilities/HttpUtility.php";
+require_once __DIR__."/connect_db.php";
+require_once __DIR__."/entities/Quote.php";
+require_once __DIR__."/utilities/HttpUtility.php";
 header("Content-Type: application/json");
 
 $connection = getMariaDBConnection();

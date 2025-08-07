@@ -1,6 +1,6 @@
 <?php
 
-require_once 'JwtUtility.php';
+require_once __DIR__ .'/JWTUtility.php';
 class CommonUtility
 {
     public static function findExistenceIds($ids, $allIds){

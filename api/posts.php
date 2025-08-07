@@ -2,19 +2,19 @@
 
 use Api\Constants\PostStatus;
 
-require_once 'constants/PostStatus.php';
-require_once 'utilities/PostUtility.php';
-require_once 'connect_db.php';
-require_once 'entities/Post.php';
-require_once 'entities/Tag.php';
-require_once 'entities/Attachment.php';
-require_once 'services/FileService.php';
-require_once 'services/PostService.php';
-require_once 'utilities/Logger.php';
-require_once 'utilities/CommonUtility.php';
-require_once 'utilities/HttpUtility.php';
-require_once 'utilities/ConfigUtility.php';
-require_once 'utilities/JwtUtility.php';
+require_once __DIR__.'/constants/PostStatus.php';
+require_once __DIR__.'/utilities/PostUtility.php';
+require_once __DIR__.'/connect_db.php';
+require_once __DIR__.'/entities/Post.php';
+require_once __DIR__.'/entities/Tag.php';
+require_once __DIR__.'/entities/Attachment.php';
+require_once __DIR__.'/services/FileService.php';
+require_once __DIR__.'/services/PostService.php';
+require_once __DIR__.'/utilities/Logger.php';
+require_once __DIR__.'/utilities/CommonUtility.php';
+require_once __DIR__.'/utilities/HttpUtility.php';
+require_once __DIR__.'/utilities/ConfigUtility.php';
+require_once __DIR__.'/utilities/JWTUtility.php';
 
 $logger = Logger::getInstance();
 

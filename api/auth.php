@@ -1,7 +1,7 @@
 <?php
-require_once 'connect_db.php';
-require_once 'utilities/HttpUtility.php';
-require_once 'services/AuthService.php';
+require_once __DIR__.'/connect_db.php';
+require_once __DIR__.'/utilities/HttpUtility.php';
+require_once __DIR__.'/services/AuthService.php';
 session_start();
 
 header("Content-Type: application/json");
