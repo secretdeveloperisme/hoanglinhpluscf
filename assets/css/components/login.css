@@ -103,18 +103,30 @@ section .signin .content .form .inputBox
   position: relative;
   width: 100%;
 }
-section .signin .content .form .inputBox input 
-{
+
+.form-control-input{
   position: relative;
   width: 100%;
   background: #333;
   border: none;
   outline: none;
-  padding: 25px 10px 7.5px;
   border-radius: 4px;
   color: #fff;
   font-weight: 500;
   font-size: 1.6rem;
+}
+
+.inputBox input
+{
+  padding: 25px 10px 7.5px
+}
+
+.inputBox button{
+  padding: 10px 0px;
+}
+
+#errorMessage, #registerErrorMessage{
+  font-size: 1.4rem;
 }
 section .signin .content .form .inputBox i 
 {
@@ -165,6 +177,37 @@ input[type="submit"]:active
 {
   opacity: 0.6;
 }
+
+.fade-in {
+    animation: fadeIn 0.5s ease-in-out forwards;
+}
+
+.fade-out {
+    animation: fadeOut 0.5s ease-in-out forwards;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeOut {
+    from {
+        opacity: 1;
+        transform: translateY(0);
+    }
+    to {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+}
+
 @media (max-width: 900px)
 {
   section span 
@@ -179,5 +222,12 @@ input[type="submit"]:active
   {
     width: calc(20vw - 2px);
     height: calc(20vw - 2px);
+  }
+}
+
+@media (max-width: 480px) {
+  section .signin{
+    width: calc(100% - 20px);
+    padding: 20px;
   }
 }
