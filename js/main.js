@@ -8,8 +8,9 @@ const animationDuration = 500; // Duration for animations in milliseconds
  * Section 1: Navigation bar
  */
 
-
+let header = document.querySelector(".header");
 let navbar = document.querySelector(".header__nav");
+let navBarCheckbox = document.querySelector("#cbx-nav-bar");
 let sticky = navbar.offsetTop;
 
 function registerStickyNavBarEvent() {
@@ -17,14 +18,67 @@ function registerStickyNavBarEvent() {
     navbar.classList.add("sticky");
   } else {
     navbar.classList.remove("sticky");
+    header.style.paddingBottom = "0px";
   }
 }
+
+navBarCheckbox.addEventListener('change', function () {
+  if (!this.checked) {
+    enableScroll();
+    header.style.display = "block";
+  } else {
+    disableScroll();
+    header.style.display = "none";
+  }
+});
 
 window.onscroll = registerStickyNavBarEvent;
 
 /**
+ * Disable/Enable scroll functions
+ */
+// left: 37, up: 38, right: 39, down: 40,
+// spacebar: 32, pageup: 33, pagedown: 34, end: 35, home: 36
+const keys = {37: 1, 38: 1, 39: 1, 40: 1};
+
+function preventDefault(e) {
+  e.preventDefault();
+}
+
+function preventDefaultForScrollKeys(e) {
+  if (keys[e.keyCode]) {
+    preventDefault(e);
+    return false;
+  }
+}
+// modern Chrome requires { passive: false } when adding event
+let supportsPassive = false;
+try {
+  window.addEventListener("test", null, Object.defineProperty({}, 'passive', {
+    get: function () { supportsPassive = true; }
+  }));
+} catch(e) {}
+
+let wheelOpt = supportsPassive ? { passive: false } : false;
+let wheelEvent = 'onwheel' in document.createElement('div') ? 'wheel' : 'mousewheel';
+
+function disableScroll() {
+  window.addEventListener('DOMMouseScroll', preventDefault, false); // older FF
+  window.addEventListener(wheelEvent, preventDefault, wheelOpt); // modern desktop
+  window.addEventListener('touchmove', preventDefault, wheelOpt); // mobile
+  window.addEventListener('keydown', preventDefaultForScrollKeys, false);
+}
+
+function enableScroll() {
+  window.removeEventListener('DOMMouseScroll', preventDefault, false);
+  window.removeEventListener(wheelEvent, preventDefault, wheelOpt);
+  window.removeEventListener('touchmove', preventDefault, wheelOpt);
+  window.removeEventListener('keydown', preventDefaultForScrollKeys, false);
+}
+
+/**
  * Section 2: Quote of the day
- */ 
+ */
 
 const QUOTES_API_URL = "api/quotes.php";
 
@@ -52,7 +106,7 @@ fetch(`${QUOTES_API_URL}/?type=random`)
 
 /**
  * Section 3: Preview picture modal
- */ 
+ */
 
 //display preview picture
 let modal = document.getElementById("modal");
@@ -109,7 +163,7 @@ btnCloseModal.onclick = function () {
 
 /**
  * Section 4: Gallery & Carousel
- */ 
+ */
 
 const CAROUSEL_TIMER = 4000;
 function createCarouselItem(imgSrc, alt, idx, orientation = 'landscape') {
@@ -188,7 +242,7 @@ btnPrevImg.addEventListener("click", () => plusDiv(-1));
 
 /**
  * Section 5:Get Posts
-*/ 
+*/
 
 import { fetchPostData, createPostElement } from './common_post.js';
 const postsContainer = document.getElementById('postsContainer');
