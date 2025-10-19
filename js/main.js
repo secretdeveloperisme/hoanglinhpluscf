@@ -160,85 +160,13 @@ btnCloseModal.onclick = function () {
   }, animationDuration);
 }
 
-
 /**
- * Section 4: Gallery & Carousel
+ * Section 4: Gallery Images Module
  */
 
-const CAROUSEL_TIMER = 4000;
-function createCarouselItem(imgSrc, alt, idx, orientation = 'landscape') {
-  let item = document.createElement('div');
-  item.className = 'slideshow_container__item hl-position-relative';
-  item.setAttribute('data-index', idx);
-  item.style.display = 'none';
-  item.innerHTML = `
-      <div class="slideshow-container_image ${orientation}"
-        style="background-image: url(${imgSrc})"></div>
-      <h2 class="hl-center-bottom hl-title--effect caption-mobile">${alt}</h2>`
-  return item;
-}
+import { initializeGalleryImagesModule } from './gallery_images.js';
 
-const slideshowContainer = document.querySelector('#slideshowContainer');
-const galleryContainer = document.querySelector('#gallerryContainer');
-const galleryImgs = galleryContainer.children;
-const btnNextImg = document.querySelector("#btnNextImg");
-const btnPrevImg = document.querySelector("#btnPrevImg");
-
-
-for (let i = 0; i < galleryImgs.length; i++) {
-  let img = galleryImgs[i];
-  img.setAttribute('data-index', i);
-  let orientation = img.getAttribute('data-orientation');
-  let carouselItem = createCarouselItem(img.src, img.alt, i, orientation);
-  slideshowContainer.append(carouselItem);
-}
-
-const carouselItems = slideshowContainer.querySelectorAll('.slideshow_container__item');
-let currentIndex = 1;
-
-function showCarouselAt(idx) {
-  for (let i = 0; i < carouselItems.length; i++) {
-    carouselItems[i].style.display = 'none';
-  }
-  for (let i = 0; i < galleryImgs.length; i++) {
-    galleryImgs[i].classList.remove('active-gallery-img');
-  }
-  if (carouselItems[idx]) carouselItems[idx].style.display = 'block';
-  if (galleryImgs[idx]) galleryImgs[idx].classList.add('active-gallery-img');
-  currentIndex = idx;
-}
-
-
-function plusDiv(n) {
-  let newIndex = currentIndex + n;
-  if (newIndex >= carouselItems.length) newIndex = 0;
-  if (newIndex < 0) newIndex = carouselItems.length - 1;
-  showCarouselAt(newIndex);
-}
-
-// Gallery click: jump carousel
-for (let i = 0; i < galleryImgs.length; i++) {
-  galleryImgs[i].addEventListener('click', function () {
-    let index = parseInt(this.getAttribute('data-index'));
-    showCarouselAt(index);
-  });
-}
-
-showCarouselAt(0);
-
-let carouselInterval = setInterval(() => {
-  plusDiv(1);
-}, CAROUSEL_TIMER);
-
-
-for (let i = 0; i < carouselItems.length; i++) {
-  carouselItems[i].addEventListener('mouseenter', () => clearInterval(carouselInterval));
-  carouselItems[i].addEventListener('mouseleave', () => {
-    carouselInterval = setInterval(() => plusDiv(1), CAROUSEL_TIMER);
-  });
-}
-btnNextImg.addEventListener("click", () => plusDiv(1));
-btnPrevImg.addEventListener("click", () => plusDiv(-1));
+initializeGalleryImagesModule();
 
 /**
  * Section 5:Get Posts
