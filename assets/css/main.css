@@ -32,7 +32,7 @@
     padding: 0 5px;
 }
 .header__home-logo a i{
-    font-size: 32px;    
+    font-size: 32px;
 }
 .header__nav{
     background-color:gray;
@@ -64,6 +64,7 @@
 
 .header__nav-item {
     border-left: 1px solid var(--black-color);
+    height: 100%;
 }
 .header__nav-list--mobile{
     padding: 10px 15px;
@@ -112,9 +113,13 @@
     clear:both;
     display: table;
 }
+
+.header__nav-items{
+    height: 100%;
+}
+
 .header__nav-list li{
     float: left;
-    display: block;
     border-left:1px solid var(--black-color);
 }
 
@@ -124,14 +129,15 @@
 
 .header__nav-list li:nth-last-child(1){
     float: right;
-    display: block;
     border-left:1px solid var(--black-color);
     border-right: none;
 }
 
 .header__nav-list a{
-    display: block;
-    padding: 17px 20px;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    padding: 8px 16px;
     text-decoration: none;
     color: var(--white-color)
 }
@@ -141,7 +147,7 @@
 }
 .dropdown{
     position: relative;
-   
+
 
 }
 
@@ -178,7 +184,7 @@
 }
 
 .header__nav-btn-bars{
-    display: none; 
+    display: none;
     margin-left: auto;
     z-index: 1;
 }
@@ -264,7 +270,7 @@
 .container .container__column-right{
     grid-column: 9/span 4;
     grid-row: 1/span 2;
-    
+
 }
 .container__column-left, .container__column-right{
     display: flex;
@@ -360,12 +366,12 @@
     margin-top: 10px;
     border-radius: 2px;
     width: 200px;
-    
+
     border-radius: 100%;
     overflow: hidden;
     color: black;
     box-shadow: 0.5rem 0.5rem 0.5rem rgb(182, 181, 181),-0.5rem -0.5rem 0.5rem rgb(182, 181, 181);
-    
+
     border: 5px solid green;
 }
 
@@ -564,7 +570,7 @@
     list-style-type: none;
     display: flex;
     flex-wrap: wrap;
-    justify-content: flex-start;    
+    justify-content: flex-start;
 }
 .hl-ul-customize--flex li{
     padding: 0.5rem;
@@ -592,7 +598,7 @@
 }
 .slideshow_container__item{
     height: 100%;
-    display: none;  
+    display: none;
     animation: fadeIn 0.5s linear ;
 }
 .slideshow-container_image{
@@ -741,7 +747,7 @@
     position: relative;
     display: flex;
     flex-direction: column;
-    
+
 }
 .experience-item {
     display: flex;
@@ -965,9 +971,9 @@
     border-radius: 0 5px 5px 0;
 }
 .footer__container{
-    background: #a8ff78;  
-    background: -webkit-linear-gradient(to right, #78ffd6, #a8ff78); 
-    background: linear-gradient(to right, #78ffd6, #a8ff78); 
+    background: #a8ff78;
+    background: -webkit-linear-gradient(to right, #78ffd6, #a8ff78);
+    background: linear-gradient(to right, #78ffd6, #a8ff78);
     width: 100%;
     padding: 1rem 2rem;
 }
@@ -1121,5 +1127,5 @@ footer ul a {
     .container{
         padding: 1rem;
     }
-    
+
 }

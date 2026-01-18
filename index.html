@@ -1,711 +1,812 @@
 <html lang="en">
+
 <head>
-   <title>HoangLinhPlus</title>
-   <meta name="author" content="Linh Nguyen">
-   <meta name="copyright" content="Hoang Linh Plus">
-   <meta name="keywords" content="HLP,hoanglinhplus,plus">
-   <meta name="description" content="Hoang Linh Plus's Portfolio">
-   <meta name="viewport" content="initial-scale=1.0">
-   <meta charset="UTF-8">
-   <link rel="preconnect" href="https://fonts.gstatic.com">
-   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,700&display=swap"
-      rel="stylesheet">
-   <link rel="preconnect" href="https://rsms.me/">
-   <link rel="stylesheet" href="https://rsms.me/inter/inter.css">
-   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
-   <link rel="stylesheet" href="assets/css/base.css">
-   <link rel="stylesheet" href="assets/css/grid.css">
-   <link rel="stylesheet" href="assets/css/main.css">
-   <link rel="stylesheet" href="assets/css/common_post.css">
-   <link rel="icon" href="assets/icons/hlp_icon.png">
-   <script type="module" src="js/common.js"></script>
-   <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/js/all.min.js"></script>
+	<title>HoangLinhPlus</title>
+	<meta name="author" content="Linh Nguyen">
+	<meta name="copyright" content="Hoang Linh Plus">
+	<meta name="keywords" content="HLP,hoanglinhplus,plus">
+	<meta name="description" content="Hoang Linh Plus's Portfolio">
+	<meta name="viewport" content="initial-scale=1.0">
+	<meta charset="UTF-8">
+	<link rel="preconnect" href="https://fonts.gstatic.com">
+	<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,700&display=swap"
+		rel="stylesheet">
+	<link rel="preconnect" href="https://rsms.me/">
+	<link rel="stylesheet" href="https://rsms.me/inter/inter.css">
+	<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+	<link rel="stylesheet" href="assets/css/base.css">
+	<link rel="stylesheet" href="assets/css/grid.css">
+	<link rel="stylesheet" href="assets/css/main.css">
+	<link rel="stylesheet" href="assets/css/common_post.css">
+	<link rel="icon" href="assets/icons/hlp_icon.png">
+	<script type="module" src="js/common.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/js/all.min.js"></script>
 </head>
+
 <body>
-   <div class="main">
-      <header class="header">
-         <div class="header__title">
-            <h1>Hoang Linh Plus</h1>
-            <p>welcome to hoanglinhplus website</p>
-         </div>
-      </header>
-      <nav class="header__nav">
-         <input type="checkbox" id="cbx-nav-bar" hidden>
-         <div class="header__home">
-            <a class="header__home-logo" href="/">
-               <img src="assets/icons/HLP_LOGO.svg" alt="hoanglinhplus logo" width="50" height="50">
-               <h1>LinhPlus</h1>
-            </a>
-         </div>
-         <ul class="header__nav-list header__nav-list--pc">
-            <li class="header__nav-items"><a href="#about">About</a></li>
-            <li class="header__nav-items"><a href="#quote">Quote</a></li>
-            <li class="header__nav-items"><a href="#posts">Posts</a></li>
-            <li class="header__nav-items"><a href="#projects">Projects</a></li>
-            <li class="header__nav-items"><a href="#experiences">Experience</a></li>
-            <li class="header__nav-items dropdown">
-               <div class="dropdown-btn cursor-pointer">Blogs</div>
-               <div class="dropdown-content posts">
-                  <a href="pages/posts.html" class="hl-center-text">
-                     Read Posts
-                  </a>
-                  <a href="pages/create_post.html" class="hl-center-text">
-                     Create Post
-                  </a>
-               </div>
-            </li>
-            <li class="header__nav-items dropdown">
-               <div class="dropdown-btn cursor-pointer">My Collections</div>
-               <div class="dropdown-content projects">
-                  <a href="pages/dashboard.html" class="hl-center-text">Dashboard</a>
-                  <a href="pages/quote.php" class="hl-center-text">Quotes</a>
-                  <a href="upload/" class="hl-center-text">Upload</a>
-                  <a href="HoangLinhSchedule/schedule.html " class="hl-center-text">Schedule</a>
-                  <div class="dropdown">
-                     <div class="dropdown-btn cursor-pointer hl-center-text">ShopPlus</div>
-                     <div class="dropdown-content dropdown-content__right">
-                        <a href="ShopPlus_Customer/" class="hl-center-text">ShopPlus Customer</a>
-                        <a href="ShopPlus_Admin/" class="hl-center-text">ShopPlus Admin</a>
-                     </div>
-                  </div>
-               </div>
-            </li>
-            <li class="header__nav-items"><a href="#contact">Contact</a></li>
-            <li class="header__nav-items header__nav_items-right dropdown dropdown--right">
-               <div class="dropdown-btn btn-more cursor-pointer">More</div>
-               <div class="dropdown-content">
-                  <a class="hl-center-text"
-                     target="_blank"
-                     href="https://secretdeveloperisme.github.io/Curriculum_Vitae/HoangLinhPlusCV.html">My CV</a>
-                  <a class="hl-center-text" href="pages/login.html">Login</a>
-               </div>
-            </li>
-         </ul>
-         <label class="header__nav-btn-bars" for="cbx-nav-bar">
-            <div class="bars-icon">
-               <div class="bar-1"></div>
-               <div class="bar-2"></div>
-               <div class="bar-3"></div>
-            </div>
-         </label>
-         <label class="header__nav-overlay" for="cbx-nav-bar"></label>
-         <ul class="header__nav-list--mobile">
-            <li class="header__home-logo">
-               <a class="header__home-logo">
-                  <i class="fas fa-code hl-color-text"></i>
-                  <h1 class="hl-color-text">LinhPlus</h1>
-               </a>
-            </li>
-            <li class="header__nav-mobile-item">
-               <div class="header-nav-mobile-item__label">Sections</div>
-               <div class="header-nav-mobile__sub-item">
-                  <a href="#about" class="hl-center-text">About</a>
-                  <a href="#quote" class="hl-center-text">Quote</a>
-                  <a href="#posts" class="hl-center-text">Posts</a>
-                  <a href="#projects" class="hl-center-text">Projects</a>
-                  <a href="#experiences" class="hl-center-text">Experience</a>
-                  <a href="#contact" class="hl-center-text">Contact</a>
-               </div>
-            </li>
+	<div class="main">
+		<header class="header">
+			<div class="header__title">
+				<h1>Hoang Linh Plus</h1>
+				<p>welcome to hoanglinhplus website</p>
+			</div>
+		</header>
+		<nav class="header__nav">
+			<input type="checkbox" id="cbx-nav-bar" hidden>
+			<div class="header__home">
+				<a class="header__home-logo" href="/">
+					<img src="assets/icons/HLP_LOGO.svg" alt="hoanglinhplus logo" width="50" height="50">
+					<h1>LinhPlus</h1>
+				</a>
+			</div>
+			<ul class="header__nav-list header__nav-list--pc">
+				<li class="header__nav-items"><a href="#about">About</a></li>
+				<li class="header__nav-items"><a href="#quote">Quote</a></li>
+				<li class="header__nav-items"><a href="#posts">Posts</a></li>
+				<li class="header__nav-items"><a href="#projects">Projects</a></li>
+				<li class="header__nav-items"><a href="#experiences">Experience</a></li>
+				<li class="header__nav-items dropdown">
+					<div class="dropdown-btn cursor-pointer">Blogs</div>
+					<div class="dropdown-content posts">
+						<a href="pages/posts.html" class="hl-center-text">
+							Read Posts
+						</a>
+						<a href="pages/create_post.html" class="hl-center-text">
+							Create Post
+						</a>
+					</div>
+				</li>
+				<li class="header__nav-items dropdown">
+					<div class="dropdown-btn cursor-pointer">My Collections</div>
+					<div class="dropdown-content projects">
+						<a href="pages/dashboard.html" class="hl-center-text">Dashboard</a>
+						<a href="pages/quote.php" class="hl-center-text">Quotes</a>
+						<a href="upload/" class="hl-center-text">Upload</a>
+						<a href="HoangLinhSchedule/schedule.html " class="hl-center-text">Schedule</a>
+						<div class="dropdown">
+							<div class="dropdown-btn cursor-pointer hl-center-text">ShopPlus</div>
+							<div class="dropdown-content dropdown-content__right">
+								<a href="ShopPlus_Customer/" class="hl-center-text">ShopPlus Customer</a>
+								<a href="ShopPlus_Admin/" class="hl-center-text">ShopPlus Admin</a>
+							</div>
+						</div>
+					</div>
+				</li>
+				<li class="header__nav-items"><a href="#contact">Contact</a></li>
+				<li class="header__nav-items header__nav_items-right flex-row">
+					<a href="https://github.com/secretdeveloperisme" class="hl-center-text">
+						<img src="/assets/icons/github.svg" class="img-x32">
+					</a>
+					<div class="header-more-wrapper dropdown dropdown--right">
+						<div class="dropdown-btn btn-more cursor-pointer">More</div>
+						<div class="dropdown-content">
+							<a class="hl-center-text" target="_blank"
+								href="https://secretdeveloperisme.github.io/Curriculum_Vitae/HoangLinhPlusCV.html">My
+								CV</a>
+							<a class="hl-center-text" href="pages/login.html">Login</a>
+						</div>
+					</div>
+				</li>
+			</ul>
+			<label class="header__nav-btn-bars" for="cbx-nav-bar">
+				<div class="bars-icon">
+					<div class="bar-1"></div>
+					<div class="bar-2"></div>
+					<div class="bar-3"></div>
+				</div>
+			</label>
+			<label class="header__nav-overlay" for="cbx-nav-bar"></label>
+			<ul class="header__nav-list--mobile">
+				<li class="header__home-logo">
+					<a class="header__home-logo">
+						<i class="fas fa-code hl-color-text"></i>
+						<h1 class="hl-color-text">LinhPlus</h1>
+					</a>
+				</li>
+				<li class="header__nav-mobile-item">
+					<div class="header-nav-mobile-item__label">Sections</div>
+					<div class="header-nav-mobile__sub-item">
+						<a href="#about" class="hl-center-text">About</a>
+						<a href="#quote" class="hl-center-text">Quote</a>
+						<a href="#posts" class="hl-center-text">Posts</a>
+						<a href="#projects" class="hl-center-text">Projects</a>
+						<a href="#experiences" class="hl-center-text">Experience</a>
+						<a href="#contact" class="hl-center-text">Contact</a>
+					</div>
+				</li>
 
-            <li class="header__nav-mobile-item">
-               <div class="header-nav-mobile-item__label">My Collections</div>
-               <div class="header-nav-mobile__sub-item">
-                  <a href="pages/dashboard.html" class="hl-center-text">Dashboard</a>
-                  <a href="pages/quote.php" class="hl-center-text">Quotes</a>
-                  <a href="upload/" class="hl-center-text">Upload</a>
-                  <a href="HoangLinhSchedule/schedule.html" class="hl-center-text">Schedule</a>
-                  <a href="ShopPlus_Customer/" class="hl-center-text">ShopPlus Customer</a>
-                  <a href="ShopPlus_Admin/" class="hl-center-text">ShopPlus Admin</a>
-               </div>
-            </li>
-            <li class="header__nav-mobile-item">
-               <div class="header-nav-mobile-item__label">Blogs</div>
-               <div class="header-nav-mobile__sub-item">
-                  <a href="pages/posts.html" class="hl-center-text">
-                     Read Posts
-                  </a>
-                  <a href="pages/create_post.html" class="hl-center-text">
-                     Create Post
-                  </a>
-               </div>
-            </li>
-            <li class="header__nav-mobile-item">
-               <div class="header-nav-mobile-item__label">More</div>
-               <div class="header-nav-mobile__sub-item">
-                  <a class="hl-center-text" href="pages/hlp_cv.html">My CV</a>
-                  <a class="hl-center-text" href="pages/login.html">Login</a>
-               </div>
-            </li>
-         </ul>
-      </nav>
-      <div class="container grid wide">
-         <div class="row">
-            <div class="card hl-center-text col l-12 m-12 c-12 " style="flex-shrink: 1;">
-               <img src="assets/images/hlp.jpg" class="card__profile-picture responsive--image" alt="picture-profile">
-               <div class="card__text">
-                  <div class="about-me">
-                     Hey, I'm <span style="color: green">Linh Nguyen.</span> Here, you can check out what I'm working
-                     on. I try my best to create things with <i class="fas fa-heart"></i> and <i
-                        class="fas fa-code"></i>. I love to learn new things and share my knowledge with others. I hope
-                     you enjoy your time here.
-                  </div>
-               </div>
-            </div>
-         </div>
-         <div class="row">
-            <div class="container__column-left col l-8 m-7 c-12">
-               <div id="quote" class="quote-container">
-                  <div class="quote-content">
-                     <div class="quote-content__icon-left">
-                        <i class="fas fa-quote-left"></i>
-                     </div>
-                     <div class="quote">
-                        <div class="quote__sentence" id="quoteSentence">
-                           Twenty years from now you will be more disappointed by the things that you didn't do than by the
-                           ones you did do. So throw off the bowlines. Sail away from the safe harbor. Catch the trade winds
-                           in your sails. Explore. Dream. Discover.
-                        </div>
-                        <div class="quote__author">
-                           <span>-</span>
-                           <span id="quoteAuthor">No Name</span>
-                        </div>
-                     </div>
-                     <div class="quote-content__icon-right">
-                        <i class="fas fa-quote-right"></i>
-                     </div>
-                  </div>
-               </div>
-               <!-- Example for Technical Stack Section -->
-               <div class="section tech-stack-section">
-                  <div class="card__text">
-                     <h2 class="section-title">Technical stack <i class="fa-solid fa-gear"></i></h2>
-                     <div class="tech-stack-category">
-                        <div class="tech-stack-category-title"><i class="fa-solid fa-code"></i> Programming Languages</div>
-                        <ul class="tech-stack-list">
-                           <li class="tech-stack-item">
-                              <img class="tech-icon" src="assets/icons/technologies/java.svg" alt="Java"/> Java
-                           </li>
-                           <li class="tech-stack-item">
-                              <img class="tech-icon" src="assets/icons/technologies/rust.svg" alt="Rust"/> Rust
-                           </li>
-                           <li class="tech-stack-item">
-                              <img class="tech-icon" src="assets/icons/technologies/javascript.svg" alt="JavaScript"/> JavaScript
-                           </li>
-                           <li class="tech-stack-item">
-                              <img class="tech-icon" src="assets/icons/technologies/c.svg" alt="C/C++"/> C/C++
-                           </li>
-                           <li class="tech-stack-item">
-                              <img class="tech-icon" src="assets/icons/technologies/html.svg" alt="HTML"/> HTML
-                           </li>
-                           <li class="tech-stack-item">
-                              <img class="tech-icon" src="assets/icons/technologies/css.svg" alt="css"/> CSS
-                           </li>
-                        </ul>
-                     </div>
-                     <div class="tech-stack-category">
-                        <div class="tech-stack-category-title"><i class="fa-solid fa-layer-group"></i> Frameworks & Libraries</div>
-                        <ul class="tech-stack-list">
-                           <li class="tech-stack-item"><img src="assets/icons/technologies/spring.svg" alt="Spring Core"> Spring Core</li>
-                           <li class="tech-stack-item"><img src="assets/icons/technologies/spring-boot.svg" alt="Spring Boot"> Spring Boot</li>
-                           <li class="tech-stack-item"><img src="assets/icons/technologies/hibernate.svg" alt="Hibernate"> Hibernate</li>
-                           <li class="tech-stack-item"><img src="assets/icons/technologies/jquery.svg" alt="jQuery"> jQuery</li>
-                           <li class="tech-stack-item"><img src="assets/icons/technologies/websocket.svg" alt="WebSocket"> WebSocket</li>
-                           <li class="tech-stack-item"><img src="assets/icons/technologies/jwt.svg" alt="JWT"> JWT</li>
-                           <li class="tech-stack-item"><img src="assets/icons/technologies/tailwind-css.svg" alt="TailwindCSS"> TailwindCSS</li>
-                        </ul>
-                     </div>
-                     <div class="tech-stack-category">
-                        <div class="tech-stack-category-title"><i class="fa-solid fa-network-wired"></i> Networking</div>
-                        <ul class="tech-stack-list">
-                              <li class="tech-stack-item"><img class="tech-icon" src="assets/icons/technologies/network-wired.svg" alt="TCP/IP"/> TCP/IP</li>
-                              <li class="tech-stack-item"><img class="tech-icon" src="assets/icons/technologies/globe.svg" alt="HTTP/HTTPS"/> HTTP/HTTPS</li>
-                              <li class="tech-stack-item"><img class="tech-icon" src="assets/icons/technologies/server.svg" alt="DNS"/> DNS</li>
-                              <li class="tech-stack-item"><img class="tech-icon" src="assets/icons/technologies/network-wired.svg" alt="DHCP"/> DHCP</li>
-                              <li class="tech-stack-item"><img class="tech-icon" src="assets/icons/technologies/microchip.svg" alt="SNMP"/> SNMP</li>
-                              <li class="tech-stack-item"><img class="tech-icon" src="assets/icons/technologies/file-arrow-down.svg" alt="FTP"/> FTP</li>
-                              <li class="tech-stack-item"><img class="tech-icon" src="assets/icons/technologies/terminal.svg" alt="SSH"/> SSH</li>
-                              <li class="tech-stack-item"><img class="tech-icon" src="assets/icons/technologies/cloud.svg" alt="REST API"/> REST API</li>
-                              <li class="tech-stack-item"><img class="tech-icon" src="assets/icons/technologies/envelope.svg" alt="SMTP"/> SMTP</li>
-                              <li class="tech-stack-item"><img class="tech-icon" src="assets/icons/technologies/arrows-spin.svg" alt="Socket Programming"/> Socket Programming</li>
-                        </ul>
-                     </div>
-                     <div class="tech-stack-category">
-                        <div class="tech-stack-category-title"><i class="fa-solid fa-database"></i> Database & Cloud Hosting</div>
-                        <ul class="tech-stack-list">
-                              <li class="tech-stack-item">
-                                 <img class="tech-icon" src="assets/icons/technologies/mariadb.svg" alt="MariaDB" /> MariaDB
-                              </li>
-                              <li class="tech-stack-item">
-                                 <img class="tech-icon" src="assets/icons/technologies/mysql.svg" alt="MySQL" /> MySQL
-                              </li>
+				<li class="header__nav-mobile-item">
+					<div class="header-nav-mobile-item__label">My Collections</div>
+					<div class="header-nav-mobile__sub-item">
+						<a href="pages/dashboard.html" class="hl-center-text">Dashboard</a>
+						<a href="pages/quote.php" class="hl-center-text">Quotes</a>
+						<a href="upload/" class="hl-center-text">Upload</a>
+						<a href="HoangLinhSchedule/schedule.html" class="hl-center-text">Schedule</a>
+						<a href="ShopPlus_Customer/" class="hl-center-text">ShopPlus Customer</a>
+						<a href="ShopPlus_Admin/" class="hl-center-text">ShopPlus Admin</a>
+					</div>
+				</li>
+				<li class="header__nav-mobile-item">
+					<div class="header-nav-mobile-item__label">Blogs</div>
+					<div class="header-nav-mobile__sub-item">
+						<a href="pages/posts.html" class="hl-center-text">
+							Read Posts
+						</a>
+						<a href="pages/create_post.html" class="hl-center-text">
+							Create Post
+						</a>
+					</div>
+				</li>
+				<li class="header__nav-mobile-item">
+					<div class="header-nav-mobile-item__label">More</div>
+					<div class="header-nav-mobile__sub-item">
+						<a class="hl-center-text" href="pages/hlp_cv.html">My CV</a>
+						<a class="hl-center-text" href="pages/login.html">Login</a>
+					</div>
+				</li>
+			</ul>
+		</nav>
+		<div class="container grid wide">
+			<div class="row">
+				<div class="card hl-center-text col l-12 m-12 c-12 " style="flex-shrink: 1;">
+					<img src="assets/images/hlp.jpg" class="card__profile-picture responsive--image"
+						alt="picture-profile">
+					<div class="card__text">
+						<div class="about-me">
+							Hey, I'm <span style="color: green">Linh Nguyen.</span> Here, you can check out what I'm
+							working
+							on. I try my best to create things with <i class="fas fa-heart"></i> and <i
+								class="fas fa-code"></i>. I
+							love to learn new things and share my knowledge with others. I hope
+							you enjoy your time here.
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="container__column-left col l-8 m-7 c-12">
+					<div id="quote" class="quote-container">
+						<div class="quote-content">
+							<div class="quote-content__icon-left">
+								<i class="fas fa-quote-left"></i>
+							</div>
+							<div class="quote">
+								<div class="quote__sentence" id="quoteSentence">
+									Twenty years from now you will be more disappointed by the things that you didn't do
+									than by the
+									ones you did do. So throw off the bowlines. Sail away from the safe harbor. Catch
+									the trade winds
+									in your sails. Explore. Dream. Discover.
+								</div>
+								<div class="quote__author">
+									<span>-</span>
+									<span id="quoteAuthor">No Name</span>
+								</div>
+							</div>
+							<div class="quote-content__icon-right">
+								<i class="fas fa-quote-right"></i>
+							</div>
+						</div>
+					</div>
+					<!-- Example for Technical Stack Section -->
+					<div class="section tech-stack-section">
+						<div class="card__text">
+							<h2 class="section-title">Technical stack <i class="fa-solid fa-gear"></i></h2>
+							<div class="tech-stack-category">
+								<div class="tech-stack-category-title"><i class="fa-solid fa-code"></i> Programming
+									Languages</div>
+								<ul class="tech-stack-list">
+									<li class="tech-stack-item">
+										<img class="tech-icon" src="assets/icons/technologies/java.svg" alt="Java" />
+										Java
+									</li>
+									<li class="tech-stack-item">
+										<img class="tech-icon" src="assets/icons/technologies/rust.svg" alt="Rust" />
+										Rust
+									</li>
+									<li class="tech-stack-item">
+										<img class="tech-icon" src="assets/icons/technologies/javascript.svg"
+											alt="JavaScript" /> JavaScript
+									</li>
+									<li class="tech-stack-item">
+										<img class="tech-icon" src="assets/icons/technologies/c.svg" alt="C/C++" />
+										C/C++
+									</li>
+									<li class="tech-stack-item">
+										<img class="tech-icon" src="assets/icons/technologies/html.svg" alt="HTML" />
+										HTML
+									</li>
+									<li class="tech-stack-item">
+										<img class="tech-icon" src="assets/icons/technologies/css.svg" alt="css" /> CSS
+									</li>
+								</ul>
+							</div>
+							<div class="tech-stack-category">
+								<div class="tech-stack-category-title"><i class="fa-solid fa-layer-group"></i>
+									Frameworks & Libraries
+								</div>
+								<ul class="tech-stack-list">
+									<li class="tech-stack-item"><img src="assets/icons/technologies/spring.svg"
+											alt="Spring Core"> Spring
+										Core</li>
+									<li class="tech-stack-item"><img src="assets/icons/technologies/spring-boot.svg"
+											alt="Spring Boot">
+										Spring Boot</li>
+									<li class="tech-stack-item"><img src="assets/icons/technologies/hibernate.svg"
+											alt="Hibernate">
+										Hibernate</li>
+									<li class="tech-stack-item"><img src="assets/icons/technologies/jquery.svg"
+											alt="jQuery"> jQuery</li>
+									<li class="tech-stack-item"><img src="assets/icons/technologies/websocket.svg"
+											alt="WebSocket">
+										WebSocket</li>
+									<li class="tech-stack-item"><img src="assets/icons/technologies/jwt.svg" alt="JWT">
+										JWT</li>
+									<li class="tech-stack-item"><img src="assets/icons/technologies/tailwind-css.svg"
+											alt="TailwindCSS">
+										TailwindCSS</li>
+								</ul>
+							</div>
+							<div class="tech-stack-category">
+								<div class="tech-stack-category-title"><i class="fa-solid fa-network-wired"></i>
+									Networking</div>
+								<ul class="tech-stack-list">
+									<li class="tech-stack-item"><img class="tech-icon"
+											src="assets/icons/technologies/network-wired.svg" alt="TCP/IP" /> TCP/IP
+									</li>
+									<li class="tech-stack-item"><img class="tech-icon"
+											src="assets/icons/technologies/globe.svg" alt="HTTP/HTTPS" /> HTTP/HTTPS
+									</li>
+									<li class="tech-stack-item"><img class="tech-icon"
+											src="assets/icons/technologies/server.svg" alt="DNS" /> DNS</li>
+									<li class="tech-stack-item"><img class="tech-icon"
+											src="assets/icons/technologies/network-wired.svg" alt="DHCP" /> DHCP</li>
+									<li class="tech-stack-item"><img class="tech-icon"
+											src="assets/icons/technologies/microchip.svg" alt="SNMP" /> SNMP</li>
+									<li class="tech-stack-item"><img class="tech-icon"
+											src="assets/icons/technologies/file-arrow-down.svg" alt="FTP" /> FTP</li>
+									<li class="tech-stack-item"><img class="tech-icon"
+											src="assets/icons/technologies/terminal.svg" alt="SSH" /> SSH</li>
+									<li class="tech-stack-item"><img class="tech-icon"
+											src="assets/icons/technologies/cloud.svg" alt="REST API" /> REST API</li>
+									<li class="tech-stack-item"><img class="tech-icon"
+											src="assets/icons/technologies/envelope.svg" alt="SMTP" /> SMTP</li>
+									<li class="tech-stack-item"><img class="tech-icon"
+											src="assets/icons/technologies/arrows-spin.svg" alt="Socket Programming" />
+										Socket Programming</li>
+								</ul>
+							</div>
+							<div class="tech-stack-category">
+								<div class="tech-stack-category-title"><i class="fa-solid fa-database"></i> Database &
+									Cloud Hosting
+								</div>
+								<ul class="tech-stack-list">
+									<li class="tech-stack-item">
+										<img class="tech-icon" src="assets/icons/technologies/mariadb.svg"
+											alt="MariaDB" /> MariaDB
+									</li>
+									<li class="tech-stack-item">
+										<img class="tech-icon" src="assets/icons/technologies/mysql.svg" alt="MySQL" />
+										MySQL
+									</li>
 
-                              <li class="tech-stack-item">
-                                 <img class="tech-icon" src="assets/icons/technologies/postgresql.svg" alt="PostgreSQL" /> PostgreSQL
-                              </li>
-                              <li class="tech-stack-item">
-                                 <img class="tech-icon" src="assets/icons/technologies/kafka.svg" alt="Kafka" /> Kafka
-                              </li>
-                              <li class="tech-stack-item">
-                                 <img class="tech-icon" src="assets/icons/technologies/redis.svg" alt="Redis" /> Redis
-                              </li>
-                        </ul>
-                     </div>
-                     <div class="tech-stack-category">
-                        <div class="tech-stack-category-title"><i class="fa-solid fa-tools"></i> Software & Tools</div>
-                        <ul class="tech-stack-list">
-                           <li class="tech-stack-item">
-                              <img class="tech-icon" src="assets/icons/technologies/git.svg" alt="Git" /> Git
-                           </li>
-                           <li class="tech-stack-item">
-                              <img class="tech-icon" src="assets/icons/technologies/intellij-idea.svg" alt="IntelliJ IDEA" /> IntelliJ IDEA
-                           </li>
-                           <li class="tech-stack-item">
-                              <img class="tech-icon" src="assets/icons/technologies/visual-studio-code.svg" alt="Visual Studio Code" /> Visual Studio Code
-                           </li>
-                           <li class="tech-stack-item">
-                              <img class="tech-icon" src="assets/icons/technologies/vim.svg" alt="Vim" /> Vim
-                           </li>
-                           <li class="tech-stack-item">
-                              <img class="tech-icon" src="assets/icons/technologies/neovim.svg" alt="NeoVim" /> NeoVim
-                           </li>
-                           <li class="tech-stack-item">
-                              <img src="assets/icons/technologies/wireshark.svg" alt="WireShark" /> WireShark
-                           </li>
-                           <li class="tech-stack-item">
-                              <img class="tech-icon" src="assets/icons/technologies/stack-overflow.svg" alt="Stack Overflow" /> Stack Overflow
-                           </li>
-                           <li class="tech-stack-item">
-                              <img class="tech-icon" src="assets/icons/technologies/chatgpt.svg" alt="ChatGPT" /> ChatGPT
-                           </li>
-                           <li class="tech-stack-item">
-                              <img class="tech-icon" src="assets/icons/technologies/microsoft-edge.svg" alt="Microsoft Edge" /> Microsoft Edge
-                           </li>
-                           <li class="tech-stack-item">
-                              <img class="tech-icon" src="assets/icons/technologies/ubuntu.svg" alt="Ubuntu" /> Ubuntu
-                           </li>
-                           <li class="tech-stack-item">
-                              <img class="tech-icon" src="assets/icons/technologies/linux-mint.svg" alt="Linux Mint" /> Linux Mint
-                           </li>
-                           <li class="tech-stack-item">
-                              <img class="tech-icon" src="assets/icons/technologies/jenkins.svg" alt="Jenkins" /> Jenkins
-                           </li>
-                        </ul>
-                     </div>
-                  </div>
-               </div>
-            </div>
+									<li class="tech-stack-item">
+										<img class="tech-icon" src="assets/icons/technologies/postgresql.svg"
+											alt="PostgreSQL" /> PostgreSQL
+									</li>
+									<li class="tech-stack-item">
+										<img class="tech-icon" src="assets/icons/technologies/kafka.svg" alt="Kafka" />
+										Kafka
+									</li>
+									<li class="tech-stack-item">
+										<img class="tech-icon" src="assets/icons/technologies/redis.svg" alt="Redis" />
+										Redis
+									</li>
+								</ul>
+							</div>
+							<div class="tech-stack-category">
+								<div class="tech-stack-category-title"><i class="fa-solid fa-tools"></i> Software &
+									Tools</div>
+								<ul class="tech-stack-list">
+									<li class="tech-stack-item">
+										<img class="tech-icon" src="assets/icons/technologies/git.svg" alt="Git" /> Git
+									</li>
+									<li class="tech-stack-item">
+										<img class="tech-icon" src="assets/icons/technologies/intellij-idea.svg"
+											alt="IntelliJ IDEA" />
+										IntelliJ IDEA
+									</li>
+									<li class="tech-stack-item">
+										<img class="tech-icon" src="assets/icons/technologies/visual-studio-code.svg"
+											alt="Visual Studio Code" /> Visual Studio Code
+									</li>
+									<li class="tech-stack-item">
+										<img class="tech-icon" src="assets/icons/technologies/vim.svg" alt="Vim" /> Vim
+									</li>
+									<li class="tech-stack-item">
+										<img class="tech-icon" src="assets/icons/technologies/neovim.svg"
+											alt="NeoVim" /> NeoVim
+									</li>
+									<li class="tech-stack-item">
+										<img src="assets/icons/technologies/wireshark.svg" alt="WireShark" /> WireShark
+									</li>
+									<li class="tech-stack-item">
+										<img class="tech-icon" src="assets/icons/technologies/stack-overflow.svg"
+											alt="Stack Overflow" />
+										Stack Overflow
+									</li>
+									<li class="tech-stack-item">
+										<img class="tech-icon" src="assets/icons/technologies/chatgpt.svg"
+											alt="ChatGPT" /> ChatGPT
+									</li>
+									<li class="tech-stack-item">
+										<img class="tech-icon" src="assets/icons/technologies/microsoft-edge.svg"
+											alt="Microsoft Edge" />
+										Microsoft Edge
+									</li>
+									<li class="tech-stack-item">
+										<img class="tech-icon" src="assets/icons/technologies/ubuntu.svg"
+											alt="Ubuntu" /> Ubuntu
+									</li>
+									<li class="tech-stack-item">
+										<img class="tech-icon" src="assets/icons/technologies/linux-mint.svg"
+											alt="Linux Mint" /> Linux Mint
+									</li>
+									<li class="tech-stack-item">
+										<img class="tech-icon" src="assets/icons/technologies/jenkins.svg"
+											alt="Jenkins" /> Jenkins
+									</li>
+								</ul>
+							</div>
+						</div>
+					</div>
+				</div>
 
-            <div class="container__column-right col l-4 m-5 c-12">
-               <div id="about" class="section">
-                  <img src="./assets/icons/man-is-coding.svg" alt="woods" style="width: 100%;">
-                  <div class="card__text">
-                     <h2 class="hl-center-text">Focusing on domains</h2>
-                     <p class="hl-margin-top">
-                        Passionate about <span class="hl-important-text">Networking</span>, <span class="hl-important-text">Linux</span>, and <span class="hl-important-text">Database</span> systems.
-                        I thrive on building networking softwares, using Linux environments, and optimizing data management.
-                        My journey is driven by a love for technology and a commitment to continuous learning in these domains.
-                     </p>
-                  </div>
-               </div>
-               <!-- Creative Hobbies Section -->
-               <div class="section">
-                 <div class="card__text">
-                   <h2 class="hl-center-text">Hobbies</h2>
-                   <ul class="hobbies-list">
-                     <li class="hobby-card">
-                       <img class="hobby-icon" src="assets/images/favorites/code.png" alt="Coding">
-                       <div class="hobby-title">Coding</div>
-                     </li>
-                     <li class="hobby-card">
-                       <img class="hobby-icon" src="assets/images/favorites/readingbook.png" alt="Reading">
-                       <div class="hobby-title">Reading</div>
-                     </li>
-                     <li class="hobby-card">
-                       <img class="hobby-icon" src="assets/images/favorites/football.png" alt="Football">
-                       <div class="hobby-title">Football</div>
-                     </li>
-                     <li class="hobby-card">
-                       <img class="hobby-icon" src="assets/images/favorites/badminton.jpg" alt="Badminton">
-                       <div class="hobby-title">Badminton</div>
-                     </li>
-                   </ul>
-                 </div>
-               </div>
-            </div>
-         </div>
-         <div id="posts" class="section">
-            <h1 class="section-title">My Posts <i class="fa-solid fa-book"></i></h1>
-            <div id="postsContainer" class="row">
-               <div id="noPostsMessage" class="hl-text-center hl-text-muted" style="display: none; width: 100%;">No posts found.</div>
-            </div>
+				<div class="container__column-right col l-4 m-5 c-12">
+					<div id="about" class="section">
+						<img src="./assets/icons/man-is-coding.svg" alt="woods" style="width: 100%;">
+						<div class="card__text">
+							<h2 class="hl-center-text">Focusing on domains</h2>
+							<p class="hl-margin-top">
+								Passionate about <span class="hl-important-text">Networking</span>, <span
+									class="hl-important-text">Linux</span>, and <span
+									class="hl-important-text">Database</span> systems.
+								I thrive on building networking softwares, using Linux environments, and optimizing data
+								management.
+								My journey is driven by a love for technology and a commitment to continuous learning in
+								these domains.
+							</p>
+						</div>
+					</div>
+					<!-- Creative Hobbies Section -->
+					<div class="section">
+						<div class="card__text">
+							<h2 class="hl-center-text">Hobbies</h2>
+							<ul class="hobbies-list">
+								<li class="hobby-card">
+									<img class="hobby-icon" src="assets/images/favorites/code.png" alt="Coding">
+									<div class="hobby-title">Coding</div>
+								</li>
+								<li class="hobby-card">
+									<img class="hobby-icon" src="assets/images/favorites/readingbook.png" alt="Reading">
+									<div class="hobby-title">Reading</div>
+								</li>
+								<li class="hobby-card">
+									<img class="hobby-icon" src="assets/images/favorites/football.png" alt="Football">
+									<div class="hobby-title">Football</div>
+								</li>
+								<li class="hobby-card">
+									<img class="hobby-icon" src="assets/images/favorites/badminton.jpg" alt="Badminton">
+									<div class="hobby-title">Badminton</div>
+								</li>
+							</ul>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div id="posts" class="section">
+				<h1 class="section-title">My Posts <i class="fa-solid fa-book"></i></h1>
+				<div id="postsContainer" class="row">
+					<div id="noPostsMessage" class="hl-text-center hl-text-muted" style="display: none; width: 100%;">No
+						posts
+						found.</div>
+				</div>
 
-         </div>
-         <div id="projects" class="section">
-            <h2 class="section-title">My Projects <i class="fa-solid fa-microscope"></i></h2>
-            <div class="projects-container">
-               <div class="row">
-                  <div class="col l-4 m-6 c-12">
-                     <div class="project-card">
-                        <img src="assets/images/projects/career_social_network.webp" alt="Career Social Network"
-                           class="project-card__image responsive--image">
-                        <div class="project-card__content">
-                           <h3 class="project-card__title">Career Social Network</h3>
-                           <p class="project-card__description">A project designed to connect employers and employees
-                              through a social network platform. This platform allows users to create profiles, share
-                              their professional experiences, and interact with potential employers or employees. It
-                              aims to streamline the hiring process by providing tools for job postings, applications,
-                              and direct communication between parties.</p>
-                           <div class="project-card__category">
-                              <span class="project-card__category pill">Web</span>
-                              <span class="project-card__category pill">Java</span>
-                              <span class="project-card__category pill">Spring Boot</span>
-                              <span class="project-card__category pill">MySQL</span>
-                              <span class="project-card__category pill">Chat</span>
-                           </div>
-                        </div>
-                        <div class="project-card__link">
-                           <a href="https://github.com/secretdeveloperisme/CareerSocialNetwork" target="_blank"
-                              class="button primary-button">
-                              <i class="fa-brands fa-github"></i>
-                              <span class="hl-margin-left-sm">Github</span>
-                           </a>
-                        </div>
-                     </div>
-                  </div>
-                  <div class="col l-4 m-6 c-12">
-                     <div class="project-card">
-                        <img src="assets/images/projects/anonymous-chat-system-design.webp" alt="Anonymous Chat"
-                           class="project-card__image responsive--image">
-                        <div class="project-card__content">
-                           <h3 class="project-card__title">Anonymous Chat</h3>
-                           <p class="project-card__description">Creating an anonymous chat application where users can
-                              communicate without identity, stored data, authentication, or authorization can be both
-                              interesting and challenging, especially in terms of privacy and security.</p>
-                           <div class="project-card__category">
-                              <span class="project-card__category pill">Web</span>
-                              <span class="project-card__category pill">Rust</span>
-                              <span class="project-card__category pill">PostgreSQL</span>
-                              <span class="project-card__category pill">Chat</span>
-                           </div>
-                        </div>
-                        <div class="project-card__link">
-                           <a href="https://github.com/secretdeveloperisme/anonymous-chat-backbone" target="_blank"
-                              class="button primary-button">
-                              <i class="fa-brands fa-github"></i>
-                              <span class="hl-margin-left-sm">Github</span>
-                           </a>
-                        </div>
-                     </div>
-                  </div>
-                  <div class="col l-4 m-6 c-12">
-                     <div class="project-card">
-                        <img src="assets/images/projects/shop_plus_customer.webp" alt="ShopPlus"
-                           class="project-card__image responsive--image">
-                        <div class="project-card__content">
-                           <h3 class="project-card__title">ShopPlus</h3>
-                           <p class="project-card__description">build a pure comercial website using php, javascript,
-                              html, css, mysql and using jquery library,ajax to send and receive data</p>
-                           <span class="project-card__category pill">HTML</span>
-                           <span class="project-card__category pill">CSS</span>
-                           <span class="project-card__category pill">JavaScript</span>
-                           <span class="project-card__category pill">JQuery</span>
-                           <span class="project-card__category pill">PHP</span>
-                           <span class="project-card__category pill">MySQL</span>
-                        </div>
-                        <div class="project-card__link">
-                           <a href="https://github.com/secretdeveloperisme/ShopPlus_Customer" target="_blank"
-                              class="button primary-button">
-                              <i class="fa-brands fa-github"></i>
-                              <span class="hl-margin-left-sm">Github</span>
-                           </a>
-                        </div>
-                     </div>
-                  </div>
-                  <div class="col l-4 m-6 c-12">
-                     <div class="project-card">
-                        <img src="assets/images/projects/WeddingInvitation.webp" alt="Wedding Invitation Online"
-                           class="project-card__image responsive--image">
-                        <div class="project-card__content">
-                           <h3 class="project-card__title">Wedding Invitation Online</h3>
-                           <p class="project-card__description">An online wedding invitation website with personalized
-                              invitations with multiple cute and meaningfull sections and enables guests to send their
-                              wishes to the bride and groom.</p>
-                           <div class="project-card__category">
-                              <span class="project-card__category pill">HTML</span>
-                              <span class="project-card__category pill">Tailwindcss</span>
-                              <span class="project-card__category pill">Javascript</span>
-                           </div>
-                        </div>
-                        <div class="project-card__link">
-                           <a href="https://github.com/secretdeveloperisme/WeddingInvitation" target="_blank"
-                              class="button primary-button">
-                              <i class="fa-brands fa-github"></i>
-                              <span class="hl-margin-left-sm">Github</span>
-                           </a>
-                        </div>
-                     </div>
-                  </div>
-                  <div class="col l-4 m-6 c-12">
-                     <div class="project-card">
-                        <img src="assets/images/projects/hoanglinhplus-portfolio.webp" alt="Hoang Linh Plus's Porfolio"
-                           class="project-card__image responsive--image">
-                        <div class="project-card__content">
-                           <h3 class="project-card__title">Hoang Linh Plus's Porfolio</h3>
-                           <p class="project-card__description">A personal portfolio website showcasing my projects,
-                              skills, and experiences in software development.</p>
-                           <div class="project-card__category">
-                              <span class="project-card__category pill">Porfolio</span>
-                              <span class="project-card__category pill">Web Development</span>
-                           </div>
-                        </div>
-                        <div class="project-card__link">
-                           <a href="https://github.com/secretdeveloperisme/hoanglinhpluscf" target="_blank"
-                              class="button primary-button">
-                              <i class="fa-brands fa-github"></i>
-                              <span class="hl-margin-left-sm">Github</span>
-                           </a>
-                        </div>
-                     </div>
-                  </div>
-                  <div class="col l-4 m-6 c-12">
-                     <div class="project-card">
-                        <img src="assets/images/projects/rust-tools.webp" alt="Rust Tool Collections"
-                           class="project-card__image responsive--image">
-                        <div class="project-card__content">
-                           <h3 class="project-card__title">Rust Tool Collections</h3>
-                           <p class="project-card__description">A collections of tool were written by Rust. One of my
-                              favorites programming language to serve enhance productivty and task automation</p>
-                           <div class="project-card__category">
-                              <span class="project-card__category pill">Rust</span>
-                              <span class="project-card__category pill">CLI</span>
-                              <span class="project-card__category pill">Tool</span>
-                           </div>
-                        </div>
-                        <div class="project-card__link">
-                           <a href="https://github.com/secretdeveloperisme?tab=repositories" target="_blank"
-                              class="button primary-button">
-                              <i class="fa-brands fa-github"></i>
-                              <span class="hl-margin-left-sm">Github</span>
-                           </a>
-                        </div>
-                     </div>
-                  </div>
-               </div>
-            </div>
-         </div>
-         <div class="section" id="experiences">
-            <h2 class="section-title">Experience <i class="fa-solid fa-briefcase"></i></h2>
-            <div class="experience-timeline">
-               <div class="experience-item">
-                  <div class="experience-item__left">
-                     <img src="assets/images/company-logos/FPT_Software_Logo.png"  alt="fpt-software" class="experience-logo">
-                     <div class="experience-dates">Aug 2024 - Present</div>
-                  </div>
-                  <div class="experience-item__right">
-                     <h3 class="experience-title">KBTG</h3>
-                     <p class="experience-description">
-                        Join a team focusing on implementing SWIFT ISO 20022 standards for both inward and outward remittance transactions.
-                        It enables secure and efficient money transfers by creating and processing financial transactions according to international banking protocols
-                     </p>
-                     <ul class="experience-responsibilities">
-                        <li>Implement new feature from customer requirements</li>
-                        <li>Collaborate with foreign teams (Dev and QA)</li>
-                        <li>Fix defects</li>
-                        <li>Develop and maintain API services</li>
-                        <li>Perform batch data processing for creating and generating</li>
-                        <li>Performing code review</li>
-                     </ul>
-                     <div class="experience-technologies">
-                        <span class="tech-stack">Java</span>
-                        <span class="tech-stack">Spring Boot</span>
-                        <span class="tech-stack">JPA</span>
-                        <span class="tech-stack">MariaDB</span>
-                        <span class="tech-stack">Message Queue</span>
-                        <span class="tech-stack">Microservices</span>
-                        <span class="tech-stack">Jenkins</span>
-                        <span class="tech-stack">Linux</span>
-                     </div>
+			</div>
+			<div id="projects" class="section">
+				<h2 class="section-title">My Projects <i class="fa-solid fa-microscope"></i></h2>
+				<div class="projects-container">
+					<div class="row">
+						<div class="col l-4 m-6 c-12">
+							<div class="project-card">
+								<img src="assets/images/projects/career_social_network.webp" alt="Career Social Network"
+									class="project-card__image responsive--image">
+								<div class="project-card__content">
+									<h3 class="project-card__title">Career Social Network</h3>
+									<p class="project-card__description">A project designed to connect employers and
+										employees
+										through a social network platform. This platform allows users to create
+										profiles, share
+										their professional experiences, and interact with potential employers or
+										employees. It
+										aims to streamline the hiring process by providing tools for job postings,
+										applications,
+										and direct communication between parties.</p>
+									<div class="project-card__category">
+										<span class="project-card__category pill">Web</span>
+										<span class="project-card__category pill">Java</span>
+										<span class="project-card__category pill">Spring Boot</span>
+										<span class="project-card__category pill">MySQL</span>
+										<span class="project-card__category pill">Chat</span>
+									</div>
+								</div>
+								<div class="project-card__link">
+									<a href="https://github.com/secretdeveloperisme/CareerSocialNetwork" target="_blank"
+										class="button primary-button">
+										<i class="fa-brands fa-github"></i>
+										<span class="hl-margin-left-sm">Github</span>
+									</a>
+								</div>
+							</div>
+						</div>
+						<div class="col l-4 m-6 c-12">
+							<div class="project-card">
+								<img src="assets/images/projects/anonymous-chat-system-design.webp" alt="Anonymous Chat"
+									class="project-card__image responsive--image">
+								<div class="project-card__content">
+									<h3 class="project-card__title">Anonymous Chat</h3>
+									<p class="project-card__description">Creating an anonymous chat application where
+										users can
+										communicate without identity, stored data, authentication, or authorization can
+										be both
+										interesting and challenging, especially in terms of privacy and security.</p>
+									<div class="project-card__category">
+										<span class="project-card__category pill">Web</span>
+										<span class="project-card__category pill">Rust</span>
+										<span class="project-card__category pill">PostgreSQL</span>
+										<span class="project-card__category pill">Chat</span>
+									</div>
+								</div>
+								<div class="project-card__link">
+									<a href="https://github.com/secretdeveloperisme/anonymous-chat-backbone"
+										target="_blank" class="button primary-button">
+										<i class="fa-brands fa-github"></i>
+										<span class="hl-margin-left-sm">Github</span>
+									</a>
+								</div>
+							</div>
+						</div>
+						<div class="col l-4 m-6 c-12">
+							<div class="project-card">
+								<img src="assets/images/projects/shop_plus_customer.webp" alt="ShopPlus"
+									class="project-card__image responsive--image">
+								<div class="project-card__content">
+									<h3 class="project-card__title">ShopPlus</h3>
+									<p class="project-card__description">build a pure comercial website using php,
+										javascript,
+										html, css, mysql and using jquery library,ajax to send and receive data</p>
+									<span class="project-card__category pill">HTML</span>
+									<span class="project-card__category pill">CSS</span>
+									<span class="project-card__category pill">JavaScript</span>
+									<span class="project-card__category pill">JQuery</span>
+									<span class="project-card__category pill">PHP</span>
+									<span class="project-card__category pill">MySQL</span>
+								</div>
+								<div class="project-card__link">
+									<a href="https://github.com/secretdeveloperisme/ShopPlus_Customer" target="_blank"
+										class="button primary-button">
+										<i class="fa-brands fa-github"></i>
+										<span class="hl-margin-left-sm">Github</span>
+									</a>
+								</div>
+							</div>
+						</div>
+						<div class="col l-4 m-6 c-12">
+							<div class="project-card">
+								<img src="assets/images/projects/WeddingInvitation.webp" alt="Wedding Invitation Online"
+									class="project-card__image responsive--image">
+								<div class="project-card__content">
+									<h3 class="project-card__title">Wedding Invitation Online</h3>
+									<p class="project-card__description">An online wedding invitation website with
+										personalized
+										invitations with multiple cute and meaningfull sections and enables guests to
+										send their
+										wishes to the bride and groom.</p>
+									<div class="project-card__category">
+										<span class="project-card__category pill">HTML</span>
+										<span class="project-card__category pill">Tailwindcss</span>
+										<span class="project-card__category pill">Javascript</span>
+									</div>
+								</div>
+								<div class="project-card__link">
+									<a href="https://hoanglinhplus.orgfree.com/wedding/groom.html" target="_blank"
+										class="button primary-button">
+										<i class="fa-solid fa-link"></i>
+										<span class="hl-margin-left-sm">Github</span>
+									</a>
+								</div>
+							</div>
+						</div>
+						<div class="col l-4 m-6 c-12">
+							<div class="project-card">
+								<img src="assets/images/projects/hoanglinhplus-portfolio.webp"
+									alt="Hoang Linh Plus's Porfolio" class="project-card__image responsive--image">
+								<div class="project-card__content">
+									<h3 class="project-card__title">Hoang Linh Plus's Porfolio</h3>
+									<p class="project-card__description">A personal portfolio website showcasing my
+										projects,
+										skills, and experiences in software development.</p>
+									<div class="project-card__category">
+										<span class="project-card__category pill">Porfolio</span>
+										<span class="project-card__category pill">Web Development</span>
+									</div>
+								</div>
+								<div class="project-card__link">
+									<a href="https://github.com/secretdeveloperisme/hoanglinhpluscf" target="_blank"
+										class="button primary-button">
+										<i class="fa-brands fa-github"></i>
+										<span class="hl-margin-left-sm">Github</span>
+									</a>
+								</div>
+							</div>
+						</div>
+						<div class="col l-4 m-6 c-12">
+							<div class="project-card">
+								<img src="assets/images/projects/rust-tools.webp" alt="Rust Tool Collections"
+									class="project-card__image responsive--image">
+								<div class="project-card__content">
+									<h3 class="project-card__title">Rust Tool Collections</h3>
+									<p class="project-card__description">A collections of tool were written by Rust. One
+										of my
+										favorites programming language to serve enhance productivty and task automation
+									</p>
+									<div class="project-card__category">
+										<span class="project-card__category pill">Rust</span>
+										<span class="project-card__category pill">CLI</span>
+										<span class="project-card__category pill">Tool</span>
+									</div>
+								</div>
+								<div class="project-card__link">
+									<a href="https://github.com/secretdeveloperisme?tab=repositories" target="_blank"
+										class="button primary-button">
+										<i class="fa-brands fa-github"></i>
+										<span class="hl-margin-left-sm">Github</span>
+									</a>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="section" id="experiences">
+				<h2 class="section-title">Experience <i class="fa-solid fa-briefcase"></i></h2>
+				<div class="experience-timeline">
+					<div class="experience-item">
+						<div class="experience-item__left">
+							<img src="assets/images/company-logos/FPT_Software_Logo.png" alt="fpt-software"
+								class="experience-logo">
+							<div class="experience-dates">Aug 2024 - Present</div>
+						</div>
+						<div class="experience-item__right">
+							<h3 class="experience-title">KBTG</h3>
+							<p class="experience-description">
+								Join a team focusing on implementing SWIFT ISO 20022 standards for both inward and
+								outward remittance
+								transactions.
+								It enables secure and efficient money transfers by creating and processing financial
+								transactions
+								according to international banking protocols
+							</p>
+							<ul class="experience-responsibilities">
+								<li>Implement new feature from customer requirements</li>
+								<li>Collaborate with foreign teams (Dev and QA)</li>
+								<li>Fix defects</li>
+								<li>Develop and maintain API services</li>
+								<li>Perform batch data processing for creating and generating</li>
+								<li>Performing code review</li>
+							</ul>
+							<div class="experience-technologies">
+								<span class="tech-stack">Java</span>
+								<span class="tech-stack">Spring Boot</span>
+								<span class="tech-stack">JPA</span>
+								<span class="tech-stack">MariaDB</span>
+								<span class="tech-stack">Message Queue</span>
+								<span class="tech-stack">Microservices</span>
+								<span class="tech-stack">Jenkins</span>
+								<span class="tech-stack">Linux</span>
+							</div>
 
-                  </div>
-               </div>
-               <div class="experience-item">
-                  <div class="experience-item__left">
-                     <img src="assets/images/company-logos/tma-solutions.webp"  alt="tma-solutions" class="experience-logo">
-                     <div class="experience-dates">Jul 2023 - Jul 2024</div>
-                  </div>
-                  <div class="experience-item__right">
-                     <h3 class="experience-title">AMS</h3>
-                     <p class="experience-description">
-                        The project manages the software packages and appliances and provides a Web UI that allows
-                        users to modify the configuration files and deploy them easily. It also monitors the services and
-                        hardware health in real-time and swiftly notifies the users when an issue arises so that they can
-                        resolve it as soon as possible.
-                     </p>
-                     <ul class="experience-responsibilities">
-                        <li>Develop crucial features based on the customer requirements.</li>
-                        <li>Collaborate with foreign teams (co-working tasks).</li>
-                        <li>Fix the software's defects and enhance performance</li>
-                        <li>Create SQL based on detailed design.</li>
-                        <li>Demo features and training new team members</li>
-                        <li>Write tools to support development more productively.</li>
-                     </ul>
-                     <div class="experience-technologies">
-                        <span class="tech-stack">Java</span>
-                        <span class="tech-stack">Spring MVC</span>
-                        <span class="tech-stack">Hibernate</span>
-                        <span class="tech-stack">MariaDB</span>
-                        <span class="tech-stack">SSH</span>
-                        <span class="tech-stack">Shell Script</span>
-                        <span class="tech-stack">Rocky Linux</span>
-                        <span class="tech-stack">Jenkins</span>
-                     </div>
+						</div>
+					</div>
+					<div class="experience-item">
+						<div class="experience-item__left">
+							<img src="assets/images/company-logos/tma-solutions.webp" alt="tma-solutions"
+								class="experience-logo">
+							<div class="experience-dates">Jul 2023 - Jul 2024</div>
+						</div>
+						<div class="experience-item__right">
+							<h3 class="experience-title">AMS</h3>
+							<p class="experience-description">
+								The project manages the software packages and appliances and provides a Web UI that
+								allows
+								users to modify the configuration files and deploy them easily. It also monitors the
+								services and
+								hardware health in real-time and swiftly notifies the users when an issue arises so that
+								they can
+								resolve it as soon as possible.
+							</p>
+							<ul class="experience-responsibilities">
+								<li>Develop crucial features based on the customer requirements.</li>
+								<li>Collaborate with foreign teams (co-working tasks).</li>
+								<li>Fix the software's defects and enhance performance</li>
+								<li>Create SQL based on detailed design.</li>
+								<li>Demo features and training new team members</li>
+								<li>Write tools to support development more productively.</li>
+							</ul>
+							<div class="experience-technologies">
+								<span class="tech-stack">Java</span>
+								<span class="tech-stack">Spring MVC</span>
+								<span class="tech-stack">Hibernate</span>
+								<span class="tech-stack">MariaDB</span>
+								<span class="tech-stack">SSH</span>
+								<span class="tech-stack">Shell Script</span>
+								<span class="tech-stack">Rocky Linux</span>
+								<span class="tech-stack">Jenkins</span>
+							</div>
+						</div>
+					</div>
+					<div class="experience-item">
+						<div class="experience-item__left">
+							<img src="assets/images/company-logos/tma-solutions.webp" alt="tma-solutions"
+								class="experience-logo">
+							<div class="experience-dates">May 2022 - Jul 2023</div>
+						</div>
+						<div class="experience-item__right">
+							<h3 class="experience-title">VitalSuite Network</h3>
+							<p class="experience-description">
+								The project provides critical network information by monitoring network performance and
+								identifying potential issues proactively. In the event of a network problem, the system
+								will generate
+								real-time alerts for network administrators, enabling them to take the best corrective
+								actions and
+								minimize the impact of the issue.
+							</p>
+							<ul class="experience-responsibilities">
+								<li>Develop and fix the application's defect base on requirements.</li>
+								<li>Nightly support customer when they have urgent issues</li>
+								<li>Maintained MySQL database and optimized queries.</li>
+							</ul>
+							<div class="experience-technologies">
+								<span class="tech-stack">C/C++</span>
+								<span class="tech-stack">Java</span>
+								<span class="tech-stack">SNMP</span>
+								<span class="tech-stack">MSSQL Server</span>
+								<span class="tech-stack">MariaDB</span>
+								<span class="tech-stack">ShellScript</span>
+								<span class="tech-stack">Redhat Enterprise</span>
+							</div>
+						</div>
+					</div>
+					<div class="experience-item">
+						<div class="experience-item__left">
+							<img src="assets/images/company-logos/tma-solutions.webp" alt="Tma solutions"
+								class="experience-logo">
+							<div class="experience-dates">Feb 2023 - Jul 2023</div>
+						</div>
+						<div class="experience-item__right">
+							<h3 class="experience-title">Project Patch Management Tool </h3>
+							<p class="experience-description">
+								Developed a patch management tool for managing software updates and patches in a
+								corporate
+								environment.
+							</p>
+							<ul class="experience-responsibilities">
+								<li>Develop API Gateway: Routing, Catching, Authentication and Authorization</li>
+								<li>Develop a REST API Patch Service using Spring Boot, PostgresQL</li>
+								<li>Develop a Logging feature</li>
+								<li>Write Readme and User Guide document</li>
+								<li>Review others team members's code</li>
+							</ul>
+							<div class="experience-technologies">
+								<span class="tech-stack">Microservices</span>
+								<span class="tech-stack">Java</span>
+								<span class="tech-stack">Spring Boot</span>
+								<span class="tech-stack">PostgreSQL</span>
+								<span class="tech-stack">Kafka</span>
+								<span class="tech-stack">Redis</span>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="section" id="gallery">
+				<h2 class="hl-title--effect hl-margin-bottom">Gallery</h2>
+				<div id="slideshowContainer" class="slideshow_container">
+					<button id="btnPrevImg" class="btn-left hl-margin-left hl-background-transparent"><i
+							class="fas fa-backward "></i></button>
+					<button id="btnNextImg" class="btn-right hl-margin-right hl-background-transparent"><i
+							class="fas fa-forward"></i></button>
+				</div>
+				<div class="gallerry-container">
+					<div id="gallerryContainer" class="grid__gallery">
+					</div>
+				</div>
+			</div>
 
-                  </div>
-               </div>
-               <div class="experience-item">
-                  <div class="experience-item__left">
-                     <img src="assets/images/company-logos/tma-solutions.webp" alt="tma-solutions" class="experience-logo">
-                     <div class="experience-dates">May 2022 - Jul 2023</div>
-                  </div>
-                  <div class="experience-item__right">
-                     <h3 class="experience-title">VitalSuite Network</h3>
-                     <p class="experience-description">
-                        The project provides critical network information by monitoring network performance and
-                        identifying potential issues proactively. In the event of a network problem, the system will generate
-                        real-time alerts for network administrators, enabling them to take the best corrective actions and
-                        minimize the impact of the issue.
-                     </p>
-                     <ul class="experience-responsibilities">
-                        <li>Develop and fix the application's defect base on requirements.</li>
-                        <li>Nightly support customer when they have urgent issues</li>
-                        <li>Maintained MySQL database and optimized queries.</li>
-                     </ul>
-                     <div class="experience-technologies">
-                        <span class="tech-stack">C/C++</span>
-                        <span class="tech-stack">Java</span>
-                        <span class="tech-stack">SNMP</span>
-                        <span class="tech-stack">MSSQL Server</span>
-                        <span class="tech-stack">MariaDB</span>
-                        <span class="tech-stack">ShellScript</span>
-                        <span class="tech-stack">Redhat Enterprise</span>
-                     </div>
-                  </div>
-               </div>
-               <div class="experience-item">
-                  <div class="experience-item__left">
-                     <img src="assets/images/company-logos/tma-solutions.webp" alt="Tma solutions" class="experience-logo">
-                     <div class="experience-dates">Feb 2023 - Jul 2023</div>
-                  </div>
-                  <div class="experience-item__right">
-                     <h3 class="experience-title">Project Patch Management Tool </h3>
-                     <p class="experience-description">
-                        Developed a patch management tool for managing software updates and patches in a corporate
-                        environment.
-                     </p>
-                     <ul class="experience-responsibilities">
-                        <li>Develop API Gateway: Routing, Catching, Authentication and Authorization</li>
-                        <li>Develop a REST API Patch Service using Spring Boot, PostgresQL</li>
-                        <li>Develop a Logging feature</li>
-                        <li>Write Readme and User Guide document</li>
-                        <li>Review others team members's code</li>
-                     </ul>
-                     <div class="experience-technologies">
-                        <span class="tech-stack">Microservices</span>
-                        <span class="tech-stack">Java</span>
-                        <span class="tech-stack">Spring Boot</span>
-                        <span class="tech-stack">PostgreSQL</span>
-                        <span class="tech-stack">Kafka</span>
-                        <span class="tech-stack">Redis</span>
-                     </div>
-                  </div>
-               </div>
-            </div>
-         </div>
-         <div class="section" id="gallery">
-            <h2 class="hl-title--effect hl-margin-bottom">Gallery</h2>
-            <div id="slideshowContainer" class="slideshow_container">
-               <button id="btnPrevImg" class="btn-left hl-margin-left hl-background-transparent" ><i class="fas fa-backward "></i></button>
-               <button id="btnNextImg" class="btn-right hl-margin-right hl-background-transparent"><i class="fas fa-forward"></i></button>
-            </div>
-            <div class="gallerry-container">
-               <div id="gallerryContainer" class="grid__gallery">
-               </div>
-            </div>
-         </div>
+			<!-- display a huge picture from hoanglinh gallery -->
+			<div id="modal">
+				<div id="modalContentWrapper" class="modal-content-wrapper">
+					<div id="modalContent" class="modal__content">
+						<img id="imageShow">
+					</div>
+				</div>
+				<div class="hl-title--effect" id="modal__caption"></div>
+				<div id="modal__close"><i class="fas fa-times"></i></div>
+			</div>
+			<!-- display a huge picture from hoanglinh gallery -->
+			<footer class="footer grid">
+				<div class="footer__container footer__container--flex-row">
+					<div class="container__item l-4 m-6 c-12 hl-center-text" id="contact">
+						<h3 class="footer__section-title">Let's Connect!</h3>
+						<ul class="footer__social-links">
+							<li>
+								<a href="https://github.com/secretdeveloperisme" target="_blank" aria-label="GitHub">
+									<i class="fab fa-github"></i>
+								</a>
+							</li>
+							<li>
+								<a href="https://www.linkedin.com/in/hoanglinhplus" target="_blank"
+									aria-label="LinkedIn">
+									<i class="fab fa-linkedin"></i>
+								</a>
+							</li>
+							<li>
+								<a href="mailto:linh072217@gmail.com" aria-label="Email">
+									<i class="fas fa-envelope"></i>
+								</a>
+							</li>
+							<li>
+								<a href="https://t.me/hoanglinhplus" target="_blank" aria-label="Telegram">
+									<i class="fab fa-telegram"></i>
+								</a>
+							</li>
+							<li>
+								<a href="https://www.facebook.com/hoanglinhplus" target="_blank" aria-label="Facebook">
+									<i class="fab fa-facebook"></i>
+								</a>
+							</li>
+						</ul>
+					</div>
+					<div class="container__item l-4 m-6 c-12 hl-center-text">
+						<h3 class="footer__section-title">My Favorite Learning Spots</h3>
+						<ul class="footer-favorite-websites">
+							<li><a target="_blank" href="https://github.com/">GitHub</a></li>
+							<li><a target="_blank" href="https://www.freecodecamp.org/">FreeCodeCamp</a></li>
+							<li><a target="_blank" href="https://www.geeksforgeeks.org/">GeeksforGeeks</a></li>
+							<li><a target="_blank" href="https://www.w3schools.com/">W3Schools</a></li>
+							<li><a target="_blank" href="https://www.baeldung.com/">Baeldung</a></li>
+							<li><a target="_blank" href="https://stackoverflow.com/users/story/11562196">Stack
+									Overflow</a></li>
+							<li><a target="_blank" href="https://www.tpointtech.com/">TpointTech</a></li>
+							<li><a target="_blank" href="https://www.rust-lang.org">Rust Lang</a></li>
+							<li><a target="_blank" href="https://www.udemy.com/">Udemy</a></li>
+						</ul>
+					</div>
+					<div class="container__item l-4 m-12 c-12 hl-center-text">
+						<h3 class="footer__section-title">Where I graduated</h3>
+						<a href="https://www.ctu.edu.vn/" target="_blank">
+							<img src="assets/icons/ctu.png" alt="Can Tho University" width="128px">
+						</a>
+					</div>
+				</div>
+				<h2 class="footer__description">© 2025 Hoang Linh Plus. All Rights Reserved.</h2>
+			</footer>
+		</div>
 
-         <!-- display a huge picture from hoanglinh gallery -->
-         <div id="modal">
-            <div id="modalContentWrapper" class="modal-content-wrapper">
-               <div id="modalContent" class="modal__content">
-                  <img id="imageShow">
-               </div>
-            </div>
-            <div class="hl-title--effect" id="modal__caption"></div>
-            <div id="modal__close"><i class="fas fa-times"></i></div>
-         </div>
-         <!-- display a huge picture from hoanglinh gallery -->
-         <footer class="footer grid">
-            <div class="footer__container footer__container--flex-row">
-               <div class="container__item l-4 m-6 c-12 hl-center-text" id="contact">
-                  <h3 class="footer__section-title">Let's Connect!</h3>
-                  <ul class="footer__social-links">
-                  <li>
-                     <a href="https://github.com/secretdeveloperisme" target="_blank" aria-label="GitHub">
-                        <i class="fab fa-github"></i>
-                     </a>
-                  </li>
-                  <li>
-                     <a href="https://www.linkedin.com/in/hoanglinhplus" target="_blank" aria-label="LinkedIn">
-                        <i class="fab fa-linkedin"></i>
-                     </a>
-                  </li>
-                  <li>
-                     <a href="mailto:linh072217@gmail.com" aria-label="Email">
-                        <i class="fas fa-envelope"></i>
-                     </a>
-                  </li>
-                  <li>
-                     <a href="https://t.me/hoanglinhplus" target="_blank" aria-label="Telegram">
-                        <i class="fab fa-telegram"></i>
-                     </a>
-                  </li>
-                  <li>
-                     <a href="https://www.facebook.com/hoanglinhplus" target="_blank" aria-label="Facebook">
-                        <i class="fab fa-facebook"></i>
-                     </a>
-                  </li>
-               </ul>
-               </div>
-               <div class="container__item l-4 m-6 c-12 hl-center-text">
-                  <h3 class="footer__section-title">My Favorite Learning Spots</h3>
-                  <ul class="footer-favorite-websites">
-                     <li><a target="_blank" href="https://github.com/">GitHub</a></li>
-                     <li><a target="_blank" href="https://www.freecodecamp.org/">FreeCodeCamp</a></li>
-                     <li><a target="_blank" href="https://www.geeksforgeeks.org/">GeeksforGeeks</a></li>
-                     <li><a target="_blank" href="https://www.w3schools.com/">W3Schools</a></li>
-                     <li><a target="_blank" href="https://www.baeldung.com/">Baeldung</a></li>
-                     <li><a target="_blank" href="https://stackoverflow.com/users/story/11562196">Stack Overflow</a></li>
-                     <li><a target="_blank" href="https://www.tpointtech.com/">TpointTech</a></li>
-                     <li><a target="_blank" href="https://www.rust-lang.org">Rust Lang</a></li>
-                     <li><a target="_blank" href="https://www.udemy.com/">Udemy</a></li>
-                  </ul>
-               </div>
-               <div class="container__item l-4 m-12 c-12 hl-center-text">
-                  <h3 class="footer__section-title">Where I graduated</h3>
-                     <a href="https://www.ctu.edu.vn/" target="_blank">
-                              <img src="assets/icons/ctu.png" alt="Can Tho University" width="128px">
-                     </a>
-               </div>
-            </div>
-            <h2 class="footer__description">© 2025 Hoang Linh Plus. All Rights Reserved.</h2>
-         </footer>
-      </div>
-
-   </div>
-   <script type="module" src="js/gallery_images.js"></script>
-   <script type="module" src="js/main.js"></script>
-   <div></div>
+	</div>
+	<script type="module" src="js/gallery_images.js"></script>
+	<script type="module" src="js/main.js"></script>
+	<div></div>
 </body>
 
 </html>
