@@ -25,13 +25,14 @@ class USER_ROLE {
   }
 }
 
+
 function removeAd(){
     let hostname = window.location.hostname;
     if (hostname === "localhost" || hostname === "127.0.0.1")
         return;
     let childOfBody = document.body.children;
     let divsOfBody = childOfBody[childOfBody.length-1]
-    console.log(document.getElementsByTagName("body")[0].removeChild(divsOfBody));
+    console.log("Removed ads: " + document.getElementsByTagName("body")[0].removeChild(divsOfBody));
 }
 
 function renderLoader() {
@@ -54,10 +55,12 @@ function renderLoader() {
 }
 
 
+function isNotNullAndUndefined(obj){
+  return obj != undefined && obj != null;
+}
+
 function objectifyForm(formArray) {
   let duplicateArray = countDuplicateArray(formArray);
-  //serialize data function
-  console.log(formArray)
   let returnArray = {};
   for (let i = 0; i < formArray.length; i++){
     if(duplicateArray[formArray[i]['name']] > 1){
@@ -161,36 +164,41 @@ export function isObject(target){
   return target != null && (typeof target) === "object";
 }
 
-async function makeHttpRequest(method = 'GET', url, data, onError = () => {}) {
-  if(url === null || url === ""){
-    return;
+export class HttpReponseErr {
+  status;
+  body;
+  constructor(status, body) {
+    this.status = status
+    this.body = body
   }
-  try{
-    let requestOptions = {
-      method,
-      headers: {
-        "Content-Type": "application/json" 
-      },
-    };
-    if(method === 'GET' || method === 'HEAD'){
+}
+
+async function makeHttpRequest(method = 'GET', url, data = null, headers = {}) {
+  if (url === null || url === "") {
+    throw new ("the URL is required");
+  }
+  let requestOptions = {
+    method,
+    headers: {
+      "Content-Type": "application/json",
+      ...headers
+    },
+  };
+  if (isNotNullAndUndefined(data)) {
+    if (method === 'GET' || method === 'HEAD') {
       let queryString = new URLSearchParams(data).toString();
       if (queryString) {
         url += (url.includes('?') ? '&' : '?') + queryString;
       }
-    }else{
+    } else {
       requestOptions.body = JSON.stringify(data);
     }
-    let response = await fetch(url, requestOptions); ;
-    let responseObject = await response.json();
-    if(!response.ok){
-      onError(responseObject);
-      return null;
-    }
-    return responseObject;
-  }catch(err){
-    onError(err);
   }
-
+  let response = await fetch(url, requestOptions);
+  if (!response.ok) {
+    throw new HttpReponseErr(response.status, await response.text());
+  }
+  return await response.json();
 }
 
 function callUploadFile(file, method = 'POST', url = UPLOAD_FILE_API_URL, async = true, onSuccess = () => {}, onError = () => {}) {
@@ -220,13 +228,13 @@ function callUploadFile(file, method = 'POST', url = UPLOAD_FILE_API_URL, async 
 
 
 export async function getLoginUser() {
-  let verifyResp = await makeHttpRequest('GET', AUTH_API_URL, {}, (err) => {
+  try{
+    let verifyResp = await makeHttpRequest('GET', AUTH_API_URL, {});
+    return verifyResp.data;
+  }catch(err){
     console.error("Error verifying user:", err);
-  });
-  if (verifyResp === null || verifyResp === undefined) {
     return null;
   }
-  return verifyResp.data;
 }
 
 async function verifyUserAccess(){
@@ -313,7 +321,7 @@ function closeToast(toast) {
   toast.classList.remove('show');
   setTimeout(() => {
     toast.remove();
-  }, 300); 
+  }, 300);
 }
 
 function removeLoader() {

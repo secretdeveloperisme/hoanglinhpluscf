@@ -32,7 +32,7 @@ function createLiHeading(heading) {
   a.textContent = heading.textContent;
   li.appendChild(a);
   return li;
-}  
+}
 
 function buildTOC(contentEl, tocContainer) {
   let headings = Array.from(contentEl.querySelectorAll('h1, h2, h3, h4, h5'));
@@ -78,7 +78,7 @@ function buildTOC(contentEl, tocContainer) {
   if (!postId) return;
 
   try {
-    let post = await makeHttpRequest("GET", GET_POST_URL + postId)
+    let {data: post} = await makeHttpRequest("GET", GET_POST_URL + postId)
 
     if (post === null) {
       console.error(`Failed to get post with id ${postId}`);

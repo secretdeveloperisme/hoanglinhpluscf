@@ -128,7 +128,7 @@ switch ($method_action) {
                 $post_id = intval($_GET['id']);
                 $post = getPostById($connection, $post_id);
             }
-         
+
             if (!$post) {
                 respond_to_client(404, "Post not found");
                 exit;
@@ -136,7 +136,7 @@ switch ($method_action) {
 
             $post->tags = getPostTags($connection, $post->post_id);
             $post->attachments = getPostAttachments($connection, $post->post_id);
-            echo json_encode(new Post($post));
+            respond_to_client(200, "Post fetched successfully", new Post($post));
         } else {
             // Paging parameters
             $default_page_start = ConfigUtility::get("defaultPageStart", 1);
@@ -147,7 +147,7 @@ switch ($method_action) {
 
             // Filtering
             $where = ["deleted_at IS NULL"];
-            
+
             $params = [];
             $types = '';
 
@@ -174,7 +174,7 @@ switch ($method_action) {
             $select_columns = implode(",", Post::$SELECT_COLUMNS);
 
             // Add sort support
-            $order_by = "created_at DESC"; 
+            $order_by = "created_at DESC";
             if (isset($_GET['sort']) && strtolower($_GET['sort']) === 'oldest') {
                 $order_by = "created_at ASC";
             }
@@ -201,7 +201,7 @@ switch ($method_action) {
             $count_stmt = $connection->prepare($count_sql);
             $logger->debug("[getPosts] type: ".$types);
             $logger->debug("[getPosts] params: ".implode(",", $params));
-            
+
             if ($types !== '') {
                 // Remove last two 'i' for limit/offset
                 $count_types = substr($types, 0, -2);
@@ -213,8 +213,8 @@ switch ($method_action) {
             $count_result = $count_stmt->get_result();
             $total = $count_result->fetch_assoc()['total'];
 
-            echo json_encode([
-                "data" => $posts,
+            respond_to_client(200, "Posts fetched successfully", [
+                "posts" => $posts,
                 "paging" => [
                     "page" => $page,
                     "limit" => $limit,
@@ -228,8 +228,7 @@ switch ($method_action) {
         // Create a new post
         $data = json_decode(file_get_contents('php://input'), true);
         if (!isset($data['title'], $data['content'])) {
-            http_response_code(400);
-            echo json_encode(["error" => "Missing required fields"]);
+            respond_to_client(400, "Missing required fields");
             exit;
         }
         $title = $data['title'];
@@ -247,7 +246,7 @@ switch ($method_action) {
             respond_to_client(422, "Invalid post status: $post_status_str");
             exit;
         }
-    
+
         // Validation for create post
         $errors = [];
         if (empty($data['title']) || strlen($data['title']) > 255) {
@@ -289,8 +288,8 @@ switch ($method_action) {
             respond_to_client(422, "Validation errors", null, $errors);
             exit;
         }
-        
-        if($has_attachments){   
+
+        if($has_attachments){
             // Move files from temp to upload directory
             $filenames = [];
             foreach ($data['attachments'] as $att) {
@@ -299,17 +298,17 @@ switch ($method_action) {
                 }
             }
             if (!empty($filenames)) {
-                
+
                 $move_result = FileService::moveFilesToUpload($filenames);
                 if (!$move_result) {
                     $logger->error("Failed to move files: " . json_encode($filenames));
                     respond_to_client(500, "Failed to move files from temp to upload directory");
                     exit;
-                }                
+                }
 
-            }  
+            }
         }
-        
+
         $slug = PostUtility::generateSlug($title);
         if($has_attachments){
             $content = PostUtility::replaceText($content, PostUtility::$FILE_IS_TEMP_SEARCHING_TEXT, 'isTemp=false');
@@ -326,7 +325,7 @@ switch ($method_action) {
             }
             $cover_image = PostUtility::replaceText($cover_image, PostUtility::$FILE_IS_TEMP_SEARCHING_TEXT, 'isTemp=false');
         }
-        
+
 
         $stmt = $connection->prepare("INSERT INTO posts (title, description, content, cover_image, slug, author_id, post_status, reading_time) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
         $post_status_str = $post_status->toString();
@@ -372,7 +371,7 @@ switch ($method_action) {
                 respond_to_client(500, "Failed to retrieve newly created post");
                 exit;
             }
-            echo json_encode(["message" => "Post created", "Post" => $new_post]);
+            echo respond_to_client(200, "Creates the post successfully", $new_post);
         } else {
             $logger->error("Failed to create post: " . $stmt->error);
             respond_to_client(500, "Failed to create post");
@@ -382,8 +381,7 @@ switch ($method_action) {
     case 'POST_UPDATE': // PUT METHOD
         // Update a post
         if (!isset($_GET['id'])) {
-            http_response_code(400);
-            echo json_encode(["error" => "Missing post id"]);
+            respond_to_client(400, "Missing post id");
             exit;
         }
         $post_id = intval($_GET['id']);
@@ -431,14 +429,14 @@ switch ($method_action) {
         }
 
         $is_tags_changed = isTagsChanged($connection, $post_id, $data['tags']);
-        
+
         if (empty($fields) && $has_attachments_change && $is_tags_changed) {
             respond_to_client(400, "No fields to update");
             exit;
         }
         // Validate post fiedls before updating
         $errors = PostService::validatePostdata($data);
-        if (!empty($errors)) { 
+        if (!empty($errors)) {
             respond_to_client(422, "Validation errors", null, $errors);
             exit;
         }
@@ -452,10 +450,10 @@ switch ($method_action) {
             $data['slug'] = $orginal_post_map['slug'];
         }
 
-        
+
         $to_delete_ids = [];
 
-        if($has_attachments){   
+        if($has_attachments){
             // Remove old attachments that are not in the new data
             $existing_attachment_ids = array_map(function($att) {
                 return $att->attachment_id;
@@ -485,14 +483,14 @@ switch ($method_action) {
                     $logger->error("Failed to move files: " . json_encode($filenames));
                     respond_to_client(500, "Failed to move files from temp to upload directory");
                     exit;
-                }                
+                }
 
-            }  
+            }
             $params['content'] = PostUtility::replaceText($data['content'], PostUtility::$FILE_IS_TEMP_SEARCHING_TEXT, 'isTemp=false');
             $types['content'] = 's';
             $fields['content'] = '?';
         }
-        
+
         $cover_image = $data['cover_image'] ?? null;
         if(!PostUtility::isNullOrEmptyString($cover_image)){
             $logger->info("Cover image provided: $cover_image");
@@ -511,7 +509,7 @@ switch ($method_action) {
             $fields['cover_image'] = '?';
         }
 
-        $connection->begin_transaction();   
+        $connection->begin_transaction();
         $params['post_id'] = $post_id;
         $types ['post_id'] = 'i';
 
@@ -523,7 +521,7 @@ switch ($method_action) {
         $logger->debug("[updatePost] SQL: $sql");
         $logger->debug("[updatePost] type: ".implode("", $types));
         $stmt = $connection->prepare($sql);
-        
+
         $stmt->bind_param(implode("", array_values($types)), ...array_values($params));
 
         $post_update_result = $stmt->execute();
@@ -570,7 +568,7 @@ switch ($method_action) {
                     $delete_ids = implode(',', array_map('intval', $to_delete_ids));
                     $connection->query("DELETE FROM attachments WHERE attachment_id IN ($delete_ids)");
                 }
-        
+
                 $new_attachments = array_filter($data['attachments'], function($att) {
                     return !isset($att['file_id']);
                 });
@@ -590,7 +588,7 @@ switch ($method_action) {
             $connection->close();
             exit;
         }
-        
+
         $updated_post = getPostById($connection, $post_id);
         if (!$updated_post) {
             $logger->error("Failed to retrieve newly updated post with ID: $post_id");
@@ -602,13 +600,12 @@ switch ($method_action) {
         $connection->commit();
         $connection->close();
 
-        respond_to_client(200, "Post updated successfully", ["Post" => $updated_post]);
+        respond_to_client(200, "Post updated successfully", $updated_post);
         break;
     case 'POST_DELETE': // DELETE METHOD
         // Delete a post: soft delete by default, hard delete if isHard=true
         if (!isset($_GET['id'])) {
-            http_response_code(400);
-            echo json_encode(["error" => "Missing post id"]);
+            respond_to_client(400, "Missing post id");
             exit;
         }
         $post_id = intval($_GET['id']);
@@ -636,21 +633,19 @@ switch ($method_action) {
                 $stmt3->execute();
 
                 $connection->commit();
-                echo json_encode(["message" => "Post hard deleted"]);
+                respond_to_client(200, "Post hard deleted");
             } catch (Exception $e) {
                 $connection->rollback();
-                http_response_code(500);
-                echo json_encode(["error" => "Failed to hard delete post"]);
+                respond_to_client(500, "Failed to hard delete post");
             }
         } else {
             // Soft delete
             $stmt = $connection->prepare("UPDATE posts SET deleted_at = CURRENT_TIMESTAMP WHERE post_id = ? AND deleted_at IS NULL");
             $stmt->bind_param("i", $post_id);
             if ($stmt->execute()) {
-                echo json_encode(["message" => "Post soft deleted"]);
+                respond_to_client(200, "Post soft deleted");
             } else {
-                http_response_code(500);
-                echo json_encode(["error" => "Failed to delete post"]);
+                respond_to_client(500, "Failed to delete post");
             }
         }
         break;

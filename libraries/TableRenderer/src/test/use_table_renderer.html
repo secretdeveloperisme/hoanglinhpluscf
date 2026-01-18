@@ -70,7 +70,6 @@
         // This handler would simulate fetching data from a backend API
         // It's responsible for applying pagination and sorting itself.
         async function myCustomDataHandler(options) {
-            console.log("Custom Data Handler called with options:", options);
             const { page, itemsPerPage, sortColumn, sortDirection } = options;
 
             // Simulate API call delay
@@ -107,17 +106,13 @@
         // --- Example of a custom delete handler (for API integration) ---
         // This handler would simulate deleting data on a backend API
         async function myCustomDeleteSingleHandler(id) {
-            console.log("Custom Delete Handler called for IDs:", id);
             // Simulate API call delay for deletion
             await new Promise(resolve => setTimeout(resolve, 500));
-
-            console.log(`Simulating deletion of ID: ${id} from backend.`);
         }
 
         // --- Example of a custom add handler (for API integration) ---
         // This handler would simulate adding data to a backend API
         async function myCustomAddHandler(newRow) {
-            console.log("Custom Add Handler called for new row:", newRow);
             // Simulate API call delay for addition
             await new Promise(resolve => setTimeout(resolve, 500));
 

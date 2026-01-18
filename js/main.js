@@ -82,27 +82,19 @@ function enableScroll() {
 
 const QUOTES_API_URL = "api/quotes.php";
 
-let quoteSentenceTag = document.querySelector("#quoteSentence");
-let quoteAuthorTag = document.querySelector("#quoteAuthor")
+async function renderRandomQuote() {
+  let quoteSentenceTag = document.querySelector("#quoteSentence");
+  let quoteAuthorTag = document.querySelector("#quoteAuthor")
 
-fetch(`${QUOTES_API_URL}/?type=random`)
-  .then(response => {
-    try {
-      let isJsonRes = response.headers.get("Content-Type").includes("application/json");
-      if (!isJsonRes)
-        throw new Error("Response is not JSON");
-      return response.json();
-    } catch (error) {
-      console.error("Error parsing JSON: ", error);
-      throw error;
-    }
-  })
-  .then(quoteObject => {
-    quoteSentenceTag.textContent = quoteObject.content;
-    quoteAuthorTag.textContent = quoteObject.author;
-  })
-  .catch(error => console.error('Error fetching quotes: ', error));
-
+  try {
+    let {data: quote} = await makeHttpRequest("GET", `${QUOTES_API_URL}/?type=random`);
+    quoteSentenceTag.textContent = quote.content;
+    quoteAuthorTag.textContent = quote.author;
+  } catch (error) {
+    console.error('Error fetching quotes: ', error)
+  }
+}
+renderRandomQuote();
 
 /**
  * Section 3: Preview picture modal
@@ -172,7 +164,8 @@ initializeGalleryImagesModule();
  * Section 5:Get Posts
 */
 
-import { fetchPostData, createPostElement } from './common_post.js';
+import { fetchPostsData, createPostElement } from './common_post.js';
+import { makeHttpRequest } from './common.js';
 const postsContainer = document.getElementById('postsContainer');
 const noPostsMessage = document.getElementById('noPostsMessage');
 
@@ -193,7 +186,7 @@ function renderPosts(posts) {
 
 async function fetchAndRenderPosts() {
   try {
-    let { posts } = await fetchPostData(1, 6);
+    let { posts } = await fetchPostsData(1, 6);
 
     renderPosts(posts);
 

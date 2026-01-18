@@ -85,9 +85,9 @@
                 </form>
             </div>
         </div>
-    </section> 
+    </section>
     <script type="module">
-        import { showToast, makeHttpRequest } from '/js/common.js';
+        import { showToast, makeHttpRequest, HttpReponseErr } from '/js/common.js';
         const signinTitle = document.getElementById('siginTitle');
         const loginForm = document.getElementById('loginForm');
         const registerForm = document.getElementById('registerForm');
@@ -128,20 +128,25 @@
             const password = formData.get('password');
 
             try {
-                const response = await makeHttpRequest("POST", "/api/auth.php", { username, password }, err=>{
-                    errorMessage.textContent = err.message || 'Login failed!';
-                });
+                const response = await makeHttpRequest("POST", "/api/auth.php", { username, password });
                 if (response) {
                     showToast('success', 'Login', "Login successful!");
                     setTimeout(() => {
                         if (redirectUrl) {
                             window.location.href = redirectUrl;
-                        } else {    
-                            window.location.href = '/'; 
+                        } else {
+                            window.location.href = '/';
                         }
                     }, 2000);
                 }
-            } catch (error) {
+            }
+            catch (error) {
+                if(error instanceof HttpReponseErr){
+                    if(error.status === 401){
+                        errorMessage.textContent = 'Username or password is incorrect';
+                    }
+                    return;
+                }
                 errorMessage.textContent = 'An error occurred. Please try again.';
                 console.error('Error:', error);
             }
@@ -161,9 +166,7 @@
             }
 
             try {
-                const response = makeHttpRequest("POST", "/api/users.php", { username, email, password }, err=>{
-                    registerErrorMessage.textContent = err.message || 'Registration failed!';
-                })
+                const response = makeHttpRequest("POST", "/api/users.php", { username, email, password });
 
                 if (response) {
                     showToast('success', 'Register', "Registration successful!");

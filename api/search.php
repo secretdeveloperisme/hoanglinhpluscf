@@ -1,5 +1,6 @@
 <?php
 
+require_once __DIR__.'/utilities/HttpUtility.php';
 require_once __DIR__.'/connect_db.php';
 require_once __DIR__.'/entities/Post.php';
 require_once __DIR__.'/entities/Tag.php';
@@ -16,8 +17,7 @@ $type = isset($_GET['type']) ? strtolower($_GET['type']) : 'post';
 $query = isset($_GET['q']) ? trim($_GET['q']) : '';
 
 if (empty($query)) {
-    http_response_code(400);
-    echo json_encode(["error" => "Missing search query"]);
+    respond_to_client(400, "Missing search query");
     exit;
 }
 
@@ -37,7 +37,7 @@ switch ($type) {
         foreach ($posts as $post) {
             $cleanPosts[] = $post->get_object_without_null_property(ignore_null:true);
         }
-        echo json_encode(["data" => $cleanPosts]);
+        respond_to_client(200, "Posts fetched successfully", $cleanPosts);
         break;
 
     case 'tag':
@@ -52,12 +52,11 @@ switch ($type) {
         while ($row = $result->fetch_assoc()) {
             $tags[] = new Tag($row);
         }
-        echo json_encode(["data" => $tags]);
+        respond_to_client(200, "Tags fetched successfully", $tags);
         break;
 
     default:
-        http_response_code(400);
-        echo json_encode(["error" => "Invalid search type"]);
+        respond_to_client(400, "Invalid search type");
         break;
 }
 ?>

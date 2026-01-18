@@ -108,8 +108,6 @@ let interactConfigs = {
 
 
 function pasteImageMatcher(node, delta) {
-  console.log("node:", node);
-  console.log("delta: ", delta);
   const imgTags = node.querySelectorAll('img');
   delta.ops.forEach(op => {
     if (op.insert && typeof op.insert === 'object') {
@@ -175,11 +173,8 @@ function imageHandler() {
 function doAfterPasteContent(quill) {
   setTimeout(() => {
     const contents = quill.getContents();
-    console.log("Editor contents after paste:", contents);
-
     if (containsImage(contents)) {
-      console.log("An image was pasted!");
-      addResizeHandleToImages(); 
+      addResizeHandleToImages();
     }
   }, 1);
 }

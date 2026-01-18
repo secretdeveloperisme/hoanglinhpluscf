@@ -24,7 +24,7 @@ switch ($method_action) {
                 exit;
             }
             $quote = new Quote($result->fetch_assoc());
-            echo json_encode($quote);
+            respond_to_client(200, "Quote fetched successfully", $quote);
         }  else if(isset($_GET['type']) && $_GET['type'] === 'random') {
             // Get a random quote
             $result = $connection->query("SELECT id, content, author, created_at FROM quotes ORDER BY RAND() LIMIT 1");
@@ -33,7 +33,7 @@ switch ($method_action) {
                 exit;
             }
             $quote = new Quote($result->fetch_assoc());
-            echo json_encode($quote);
+            respond_to_client(200, "Quote fetched successfully", $quote);
         }
         else {
             // Get all quotes with pagination
@@ -54,8 +54,8 @@ switch ($method_action) {
             while ($row = $result->fetch_assoc()) {
                 $quotes[] = new Quote($row);
             }
-            echo json_encode([
-                "data" => $quotes,
+            respond_to_client(200, "Quotes fetched successfully", [
+                "quotes" => $quotes,
                 "paging" => [
                     "page" => $page,
                     "limit" => $limit,
@@ -73,14 +73,12 @@ switch ($method_action) {
             $stmt = $connection->prepare("INSERT INTO quotes (content, author) VALUES (?, ?)");
             $stmt->bind_param("ss", $data['content'], $data['author']);
             if ($stmt->execute()) {
-                echo json_encode(["message" => "Quote added successfully", "id" => $connection->insert_id]);
+                respond_to_client(201, "Quote added successfully", ["id" => $connection->insert_id]);
             } else {
-                http_response_code(500);
-                echo json_encode(["error" => "Failed to add quote"]);
+                respond_to_client(500, "Failed to add quote");
             }
         } else {
-            http_response_code(400);
-            echo json_encode(["error" => "Invalid input"]);
+            respond_to_client(400, "Invalid input");
         }
         break;
 
@@ -92,14 +90,12 @@ switch ($method_action) {
             $stmt = $connection->prepare("UPDATE quotes SET content = ?, author = ? WHERE id = ?");
             $stmt->bind_param("ssi", $data['content'], $data['author'], $id);
             if ($stmt->execute()) {
-                echo json_encode(["message" => "Quote updated successfully"]);
+                respond_to_client(200, "Quote updated successfully");
             } else {
-                http_response_code(500);
-                echo json_encode(["error" => "Failed to update quote"]);
+                respond_to_client(500, "Failed to update quote");
             }
         } else {
-            http_response_code(400);
-            echo json_encode(["error" => "Quote ID is required"]);
+            respond_to_client(400, "Quote ID is required");
         }
         break;
 
@@ -110,20 +106,17 @@ switch ($method_action) {
             $stmt = $connection->prepare("DELETE FROM quotes WHERE id = ?");
             $stmt->bind_param("i", $id);
             if ($stmt->execute()) {
-                echo json_encode(["message" => "Quote deleted successfully"]);
+                respond_to_client(200, "Quote deleted successfully");
             } else {
-                http_response_code(500);
-                echo json_encode(["error" => "Failed to delete quote"]);
+                respond_to_client(500, "Failed to delete quote");
             }
         } else {
-            http_response_code(400);
-            echo json_encode(["error" => "Quote ID is required"]);
+            respond_to_client(400, "Quote ID is required");
         }
         break;
 
     default:
-        http_response_code(405);
-        echo json_encode(["error" => "Method not allowed"]);
+        respond_to_client(405, "Method not allowed");
         break;
 }
 

@@ -8,11 +8,9 @@ document.addEventListener("DOMContentLoaded", async () => {
   if (!user || !user.user_id) {
     window.location.href = "/pages/login.html?redirect=" + encodeURIComponent(window.location.href);
   }
-
-  console.log("User logged in:", user);
   function checkOwnership(post) {
     if (user.role === "ADMIN") {
-      return true; 
+      return true;
     }
     if (post.author_id !== user.user_id) {
       console.error(`User ${user.user_id} does not own post ${post.post_id}`);
@@ -58,7 +56,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
     fileReader.readAsDataURL(this.files[0]);
   });
-  
+
 
 
   function setCaretToEnd(target) {
@@ -166,7 +164,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
     document.title = "Edit Post";
     try {
-      let post = await makeHttpRequest("GET", A_POST_URL + postId)
+      let {data: post} = await makeHttpRequest("GET", A_POST_URL + postId)
       if (post === null) {
         console.error(`Failed to get post with id ${postId}`);
         return;
@@ -268,7 +266,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     dataObject.content = JSON.stringify(editor.getContents());
     // remove unnecessary fields
     delete dataObject.postImage;
-    console.log("[preparePostPayload] postPayload:", dataObject);
     return dataObject;
   }
 
@@ -280,18 +277,20 @@ document.addEventListener("DOMContentLoaded", async () => {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(dataObject)
     })
-      .then(response => response.text().then(rawBody => {
-        console.log("Response from server:", rawBody);
+      .then(response => response.text())
+      .then(rawBody => {
         let jsonResp = parseJson(rawBody);
         if (jsonResp === null) {
           throw new Error("Invalid JSON response from server: " + rawBody);
         }
-        return { status: jsonResp.status, message: jsonResp.message, post: jsonResp.Post }
-      }))
+        return { status: jsonResp.status, message: jsonResp.message, post: jsonResp.data }
+      })
       .then(({ status, message, post }) => {
         if (status === 200) {
-          showToast("success", "Create Post", "Post created successfully!");
-          window.open(POST_DETAIL_URL + post.post_id, '_blank').focus();
+          showToast("success", "Create Post", "Post created successfully!, You will be redirected to the new post in a few moments");
+          setTimeout(() => {
+            window.location = POST_DETAIL_URL + post.post_id;
+          }, 1000);
         } else {
           showToast("error", "Create Post", "Failed to create post: " + message);
         }
@@ -309,19 +308,20 @@ document.addEventListener("DOMContentLoaded", async () => {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(dataObject)
     })
-      .then(response => response.text().then(rawBody => {
+      .then(response => response.text())
+      .then(rawBody => {
         let jsonResp = parseJson(rawBody);
         if (jsonResp === null) {
           throw new Error("Invalid JSON response from server: " + rawBody);
         }
-        return { status: jsonResp.status, message: jsonResp.message, post: jsonResp.Post }
-      }))
+        return { status: jsonResp.status, message: jsonResp.message, post: jsonResp.data }
+      })
       .then(({ status, message, post }) => {
         if (status == 200) {
           showToast("success", "Update Post", "Post updated successfully!");
           resetPostForm();
           loadPostData(postId);
-        } 
+        }
         else if(status === 403) {
           showToast('error', "Update Post", "You do not have permission to update this post.");
         }

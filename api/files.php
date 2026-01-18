@@ -20,8 +20,7 @@ if ($method_action === 'GET_DEFAULT') {
     $filename = isset($_GET['fileName']) ? basename($_GET['fileName']) : null;
 
     if (!$filename) {
-        http_response_code(400);
-        echo json_encode(['error' => 'No filename specified']);
+        respond_to_client(400, "No filename specified");
         exit;
     }
     $isTemp = isset($_GET['isTemp']) && $_GET['isTemp'] === 'true';
@@ -57,8 +56,8 @@ if ($method_action === 'POST_DEFAULT') {
     }
 
     $targetPath = $ENTRY_POINT . "?isTemp=true&fileName=" . urlencode($result['filename']);
-    
-    echo json_encode([
+
+    respond_to_client(200, "Files fetched successfully", [
         'success' => true,
         'filename' => $result['filename'],
         'fileType' => $result['fileType'],
@@ -86,7 +85,7 @@ if ($method_action === 'POST_DELETE') {
         exit;
     }
 
-    echo json_encode(['success' => true]);
+    respond_to_client(200, "File uploaded successfully", ['success' => true]);
     exit;
 }
 

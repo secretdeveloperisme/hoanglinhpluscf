@@ -1,6 +1,6 @@
 <?php
 
-function respond_to_client($status, $message, $data = null, $errors = null) {
+function respond_to_client($status = 200, $message = "The operation is successful", $data = null, $errors = null) {
     http_response_code($status);
 
     $data_response = [];

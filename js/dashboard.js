@@ -6,7 +6,7 @@ const QUOTES_API_URL = "/api/quotes.php";
 
 
 document.addEventListener('DOMContentLoaded', async () => {
-    
+
     if(await verifyAdminAccess() === false) {
         window.location.href = "/pages/login.html";
     }
@@ -96,7 +96,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 }
             },
             {
-                key: 'email', label: 'EMAIL', type: 'text', sortable: true, 
+                key: 'email', label: 'EMAIL', type: 'text', sortable: true,
             }
         ];
 
@@ -110,7 +110,6 @@ document.addEventListener('DOMContentLoaded', async () => {
             customDataHandler: loadUsersData,
             deleteSingleRowHandler: deleteSingleUserHandler,
         });
-        console.log(postsTable);
         try {
             postsTable._fetchAndRenderData();
         }
@@ -165,7 +164,6 @@ document.addEventListener('DOMContentLoaded', async () => {
             updateRowHandler: myCustomUpdateRowHandler,
             addRowHandler: myCustomAddHandler,
         });
-        console.log(postsTable);
         try {
             postsTable._fetchAndRenderData();
         }
@@ -188,7 +186,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 key: 'author', label: 'AUTHOR', type: 'text', sortable: true, center: true,
             },
             {
-                key: 'created_at', label: 'CREATED_AT', type: 'text', sortable: true, center: true, 
+                key: 'created_at', label: 'CREATED_AT', type: 'text', sortable: true, center: true,
             }
         ];
 
@@ -202,7 +200,6 @@ document.addEventListener('DOMContentLoaded', async () => {
             customDataHandler: loadQuotesData,
             deleteSingleRowHandler: deleteSingleQuoteHandler,
         });
-        console.log(postsTable);
         try {
             postsTable._fetchAndRenderData();
         }
@@ -218,18 +215,20 @@ document.addEventListener('DOMContentLoaded', async () => {
         request_users_url.set('sort', sortColumn);
         request_users_url.set('direction', sortDirection);
 
-        let response = await makeHttpRequest("GET", `${USERS_API_URL}?${request_users_url.toString()}`);
-        return response || {};
+        try{
+          let response = await makeHttpRequest("GET", `${USERS_API_URL}?${request_users_url.toString()}`);
+          return response?.data;
+        }catch(err){
+          console.error("Failed to get users: ", err)
+          return [];
+        }
     }
     async function loadUsersData(options) {
         const { page, itemsPerPage, sortColumn, sortDirection } = options;
-        let users = await getUsersFromServer(page, itemsPerPage, sortColumn, sortDirection);
-        let filteredAndSortedData = [...users?.data || []];
-        if (sortColumn && sortDirection) {
-
-        }
-        const total = users.paging?.total;
-        const totalPages = users.paging?.pages;
+        let usersRes = await getUsersFromServer(page, itemsPerPage, sortColumn, sortDirection);
+        let filteredAndSortedData = [...usersRes.users];
+        const total = usersRes.paging?.total;
+        const totalPages = usersRes.paging?.pages;
 
         return {
             data: filteredAndSortedData,
@@ -238,61 +237,65 @@ document.addEventListener('DOMContentLoaded', async () => {
         };
     }
 
-    async function deleteSingleUserHandler(id) {
-        let delete_user_params = new URLSearchParams({
-            action: 'delete',
-            id
-        });
-        let response = await makeHttpRequest("POST", `${USERS_API_URL}?${delete_user_params.toString()}`);
-        if (response) {
-            showToast("success", "Delete User", "User deleted successfully!");
-        } else {
-            showToast("error", "Delete User", "Failed to delete User. Please try again.");
-        }
+  async function deleteSingleUserHandler(id) {
+    let delete_user_params = new URLSearchParams({
+      action: 'delete',
+      id
+    });
+    try {
+      await makeHttpRequest("POST", `${USERS_API_URL}?${delete_user_params.toString()}`);
+      showToast("success", "Delete User", "User deleted successfully!");
+    } catch (error) {
+      showToast("error", "Delete User", "Failed to delete User. Please try again.");
     }
+  }
 
-    async function getPostsFromServer(page, itemsPerPage, sortColumn, sortDirection) {
-        let request_posts_url = new URLSearchParams();
-        request_posts_url.set('page', page);
-        request_posts_url.set('limit', itemsPerPage);
-        request_posts_url.set('sort', sortColumn);
-        request_posts_url.set('direction', sortDirection);
-
-        let response = await makeHttpRequest("GET", `${POSTS_API_URL}?${request_posts_url.toString()}`);
-        return response || {};
+  async function getPostsFromServer(page, itemsPerPage, sortColumn, sortDirection) {
+    let request_posts_url = new URLSearchParams();
+    request_posts_url.set('page', page);
+    request_posts_url.set('limit', itemsPerPage);
+    request_posts_url.set('sort', sortColumn);
+    request_posts_url.set('direction', sortDirection);
+    try {
+      let response = await makeHttpRequest("GET", `${POSTS_API_URL}?${request_posts_url.toString()}`);
+      return response.data;
+    } catch (error) {
+      console.error("Failed to get posts: ", error);
+      return [];
     }
-    async function loadPostsData(options) {
-        console.log("Custom Data Handler called with options:", options);
-        const { page, itemsPerPage, sortColumn, sortDirection } = options;
-        let posts = await getPostsFromServer(page, itemsPerPage, sortColumn, sortDirection);
-        let filteredAndSortedData = [...posts?.data || []];
-        if (sortColumn && sortDirection) {
+  }
+  async function loadPostsData(options) {
+    const { page, itemsPerPage, sortColumn, sortDirection } = options;
+    let postsRes = await getPostsFromServer(page, itemsPerPage, sortColumn, sortDirection);
+    let filteredAndSortedData = [...postsRes.posts];
+    if (sortColumn && sortDirection) {
 
-        }
-        const total = posts.paging?.total;
-        const totalPages = posts.paging?.pages;
-
-        return {
-            data: filteredAndSortedData,
-            totalItems: total,
-            totalPages
-        };
     }
+    const total = postsRes.paging?.total;
+    const totalPages = postsRes.paging?.pages;
 
-    async function deleteSingleRowHandler(id) {
-        console.log("Custom Delete Handler called for ID:", id);
-        let delete_post_params = new URLSearchParams({
-            action: 'delete',
-            isHard: false,
-            id
-        });
-        let response = await makeHttpRequest("POST", `${POSTS_API_URL}?${delete_post_params.toString()}`);
-        if (response) {
-            showToast("success", "Delete Post", "Post deleted successfully!");
-        } else {
-            showToast("error", "Delete Post", "Failed to delete post. Please try again.");
-        }
+    return {
+      data: filteredAndSortedData,
+      totalItems: total,
+      totalPages
+    };
+  }
+
+  async function deleteSingleRowHandler(id) {
+    console.log("Custom Delete Handler called for ID:", id);
+    let delete_post_params = new URLSearchParams({
+      action: 'delete',
+      isHard: false,
+      id
+    });
+    try {
+      await makeHttpRequest("POST", `${POSTS_API_URL}?${delete_post_params.toString()}`);
+      showToast("success", "Delete Post", "Post deleted successfully!");
+    } catch (error) {
+      console.error("Failed to delete post: ", error)
+      showToast("error", "Delete Post", "Failed to delete post. Please try again.");
     }
+  }
 
     function myCustomAddHandler() {
         window.location.href = `/pages/create_post.html`;
@@ -311,14 +314,19 @@ document.addEventListener('DOMContentLoaded', async () => {
         request_quotes_url.set('sort', sortColumn);
         request_quotes_url.set('direction', sortDirection);
 
-        let response = await makeHttpRequest("GET", `${QUOTES_API_URL}?${request_quotes_url.toString()}`);
-        return response || {};
+        try {
+          let response = await makeHttpRequest("GET", `${QUOTES_API_URL}?${request_quotes_url.toString()}`);
+          return response.data;
+        } catch (error) {
+          console.error("Failed to get quotes from server: ", error);
+          return [];
+        }
     }
     async function loadQuotesData(options) {
         console.log("Custom Data Handler called with options:", options);
         const { page, itemsPerPage, sortColumn, sortDirection } = options;
         let quotes = await getQuotesFromServer(page, itemsPerPage, sortColumn, sortDirection);
-        let filteredAndSortedData = [...quotes?.data || []];
+        let filteredAndSortedData = [...quotes.quotes];
         if (sortColumn && sortDirection) {
 
         }
@@ -337,11 +345,12 @@ document.addEventListener('DOMContentLoaded', async () => {
             action: 'delete',
             id
         });
-        let response = await makeHttpRequest("POST", `${QUOTES_API_URL}?${delete_quote_params.toString()}`);
-        if (response) {
-            showToast("success", "Delete Quote", "Quote deleted successfully!");
-        } else {
-            showToast("error", "Delete Quote", "Failed to delete Quote. Please try again.");
+        try {
+          await makeHttpRequest("POST", `${QUOTES_API_URL}?${delete_quote_params.toString()}`);
+          showToast("success", "Delete Quote", "Quote deleted successfully!");
+        } catch (error) {
+          console.error("Failed to delete the quote");
+          showToast("error", "Delete Quote", "Failed to delete Quote. Please try again.");
         }
     }
 

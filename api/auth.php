@@ -54,7 +54,7 @@ switch ($method_action) {
                     "role" => $user['role']
                 ]);
                 exit;
-                
+
             } else {
                 respond_to_client(401, message: "Invalid credentials");
                 exit;
@@ -101,7 +101,7 @@ switch ($method_action) {
                 ];
                 $newAccessToken = $authService->generateAccessToken($userPayload);
                 setcookie("access_token", $newAccessToken, time() + $authService->getAccessTokenExpiry(), "/", "", false, true);
-                echo json_encode([
+                respond_to_client(200, "Authentication successful", [
                     "message" => "Access token refreshed",
                     "access_token" => $newAccessToken
                 ]);

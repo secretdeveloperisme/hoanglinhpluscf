@@ -1,6 +1,6 @@
 
-import { getQueryParams, isEmptyString } from './common.js'
-import { createPostElement, fetchPostData } from './common_post.js';
+import { getQueryParams, isEmptyString, makeHttpRequest } from './common.js'
+import { createPostElement, fetchPostsData } from './common_post.js';
 
 
 const postsPerPage = 6;
@@ -93,6 +93,7 @@ function renderPagination() {
         currentPage = i;
         fetchAndRenderPosts();
       }
+      window.scrollTo({top: 0});
     });
     pagination.appendChild(li);
   }
@@ -126,12 +127,11 @@ async function fetchAndRenderPosts() {
   updateUrlParams();
   const url = buildApiUrl();
   try {
-    const res = await fetch(url);
-    const json = await res.json();
-
+    let response = await makeHttpRequest("GET", url);
+    let posts = response?.data?.posts;
+    let paging = response?.data?.paging;
     // Sort on client if needed
     const sortValue = sortSelect.value;
-    let posts = json.data || [];
     if (sortValue === 'latest') {
       posts.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
     } else {
@@ -139,7 +139,7 @@ async function fetchAndRenderPosts() {
     }
 
     filteredPosts = posts;
-    totalPages = json.paging ? json.paging.pages : 1;
+    totalPages = paging ? paging.pages : 1;
 
     // Collect all tags for filter dropdown
     let tagsSet = new Set();
@@ -154,6 +154,7 @@ async function fetchAndRenderPosts() {
     renderPagination();
     fillDataToFilterElements();
   } catch (e) {
+    console.error("Failed to get posts: ", e);
     postsContainer.innerHTML = '<div class="hl-text-center hl-text-danger">Failed to load posts.</div>';
     pagination.innerHTML = '';
   }

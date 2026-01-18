@@ -1,4 +1,4 @@
-import {timeFromNow } from '../js/common.js';
+import {makeHttpRequest, timeFromNow } from '../js/common.js';
 
 const POST_DETAIL_URL = '/pages/post_detail.html';
 const POSTS_API_URL = '/api/posts.php';
@@ -40,12 +40,11 @@ export function buildApiUrl(page = 1, itemsPerPage = 6) {
   return `${POSTS_API_URL}?${params.join('&')}`;
 }
 
-export async function fetchPostData(page = 1, itemsPerPage = 6, fetchDefault = true) {
+export async function fetchPostsData(page = 1, itemsPerPage = 6, fetchDefault = true) {
   const url = fetchDefault ? buildDefaultApiUrl() : buildApiUrl(page, itemsPerPage);
   try {
-    const res = await fetch(url);
-    const json = await res.json();
-    return { posts: json.data, paging: json.paging } || {};
+    let postsRes = await makeHttpRequest("GET", url);
+    return { posts: postsRes?.data?.posts, paging: postsRes?.data?.paging };
   } catch (e) {
     console.error('Failed to fetch posts:', e);
     throw new Error('Failed to load posts');
@@ -99,13 +98,11 @@ if (searchInput && searchDropdown) {
       return;
     }
 
-    debounceTimeout = setTimeout(() => {
-      fetch(`/api/search.php?type=post&q=${encodeURIComponent(query)}`)
-        .then(res => res.json())
-        .then(json => {
-          if (json.data && json.data.length > 0) {
-
-            searchDropdown.innerHTML = json.data.map(post =>
+    debounceTimeout = setTimeout(async () => {
+      try {
+          let postsRes = await makeHttpRequest("GET", `/api/search.php?type=post&q=${encodeURIComponent(query)}`)
+        if (postsRes.data && postsRes.data.length > 0) {
+            searchDropdown.innerHTML = postsRes.data.map(post =>
               `<a class="search-dropdown-item" href="${POST_DETAIL_URL}?id=${post.post_id}" target="_blank">${post.title}</a>`
             ).join('');
 
@@ -114,13 +111,12 @@ if (searchInput && searchDropdown) {
             searchDropdown.innerHTML = '<div class="search-dropdown-item">No results found.</div>';
             searchDropdown.style.display = 'block';
           }
-        })
-        .catch(error => {
-          console.error('Error fetching search results:', error);
-          searchDropdown.innerHTML = '<div class="search-dropdown-item">Error searching.</div>';
-          searchDropdown.style.display = 'block';
-        });
 
+      } catch (error) {
+        console.error('Error fetching search results:', error);
+        searchDropdown.innerHTML = '<div class="search-dropdown-item">Error searching.</div>';
+        searchDropdown.style.display = 'block';
+      }
     }, DEBOUNCE_TIMEOUT);
     document.addEventListener('click', function (e) {
       if (!searchInput.contains(e.target) && !searchDropdown.contains(e.target)) {

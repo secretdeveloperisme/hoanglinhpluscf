@@ -18,9 +18,8 @@
                 if (!response.ok) {
                     throw new Error('Network response was not ok ' + response.statusText);
                 }
-                
+
                 const users = await response.json();
-                console.log('All Users:', users);
             } catch (error) {
                 console.error('Error fetching users:', error);
             }
@@ -31,7 +30,6 @@
             try {
                 const response = await fetch(`${apiUrl}?id=${id}`);
                 const user = await response.json();
-                console.log(`User with ID ${id}:`, user);
             } catch (error) {
                 console.error(`Error fetching user with ID ${id}:`, error);
             }
@@ -48,7 +46,6 @@
                     body: JSON.stringify({ username, email, password }),
                 });
                 const result = await response.json();
-                console.log('User created:', result);
             } catch (error) {
                 console.error('Error creating user:', error);
             }
@@ -65,7 +62,6 @@
                     body: JSON.stringify({ email }),
                 });
                 const result = await response.json();
-                console.log(`User with ID ${id} updated:`, result);
             } catch (error) {
                 console.error(`Error updating user with ID ${id}:`, error);
             }
@@ -78,14 +74,13 @@
                     method: 'DELETE',
                 });
                 const result = await response.json();
-                console.log(`User with ID ${id} deleted:`, result);
             } catch (error) {
                 console.error(`Error deleting user with ID ${id}:`, error);
             }
         }
 
         // Example usage
-        
+
         getUserById(1);
         createUser('newuser', 'newuser@example.com', 'password123');
         getAllUsers();
