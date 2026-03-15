@@ -234,13 +234,18 @@ document.addEventListener("DOMContentLoaded", async () => {
     });
     if (!uploadImageResponse) {
       alert("Image upload failed. Please try again.");
-      return;
+      return null;
     }
-    return uploadImageResponse.filePath;
+    let filePath = uploadImageResponse?.data?.filePath;
+    return filePath != undefined? filePath:null;
   }
 
   function preparePostPayload() {
     postImagePath.value = callUploadPostImageCover();
+    if(postImagePath.value == null){
+      console.error("Failed to upload cover image, aborting post submission.");
+      return null;
+    }
     readingTime.value = calculateReadingTime(editor.getText());
 
     // Serialize form data
@@ -271,6 +276,10 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   function callCreatePost() {
     let dataObject = preparePostPayload();
+    if(dataObject == null){
+      showToast("error", "Create Post", "Failed to create post due to prepare post payload failed");
+      return;
+    }
 
     fetch(POST_API_URL, {
       method: "POST",
@@ -371,7 +380,4 @@ document.addEventListener("DOMContentLoaded", async () => {
       callUpdatePost(postId);
     });
   }
-
-
-
 });

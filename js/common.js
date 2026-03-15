@@ -266,19 +266,30 @@ export function calculateReadingTime(text) {
   return seconds;
 }
 
-// Display time from now in a human-readable format
-export function timeFromNow(date) {
-  const now = new Date();
-  const diff = now - new Date(date);
-  const seconds = Math.floor(diff / 1000);
-  const minutes = Math.floor(seconds / 60);
-  const hours = Math.floor(minutes / 60);
-  const days = Math.floor(hours / 24);
 
-  if (days > 0) return `${days} day${days > 1 ? 's' : ''} ago`;
-  if (hours > 0) return `${hours} hour${hours > 1 ? 's' : ''} ago`;
-  if (minutes > 0) return `${minutes} minute${minutes > 1 ? 's' : ''} ago`;
-  return `${seconds} second${seconds > 1 ? 's' : ''} ago`;
+export function timeFromNow(date) {
+  let seconds = Math.floor((new Date() - new Date(date)) / 1000);
+  let interval = seconds / 31536000;
+  if (interval > 1) {
+    return Math.floor(interval) + " years";
+  }
+  interval = seconds / 2592000;
+  if (interval > 1) {
+    return Math.floor(interval) + " months";
+  }
+  interval = seconds / 86400;
+  if (interval > 1) {
+    return Math.floor(interval) + " days";
+  }
+  interval = seconds / 3600;
+  if (interval > 1) {
+    return Math.floor(interval) + " hours";
+  }
+  interval = seconds / 60;
+  if (interval > 1) {
+    return Math.floor(interval) + " minutes";
+  }
+  return Math.floor(seconds) + " seconds";
 }
 
 function initToast(){

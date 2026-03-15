@@ -89,6 +89,12 @@ function buildTOC(contentEl, tocContainer) {
     }
     if (postTitle) postTitle.textContent = post.title;
     document.title = post.title;
+    document.querySelector('meta[name="description"]').setAttribute("content", post.description);
+    document.querySelector('meta[property="og:title"]').setAttribute("content", post.title);
+    document.querySelector('meta[property="og:description"]').setAttribute("content", post.description);
+    if (post.cover_image) {
+      document.querySelector('meta[property="og:image"]').setAttribute("content", post.cover_image);
+    }
     if (postCreatedAt) postCreatedAt.textContent = timeFromNow(post.created_at);
     if (postUpdatedAt) postUpdatedAt.textContent = timeFromNow(post.updated_at);
     if (tagsContainer && Array.isArray(post.tags)) {
