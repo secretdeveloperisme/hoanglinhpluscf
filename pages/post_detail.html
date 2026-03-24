@@ -2,79 +2,85 @@
 <html lang="en">
 
 <head>
-  <title>Post Detail</title>
-  <meta name="description" content="Post Description">
-  <meta charset="UTF-8">
-  <meta property="og:title" content="Post Title">
-  <meta property="og:description" content="Post Description">
-  <meta property="og:image" content="Post Cover Image">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="../assets/css/base.css">
-  <link rel="stylesheet" href="../assets/css/posts.css">
-  <link rel="stylesheet" href="../assets/css/common_post.css">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@11.11.1/styles/atom-one-dark.css">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&family=Lora:ital,wght@0,400..700;1,400..700&family=Playfair:ital,opsz,wght@0,5..1200,300..900;1,5..1200,300..900&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="../assets/css/quill.snow.css">
-  <link href="https://cdn.jsdelivr.net/npm/quill-table-better@1/dist/quill-table-better.css" rel="stylesheet" />
-  <script type="module" src="../js/common.js"></script>
-  <script src="../assets/libs/highlight_11-11-1.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/quill-table-better@1/dist/quill-table-better.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/js/all.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/interactjs@1.10.27/dist/interact.min.js"></script>
-  <script type="module" src="../js/editor_configurations.js"></script>
-  <script type="module" src="../js/post_detail.js"></script>
+    <title>Post Detail</title>
+    <meta name="description" content="Post Description">
+    <meta charset="UTF-8">
+    <meta property="og:title" content="Post Title">
+    <meta property="og:description" content="Post Description">
+    <meta property="og:image" content="Post Cover Image">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../assets/css/base.css">
+    <link rel="stylesheet" href="../assets/css/posts.css">
+    <link rel="stylesheet" href="../assets/css/common_post.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@11.11.1/styles/atom-one-dark.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&family=Lora:ital,wght@0,400..700;1,400..700&family=Playfair:ital,opsz,wght@0,5..1200,300..900;1,5..1200,300..900&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="../assets/css/quill.snow.css">
+    <link href="https://cdn.jsdelivr.net/npm/quill-table-better@1/dist/quill-table-better.css" rel="stylesheet" />
+    <script type="module" src="../js/common.js"></script>
+    <script src="../assets/libs/highlight_11-11-1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/quill-table-better@1/dist/quill-table-better.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/js/all.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/interactjs@1.10.27/dist/interact.min.js"></script>
+    <script type="module" src="../js/editor_configurations.js"></script>
+    <script type="module" src="../js/post_detail.js"></script>
 </head>
+
 <body>
-  <nav class="post-navbar">
-    <div class="container">
-        <div class="post-navbar-brand"><a href="/">Linh's Blog</a></div>
-        <div class="post-navbar-search search-group">
-            <input id="searchInput" class="form-control" type="search" placeholder="Search posts..." aria-label="Search">
-            <button id="btnSearch" class="btn-search" type="button">
-                <img src="../assets/icons/search-icon.svg" alt="search icon">
+    <nav class="post-navbar">
+        <div class="container">
+            <div class="post-navbar-brand"><a href="/">Linh's Blog</a></div>
+            <div class="post-navbar-search search-group">
+                <input id="searchInput" class="form-control" type="search" placeholder="Search posts..."
+                    aria-label="Search">
+                <button id="btnSearch" class="btn-search" type="button">
+                    <img src="../assets/icons/search-icon.svg" alt="search icon">
+                </button>
+                <div id="searchDropdown" class="search-dropdown"></div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="post-container">
+        <div class="main-content">
+            <img id="postCoverImage"
+                src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=800&q=80"
+                alt="Cover" class="cover-image">
+            <div class="title" id="postTitle">This is post tile</div>
+            <div class="meta">Created at: <span id="postCreatedAt">June 15, 2025</span></div>
+            <div class="meta">Updated at: <span id="postUpdatedAt">June 15, 2025</span></div>
+            <div class="tags" id="tagsContainer">
+                <span class="tag">Web Development</span>
+                <span class="tag">HTML</span>
+                <span class="tag">CSS</span>
+                <span class="tag">Tutorial</span>
+            </div>
+            <div class="description" id="postDescription">
+                Description: This is a brief description of the post. It provides an overview of the content and purpose
+                of the post.
+            </div>
+            <div class="content" id="postContent"></div>
+        </div>
+        <aside class="toc">
+            <div class="toc-wrapper" id="tocWrapper">
+                <h3 class="hl-center-text">Table of Contents</h3>
+                <div id="tableOfContent"></div>
+            </div>
+        </aside>
+    </div>
+    <div class="top-link">
+        <div class="btn-group-wrapper p-2 bg-white w-100">
+            <button class="button primary-button" onclick="window.scrollTo({top:0})">
+                <i class="fa fa-arrow-up" aria-hidden="true"></i>
             </button>
-            <div id="searchDropdown" class="search-dropdown"></div>
         </div>
     </div>
-  </nav>
-
-  <div class="post-container">
-    <div class="main-content">
-      <img id="postCoverImage"
-        src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=800&q=80" alt="Cover"
-        class="cover-image">
-      <div class="title" id="postTitle">This is post tile</div>
-      <div class="meta">Created at: <span id="postCreatedAt">June 15, 2025</span></div>
-      <div class="meta">Updated at: <span id="postUpdatedAt">June 15, 2025</span></div>
-      <div class="tags" id="tagsContainer">
-        <span class="tag">Web Development</span>
-        <span class="tag">HTML</span>
-        <span class="tag">CSS</span>
-        <span class="tag">Tutorial</span>
-      </div>
-      <div class="description" id="postDescription">
-        Description: This is a brief description of the post. It provides an overview of the content and purpose of the post.
-      </div>
-      <div class="content" id="postContent"></div>
-    </div>
-    <aside class="toc">
-      <div class="toc-wrapper" id="tocWrapper">
-        <h3 class="hl-center-text">Table of Contents</h3>
-        <div id="tableOfContent"></div>
-      </div>
-    </aside>
-  </div>
-  <div class="top-link">
-    <div class="btn-group-wrapper p-2 bg-white w-100">
-      <button class="button primary-button" onclick="window.scrollTo({top:0})">
-        <i class="fa fa-arrow-up" aria-hidden="true"></i>
-      </button>
-    </div>
-  <script type="module" src="../js/common_post.js"></script>
-  <div class="empty"></div>
+    <script type="module" src="../js/common_post.js"></script>
+    <div class="empty"></div>
 </body>
 
 </html>
