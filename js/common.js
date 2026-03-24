@@ -30,9 +30,13 @@ function removeAd(){
     let hostname = window.location.hostname;
     if (hostname === "localhost" || hostname === "127.0.0.1")
         return;
-    let childOfBody = document.body.children;
-    let divsOfBody = childOfBody[childOfBody.length-1]
-    console.log("Removed ads: " + document.getElementsByTagName("body")[0].removeChild(divsOfBody));
+    let childOfAdContainer = document.querySelector("body > div:last-child > a > img");
+    if(childOfAdContainer === null || childOfAdContainer === undefined)
+        return;
+
+    let adContainer = childOfAdContainer.parentElement.parentElement;
+    adContainer.remove();
+    console.dir("Removed ads: " + adContainer);
 }
 
 function renderLoader() {
@@ -358,14 +362,13 @@ function removeLoader() {
     }, 2000);
   }
 }
-window.removeLoader = removeLoader;
 
 // Initialize loader
 renderLoader();
 
 
+removeAd();
 document.addEventListener("DOMContentLoaded", ()=>{
-  removeAd();
   initToast();
   removeLoader();
 });
