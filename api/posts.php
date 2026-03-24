@@ -428,7 +428,7 @@ switch ($method_action) {
             }
         }
 
-        $is_tags_changed = isTagsChanged($connection, $post_id, $data['tags']);
+        $is_tags_changed = isTagsChanged($connection, $post_id, $data['tags'] ?? []);
 
         if (empty($fields) && $has_attachments_change && $is_tags_changed) {
             respond_to_client(400, "No fields to update");

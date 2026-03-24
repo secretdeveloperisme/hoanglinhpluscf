@@ -33,6 +33,9 @@ class CustomImage extends Image {
 
 Quill.register(Font, true);
 Quill.register(CustomImage, true);
+Quill.register({
+    'modules/table-better': QuillTableBetter
+}, true);
 
 // Quill toolbar options
 
@@ -69,6 +72,14 @@ let quillOptionsWithoutToolBar = {
       matchers: [
         ['img', pasteImageMatcher]
       ]
+    },
+    'table-better': {
+      language: 'en_US',
+      menus: ['column', 'row', 'merge', 'table', 'cell', 'wrap', 'copy', 'delete'],
+      toolbarTable: true
+    },
+    keyboard: {
+      bindings: QuillTableBetter.keyboardBindings
     }
   },
   placeholder: "Write your Post Here!",

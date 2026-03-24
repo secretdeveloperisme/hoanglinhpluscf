@@ -39,6 +39,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   const btnCreatePost = document.querySelector("#btnCreatePost");
   const btnSavePost = document.querySelector("#btnSavePost");
   const btnResetPost = document.querySelector("#btnResetPost");
+  const btnReview = document.querySelector("#btnReview");
   const attachmentContainer = document.getElementById('attachmentContainer');
 
   quillOptions.customEvents.doAfterInsertImage = addAttachment;
@@ -57,7 +58,8 @@ document.addEventListener("DOMContentLoaded", async () => {
     fileReader.readAsDataURL(this.files[0]);
   });
 
-
+  const quillBetterTableModule = editor.getModule('table-better');
+  window.quillBetterTableModule = quillBetterTableModule;
 
   function setCaretToEnd(target) {
     const range = document.createRange();
@@ -191,8 +193,8 @@ document.addEventListener("DOMContentLoaded", async () => {
           draftStatusRadio.checked = false;
           break;
       }
-
-      editor.setContents(post.content ? JSON.parse(post.content) : []);
+      let contentDelta = post.content ? JSON.parse(post.content) : [];
+      editor.updateContents(contentDelta);
       addResizeHandleToImages();
       readingTime.value = post.reading_time;
       postImagePath.value = post.cover_image || "";
@@ -268,7 +270,10 @@ document.addEventListener("DOMContentLoaded", async () => {
     if (dataObject.cover_image != undefined && isEmptyString(dataObject.cover_image)) {
       delete dataObject.cover_image;
     }
+    quillBetterTableModule.hideTools();
     dataObject.content = JSON.stringify(editor.getContents());
+    quillBetterTableModule.showTools()
+
     // remove unnecessary fields
     delete dataObject.postImage;
     return dataObject;
