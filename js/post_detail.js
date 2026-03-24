@@ -37,6 +37,12 @@ function createLiHeading(heading) {
 function buildTOC(contentEl, tocContainer) {
   let headings = Array.from(contentEl.querySelectorAll('h1, h2, h3, h4, h5'));
   if (!headings.length) return;
+  // Filters out headings that are inside other blocks
+  headings = headings.filter(heading => {
+    let parent = heading.parentElement;
+    if(parent.classList.contains('ql-editor')) return true;
+    return false;
+  });
 
   // Remove first header if it is level 3
   if (headings[0] && headings[0].tagName.toLowerCase() === 'h3') {

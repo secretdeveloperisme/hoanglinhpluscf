@@ -54,7 +54,7 @@ h1::selection, h2::selection,
 h3::selection, h4::selection,
 h5::selection, h6::selection,
 a::selection, button::selection,
-span::selection{
+li::selection, span::selection{
     color: var(--lighter--color--primary);
     background-color: var(--lighter--color--primary-alpha);
 }
