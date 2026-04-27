@@ -1,5 +1,5 @@
 /*
- * 
+ *
  * This SQL script creates a table named 'users' with the following fields:
  * - id: an auto-incrementing primary key
  * - username: a unique string for the user's name
@@ -15,6 +15,7 @@ CREATE TABLE users (
     email VARCHAR(100) NOT NULL UNIQUE,
     password VARCHAR(255) NOT NULL,
     role ENUM('ADMIN', 'USER') DEFAULT 'USER',
+    avatar_path VARCHAR(255),
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
@@ -95,7 +96,7 @@ CREATE TABLE post_tags (
     FOREIGN KEY (post_id) REFERENCES posts(post_id)
         ON DELETE CASCADE
         ON UPDATE CASCADE,
-    
+
     FOREIGN KEY (tag_id) REFERENCES tags(tag_id)
         ON DELETE CASCADE
         ON UPDATE CASCADE
