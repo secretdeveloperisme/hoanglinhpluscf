@@ -1,4 +1,5 @@
-import { makeHttpRequest, showToast, verifyAdminAccess } from "./common.js"
+import { makeHttpRequest, showToast } from "./common.js"
+import { verifyAdminAccess } from "./auth.js";
 import { TableRenderer } from "../assets/libs/table_renderer_v1.0.0.es.js";
 const USERS_API_URL = "/api/users.php";
 const POSTS_API_URL = "/api/posts.php";

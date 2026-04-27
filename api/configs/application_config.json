@@ -1,8 +1,8 @@
 {
-    "defaultPageStart": 1,
-    "defaultPageSize": 3,
-    "searchPageSize": 5,
-    "JWT_SECRET": "default_secret_key",
-    "ACCESS_TOKEN_EXPIRY": 900,
-    "REFRESH_TOKEN_EXPIRY": 604800
+  "defaultPageStart": 1,
+  "defaultPageSize": 3,
+  "searchPageSize": 5,
+  "JWT_SECRET": "default_secret_key",
+  "ACCESS_TOKEN_EXPIRY": 900,
+  "REFRESH_TOKEN_EXPIRY": 604800
 }

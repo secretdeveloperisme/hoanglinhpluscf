@@ -91,15 +91,14 @@ switch ($method_action) {
         // Generate new access token from refresh token
         if (isset($_COOKIE['refresh_token'])) {
             $refreshToken = $_COOKIE['refresh_token'];
-            $payload = $authService->verifyToken($refreshToken);
-            if ($payload !== false && isset($payload['id']) && isset($payload['username']) && isset($payload['role']) && isset($payload['type']) && $payload['type'] === 'refresh') {
-                // Remove iat, exp, type from payload for new access token
-                $userPayload = [
-                    'id' => $payload['id'],
-                    'username' => $payload['username'],
-                    'role' => $payload['role']
-                ];
-                $newAccessToken = $authService->generateAccessToken($userPayload);
+            $validJWTUser = $authService->verifyToken($refreshToken);
+            if ($validJWTUser !== false) {
+                // Remove iat, exp, type from validJWTUser for new access token
+                $newAccessToken = $authService->generateAccessToken([
+                    'id' => $validJWTUser->id,
+                    'username' => $validJWTUser->username,
+                    'role' => $validJWTUser->role
+                ]);
                 setcookie("access_token", $newAccessToken, time() + $authService->getAccessTokenExpiry(), "/", "", false, true);
                 respond_to_client(200, "Authentication successful", [
                     "message" => "Access token refreshed",

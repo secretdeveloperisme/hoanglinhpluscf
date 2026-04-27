@@ -1,4 +1,5 @@
-import { UPLOAD_FILE_API_URL, objectifyForm, callUploadFile, calculateReadingTime, makeHttpRequest, isEmptyString, showToast, getLoginUser,verifyUserAccess, parseJson } from "./common.js";
+import { getLoginUser } from "./auth.js";
+import { UPLOAD_FILE_API_URL, objectifyForm, callUploadFile, calculateReadingTime, makeHttpRequest, isEmptyString, showToast, parseJson } from "./common.js";
 import { quillOptions, attachments,  addResizeHandleToImages} from "./editor_configurations.js";
 
 

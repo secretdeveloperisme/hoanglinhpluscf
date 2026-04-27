@@ -19,7 +19,7 @@ class AuthService
         }
         return AuthService::$authService;
     }
-   
+
     public function __construct()
     {
         $this->jwtUtility = JWTUtility::get_instance();
@@ -41,8 +41,9 @@ class AuthService
     {
         $payload = $userPayload;
         $payload['type'] = 'access';
-        $payload['iat'] = time();
-        $payload['exp'] = time() + $this->accessTokenExpiry;
+        $nowUtc = time();
+        $payload['iat'] = $nowUtc;
+        $payload['exp'] = $nowUtc + $this->accessTokenExpiry;
         return $this->jwtUtility->encode($payload);
     }
 
@@ -50,8 +51,9 @@ class AuthService
     {
         $payload = $userPayload;
         $payload['type'] = 'refresh';
-        $payload['iat'] = time();
-        $payload['exp'] = time() + $this->refreshTokenExpiry;
+        $nowUtc = time();
+        $payload['iat'] = $nowUtc;
+        $payload['exp'] = $nowUtc + $this->refreshTokenExpiry;
         return $this->jwtUtility->encode($payload);
     }
 

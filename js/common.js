@@ -1,30 +1,7 @@
+import { scheduleRefreshToken } from "./auth.js";
+
 const UPLOAD_FILE_API_URL = "/api/files.php";
 const AUTH_API_URL = "/api/auth.php";
-
-class USER_ROLE {
-  static ADMIN = "admin";
-  static USER = "user";
-  static GUEST = "guest";
-  static isAdmin(role){
-    if (role === null || role === undefined) {
-      return false;
-    }
-    if (typeof role !== "string") {
-      return false;
-    }
-    return role.toLowerCase() === USER_ROLE.ADMIN;
-  }
-  static isUser(role){
-    if (role === null || role === undefined) {
-      return false;
-    }
-    if (typeof role !== "string") {
-      return false;
-    }
-    return role.toLowerCase() === USER_ROLE.USER;
-  }
-}
-
 
 function removeAd(){
     let hostname = window.location.hostname;
@@ -230,38 +207,6 @@ function callUploadFile(file, method = 'POST', url = UPLOAD_FILE_API_URL, async 
   xhr.send(form);
 }
 
-
-export async function getLoginUser() {
-  try{
-    let verifyResp = await makeHttpRequest('GET', AUTH_API_URL, {});
-    return verifyResp.data;
-  }catch(err){
-    console.error("Error verifying user:", err);
-    return null;
-  }
-}
-
-async function verifyUserAccess(){
-  let user = await getLoginUser();
-  if (user === null || user === undefined) {
-    return false;
-  }
-  return true;
-}
-
-async function verifyAdminAccess(){
-  let user = await getLoginUser();
-  if (user === null || user === undefined) {
-    return false;
-  }
-
-  if(USER_ROLE.isAdmin(user.role)){
-    return true;
-  }
-  return false;
-}
-
-
 // Calculate reading time in seconds unit for a given text
 export function calculateReadingTime(text) {
   const wordsPerMinute = 200; // Average reading speed
@@ -371,6 +316,7 @@ removeAd();
 document.addEventListener("DOMContentLoaded", ()=>{
   initToast();
   removeLoader();
+  scheduleRefreshToken();
 });
 
-export {UPLOAD_FILE_API_URL, objectifyForm, callUploadFile, makeHttpRequest, showToast, verifyAdminAccess, verifyUserAccess };
+export {UPLOAD_FILE_API_URL, objectifyForm, callUploadFile, makeHttpRequest, showToast };
