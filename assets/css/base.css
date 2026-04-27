@@ -4,6 +4,10 @@
     --pale-black-color:#333;
     --background-color:#f1f1f1;
     --primary-color: green;
+
+    --primary-text-color: #333;
+    --secondary-text-color: #fff;
+
     --0-palette: #6E3CBC;
     --1-palette: #7267CB;
     --2-palette: #98BAE7;
@@ -154,6 +158,19 @@ li::selection, span::selection{
     justify-content: center;
     align-items: center;
 }
+
+.hl-horizontal-center{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.hl-vertical-center{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
 .hl-title--effect{
     font-family: 'Playfair Display',serif;
     text-align: center;
@@ -175,6 +192,9 @@ li::selection, span::selection{
 .hl-color-text{
     color: #333;
 }
+.hl-text-white{
+    color: var(--white-color);
+}
 
 .hl-text-center { text-align: center; }
 .hl-text-muted { color: #6c757d; }
@@ -184,10 +204,20 @@ li::selection, span::selection{
 }
 
 
-/* Teplate */
+/* Template */
 .img-x32{
     width: 32px;
     height: 32px;
+}
+
+.img-x64{
+    width: 64px;
+    height: 64px;
+}
+
+.img-x128{
+    width: 128px;
+    height: 128px;
 }
 
 .responsive--image{
@@ -195,6 +225,10 @@ li::selection, span::selection{
     height: auto;
     object-fit: contain;
     object-position: center;
+}
+
+.hl-rounded-full{
+    border-radius: 100%;
 }
 .pill{
     border-radius: 50px;
@@ -493,6 +527,15 @@ li::selection, span::selection{
   background-repeat: no-repeat;
   box-sizing: border-box;
   animation: rotationBack 4s linear infinite reverse;
+}
+
+/* Components Template */
+
+.primary-border{
+    border-radius: 100%;
+    overflow: hidden;
+    color: black;
+    border: 2px solid var(--primary-color);
 }
 
 

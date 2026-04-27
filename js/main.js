@@ -166,6 +166,7 @@ initializeGalleryImagesModule();
 
 import { fetchPostsData, createPostElement } from './common_post.js';
 import { makeHttpRequest } from './common.js';
+import { getLoggedInUserFromStorage } from './auth.js';
 const postsContainer = document.getElementById('postsContainer');
 const noPostsMessage = document.getElementById('noPostsMessage');
 
@@ -199,3 +200,37 @@ async function fetchAndRenderPosts() {
 
 fetchAndRenderPosts();
 
+/* Get current loggedin user to display on navigation bar */
+
+async function showCurrentUserOnNavBar() {
+  const userAvatarImgs = document.querySelectorAll(".user-avatar-img");
+  const userInfoWrappers = document.querySelectorAll(".user-info-wrapper");
+  const userUsernames = document.querySelectorAll(".user-username");
+  const userMyProfileLinks = document.querySelectorAll(".user-my-profile-link");
+  const userMyPostsLinks = document.querySelectorAll(".user-my-posts-link");
+
+  const currentUser = await getLoggedInUserFromStorage();
+  if(currentUser == null){
+    return;
+  }
+
+  userAvatarImgs.forEach(img => {
+    img.src = currentUser.avatar_path || "/assets/icons/user.png";
+  });
+
+  userInfoWrappers.forEach(wrapper => {
+    wrapper.style.display = "flex";
+  });
+
+  userUsernames.forEach(usernameTag => {
+    usernameTag.textContent = currentUser.username || "User";
+  });
+  userMyPostsLinks.forEach(link => {
+    link.href = `pages/my_posts.html?user_id=${currentUser.id}`;
+  });
+  userMyProfileLinks.forEach(link => {
+    link.href = `pages/profile.html?user_id=${currentUser.id}`;
+  });
+}
+
+showCurrentUserOnNavBar();

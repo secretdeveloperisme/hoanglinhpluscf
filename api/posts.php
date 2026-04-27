@@ -11,6 +11,7 @@ require_once __DIR__.'/entities/Attachment.php';
 require_once __DIR__.'/services/FileService.php';
 require_once __DIR__.'/services/PostService.php';
 require_once __DIR__.'/utilities/Logger.php';
+require_once __DIR__.'/utilities/FileUtility.php';
 require_once __DIR__.'/utilities/CommonUtility.php';
 require_once __DIR__.'/utilities/HttpUtility.php';
 require_once __DIR__.'/utilities/ConfigUtility.php';
@@ -249,7 +250,7 @@ switch ($method_action) {
 
         // Validation for create post
         $errors = [];
-        if (empty($data['title']) || strlen($data['title']) > 255) {
+        if (CommonUtility::isNullOrEmptyString($data['title']) || strlen($data['title']) > 255) {
             $errors[] = "Title is required and must be less than 255 characters.";
         }
         if (isset($data['description']) && strlen($data['description']) > 1000) {
@@ -311,19 +312,19 @@ switch ($method_action) {
 
         $slug = PostUtility::generateSlug($title);
         if($has_attachments){
-            $content = PostUtility::replaceText($content, PostUtility::$FILE_IS_TEMP_SEARCHING_TEXT, 'isTemp=false');
+            $content = PostUtility::replaceText($content, FileUtility::$FILE_IS_TEMP_SEARCHING_TEXT, 'isTemp=false');
         }
 
-        if(!PostUtility::isNullOrEmptyString($cover_image)){
+        if(!CommonUtility::isNullOrEmptyString($cover_image)){
             $logger->info("Cover image provided: $cover_image");
-            $cover_image_filename = PostUtility::extractFileNameFromUrl($cover_image);
+            $cover_image_filename = FileUtility::extractFileNameFromUrl($cover_image);
             $move_result = FileService::moveFilesToUpload([$cover_image_filename]);
             if (!$move_result) {
                 $logger->error("Failed to move cover image: $cover_image_filename");
                 respond_to_client(500, "Failed to move cover image from temp to upload directory");
                 exit;
             }
-            $cover_image = PostUtility::replaceText($cover_image, PostUtility::$FILE_IS_TEMP_SEARCHING_TEXT, 'isTemp=false');
+            $cover_image = PostUtility::replaceText($cover_image, FileUtility::$FILE_IS_TEMP_SEARCHING_TEXT, 'isTemp=false');
         }
 
 
@@ -356,7 +357,7 @@ switch ($method_action) {
             if ($has_attachments) {
                 foreach ($data['attachments'] as $att) {
                     if (isset($att['file_name'], $att['file_url'], $att['file_type'])) {
-                        $new_file_url = PostUtility::replaceText($att['file_url'], PostUtility::$FILE_IS_TEMP_SEARCHING_TEXT, 'isTemp=false');
+                        $new_file_url = PostUtility::replaceText($att['file_url'], FileUtility::$FILE_IS_TEMP_SEARCHING_TEXT, 'isTemp=false');
                         $att_stmt = $connection->prepare("INSERT INTO attachments (post_id, file_name, file_url, file_type) VALUES (?, ?, ?, ?)");
                         $att_stmt->bind_param("isss", $post_id, $att['file_name'], $new_file_url, $att['file_type']);
                         $att_stmt->execute();
@@ -486,15 +487,15 @@ switch ($method_action) {
                 }
 
             }
-            $params['content'] = PostUtility::replaceText($data['content'], PostUtility::$FILE_IS_TEMP_SEARCHING_TEXT, 'isTemp=false');
+            $params['content'] = PostUtility::replaceText($data['content'], FileUtility::$FILE_IS_TEMP_SEARCHING_TEXT, 'isTemp=false');
             $types['content'] = 's';
             $fields['content'] = '?';
         }
 
         $cover_image = $data['cover_image'] ?? null;
-        if(!PostUtility::isNullOrEmptyString($cover_image)){
+        if(!CommonUtility::isNullOrEmptyString($cover_image)){
             $logger->info("Cover image provided: $cover_image");
-            $cover_image_filename = PostUtility::extractFileNameFromUrl($cover_image);
+            $cover_image_filename = FileUtility::extractFileNameFromUrl($cover_image);
             $move_result = FileService::moveFilesToUpload([$cover_image_filename]);
             if (!$move_result) {
                 $connection->close();
@@ -502,7 +503,7 @@ switch ($method_action) {
                 respond_to_client(500, "Failed to move cover image from temp to upload directory");
                 exit;
             }
-            $cover_image = PostUtility::replaceText($cover_image, PostUtility::$FILE_IS_TEMP_SEARCHING_TEXT, 'isTemp=false');
+            $cover_image = PostUtility::replaceText($cover_image, FileUtility::$FILE_IS_TEMP_SEARCHING_TEXT, 'isTemp=false');
             $logger->debug("Cover image after replacement: $cover_image");
             $params['cover_image'] = $cover_image;
             $types['cover_image'] = 's';

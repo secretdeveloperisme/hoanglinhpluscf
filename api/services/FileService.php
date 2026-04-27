@@ -12,13 +12,13 @@ class FileService
 {
     private static $uploadDir;
     private static $tempDir;
-    static $logger ;
+    static $logger;
 
     public static function init($uploadDir, $tempDir)
     {
         self::$uploadDir = $uploadDir;
         self::$tempDir = $tempDir;
-        
+
     }
 
     public static function getFile($filename, $isTemp)
@@ -43,25 +43,30 @@ class FileService
     }
 
 
-    public static function moveFilesToUpload($filenames)
+    public static function moveFilesToUpload($filenames): bool
     {
-        foreach ($filenames as $filename) {
-            $tempFilePath = self::$tempDir . $filename;
-            $uploadFilePath = self::$uploadDir . $filename;
+        try{
+            foreach ($filenames as $filename) {
+                $tempFilePath = self::$tempDir . $filename;
+                $uploadFilePath = self::$uploadDir . $filename;
 
-            if (!file_exists($tempFilePath)) {
-                return false;
-            }
+                if (!file_exists($tempFilePath)) {
+                    return false;
+                }
 
-            if (!is_dir(self::$uploadDir)) {
-                mkdir(self::$uploadDir, 0777, true);
-            }
+                if (!is_dir(self::$uploadDir)) {
+                    mkdir(self::$uploadDir, 0777, true);
+                }
 
-            if (!rename($tempFilePath, $uploadFilePath)) {
-                return false;
+                if (!rename($tempFilePath, $uploadFilePath)) {
+                    return false;
+                }
             }
+            return true;
+        }catch(Exception $e) {
+            FileService::$logger->error("Error moving files to upload: " . $e->getMessage());
+            return false;
         }
-        return true;
     }
 
     public static function uploadFile($file)

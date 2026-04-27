@@ -1,5 +1,8 @@
 import { showToast, makeHttpRequest, HttpReponseErr } from './common.js';
-import { AUTH_API_URL, scheduleRefreshToken, storeTokenExpiry, getTokenExpiry } from './auth.js';
+import { AUTH_API_URL, scheduleRefreshToken, storeTokenExpiry, getTokenExpiry, login, saveLoggedInUser } from './auth.js';
+
+import { UPLOAD_FILE_API_URL, callUploadFile } from './common.js';
+
 const signinTitle = document.getElementById('siginTitle');
 const loginForm = document.getElementById('loginForm');
 const registerForm = document.getElementById('registerForm');
@@ -8,6 +11,39 @@ const showLoginFormButton = document.getElementById('showLoginForm');
 const errorMessage = document.getElementById('errorMessage');
 const registerErrorMessage = document.getElementById('registerErrorMessage');
 let redirectUrl = new URLSearchParams(window.location.search).get('redirect');
+
+// Avatar upload logic
+const avatarInput = document.getElementById('avatar');
+const avatarPathInput = document.getElementById('avatarPath');
+const previewAvatarImage = document.getElementById('previewAvatarImage');
+const defaultAvatarIcon = '../assets/icons/upload.svg';
+
+if (avatarInput && previewAvatarImage && avatarPathInput) {
+  avatarInput.addEventListener('change', function (event) {
+    const file = avatarInput.files[0];
+    if (!file) return;
+    // Preview
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      previewAvatarImage.src = e.target.result;
+    };
+    reader.readAsDataURL(file);
+    // Upload
+    callUploadFile(file, 'POST', UPLOAD_FILE_API_URL, false, (res) => {
+      if (res && res.data && res.data.filePath) {
+        avatarPathInput.value = res.data.filePath;
+      } else {
+        avatarPathInput.value = '';
+        previewAvatarImage.src = defaultAvatarIcon;
+        registerErrorMessage.textContent = 'Failed to upload avatar.';
+      }
+    }, (err) => {
+      avatarPathInput.value = '';
+      previewAvatarImage.src = defaultAvatarIcon;
+      registerErrorMessage.textContent = 'Failed to upload avatar.';
+    });
+  });
+}
 
 showRegisterFormButton.addEventListener('click', () => {
   loginForm.classList.add('fade-out');
@@ -40,13 +76,14 @@ loginForm.addEventListener('submit', async (e) => {
   const password = formData.get('password');
 
   try {
-    const response = await makeHttpRequest("POST", AUTH_API_URL, { username, password });
-    if (response) {
+    const userCredential = await login({ username, password });
+    if (userCredential) {
       showToast('success', 'Login', "Login successful!");
-      if(response?.data?.access_token){
-        const expiry = getTokenExpiry(response.data.access_token);
+      if(userCredential?.accessToken){
+        const expiry = getTokenExpiry(userCredential.accessToken);
         storeTokenExpiry(expiry);
       }
+      saveLoggedInUser(userCredential.userInfo);
       setTimeout(() => {
         if (redirectUrl) {
           window.location.href = redirectUrl;
@@ -75,6 +112,7 @@ registerForm.addEventListener('submit', async (e) => {
   const email = formData.get('email');
   const password = formData.get('password');
   const retypePassword = formData.get('retype_password');
+  const avatar_path = formData.get('avatar_path') || '';
 
   if (password !== retypePassword) {
     registerErrorMessage.textContent = 'Passwords do not match!';
@@ -82,7 +120,7 @@ registerForm.addEventListener('submit', async (e) => {
   }
 
   try {
-    const response = await makeHttpRequest("POST", "/api/users.php", { username, email, password });
+    const response = await makeHttpRequest("POST", "/api/users.php", { username, email, password, avatar_path });
 
     if (response) {
       showToast('success', 'Register', "Registration successful!");
@@ -92,7 +130,7 @@ registerForm.addEventListener('submit', async (e) => {
         registerErrorMessage.textContent = '';
       }, 2000);
     } else {
-      registerErrorMessage.textContent = result.error || 'Registration failed!';
+      registerErrorMessage.textContent = response?.error || 'Registration failed!';
     }
   } catch (error) {
     registerErrorMessage.textContent = 'An error occurred. Please try again.';

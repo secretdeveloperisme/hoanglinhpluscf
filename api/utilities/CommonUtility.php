@@ -3,6 +3,12 @@
 require_once __DIR__ .'/JWTUtility.php';
 class CommonUtility
 {
+     // check string is null or empty
+    public static function isNullOrEmptyString($string)
+    {
+        return !isset($string) || trim($string) === '';
+    }
+
     public static function findExistenceIds($ids, $allIds){
         $data = [];
         if (!is_array($allIds) || empty($allIds)) {
@@ -33,7 +39,7 @@ class CommonUtility
         $data['existing'] = $existingId;
         $data['not_existing'] = $notExistingIds;
         return $data;
-       
+
     }
 
     public static function getUserFromTokenCookie(): JwtUser|null {

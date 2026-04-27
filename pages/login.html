@@ -63,6 +63,15 @@
                 </form>
 
                 <form id="registerForm" class="form" style="display: none;">
+                    <div class="avatar-wrapper inputBox hl-vertical-center" id="imageUpload">
+                        <p class="hl-text-white hl-margin-bottom-md">Avatar</p>
+                        <input type="file" name="avatar" hidden accept="image/*" id="avatar">
+                        <input type="hidden" name="avatar_path" id="avatarPath">
+                        <label class="avatar-image-wrapper" for="avatar">
+                            <img class="avatar-image img-x128" id="previewAvatarImage" src="../assets/icons/upload.svg"
+                            alt="avatar image">
+                        </label>
+                    </div>
                     <div class="inputBox">
                         <input type="text" name="username" required class="form-control-input"> <i>Username</i>
                     </div>

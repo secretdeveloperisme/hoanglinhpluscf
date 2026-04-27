@@ -4,6 +4,9 @@ require_once __DIR__.'/entities/User.php';
 require_once __DIR__.'/utilities/HttpUtility.php';
 require_once __DIR__.'/utilities/ConfigUtility.php';
 require_once __DIR__.'/utilities/CommonUtility.php';
+require_once __DIR__.'/utilities/PostUtility.php';
+require_once __DIR__.'/utilities/FileUtility.php';
+require_once __DIR__.'/services/FileService.php';
 
 
 
@@ -41,7 +44,7 @@ switch ($method_action) {
                 respond_to_client(403, "Forbidden: You do not have permission to access this user");
                 exit;
             }
-            $stmt = $connection->prepare("SELECT id, username, role, email FROM users WHERE id = ?");
+            $stmt = $connection->prepare("SELECT id, username, role, email, avatar_path FROM users WHERE id = ?");
             $stmt->bind_param("i", $id);
             $stmt->execute();
             $result = $stmt->get_result();
@@ -66,7 +69,7 @@ switch ($method_action) {
             $total_result = $connection->query("SELECT COUNT(*) as total FROM users");
             $total_users = $total_result->fetch_assoc()['total'];
 
-            $stmt = $connection->prepare("SELECT id, username, role, email FROM users LIMIT ? OFFSET ?");
+            $stmt = $connection->prepare("SELECT id, username, role, email, avatar_path FROM users LIMIT ? OFFSET ?");
             $stmt->bind_param("ii", $limit, $offset);
             $stmt->execute();
             $result = $stmt->get_result();
@@ -88,10 +91,22 @@ switch ($method_action) {
 
     case 'POST_DEFAULT':
         // Create a new user with a password
-        $data = json_decode(file_get_contents("php://input"), true);
-        $hashedPassword = password_hash($data['password'], PASSWORD_BCRYPT);
-        $stmt = $connection->prepare("INSERT INTO users (username, email, password) VALUES (?, ?, ?)");
-        $stmt->bind_param("sss", $data['username'], $data['email'], $hashedPassword);
+        $user = User::fromJson(file_get_contents("php://input"));
+        $hashedPassword = password_hash($user->password, PASSWORD_BCRYPT);
+        $temporaryAvatarPath = $user->avatar_path;
+        if(CommonUtility::isNullOrEmptyString($temporaryAvatarPath)) {
+            $user->avatar_path = null;
+        } else {
+            $avatarFilename = FileUtility::extractFileNameFromUrl($temporaryAvatarPath);
+            $move_result = FileService::moveFilesToUpload([$avatarFilename]);
+            if (!$move_result) {
+                respond_to_client(500, "Failed to move avatar file");
+                exit;
+            }
+            $user->avatar_path = PostUtility::replaceText($user->avatar_path, FileUtility::$FILE_IS_TEMP_SEARCHING_TEXT, 'isTemp=false');;
+        }
+        $stmt = $connection->prepare("INSERT INTO users (username, email, password, avatar_path) VALUES (?, ?, ?, ?)");
+        $stmt->bind_param("ssss", $user->username, $user->email, $hashedPassword, $user->avatar_path);
         if ($stmt->execute()) {
             respond_to_client(201, "User created successfully", ["id" => $connection->insert_id]);
         } else {
@@ -100,16 +115,15 @@ switch ($method_action) {
         break;
 
     case 'POST_UPDATE':
-        // Update an existing user
         if (isset($_GET['id'])) {
             $id = intval($_GET['id']);
             if (!checkUserOwnerPermission($user, $id)) {
                 respond_to_client(403, "Forbidden: You do not have permission to update this user");
                 exit;
             }
-            $data = json_decode(file_get_contents("php://input"), true);
-            $stmt = $connection->prepare("UPDATE email = ? WHERE id = ?");
-            $stmt->bind_param("si", $data['email'], $id);
+            $user = User::fromJson(file_get_contents("php://input"));
+            $stmt = $connection->prepare("UPDATE users SET email = ? WHERE id = ?");
+            $stmt->bind_param("si", $user->email, $id);
             if ($stmt->execute()) {
                 respond_to_client(200, "User updated successfully");
             } else {

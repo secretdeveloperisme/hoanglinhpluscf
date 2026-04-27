@@ -74,10 +74,25 @@
 				</li>
 				<li class="header__nav-items"><a href="#contact">Contact</a></li>
 				<li class="header__nav-items header__nav_items-right flex-row">
-					<a href="https://github.com/secretdeveloperisme" class="hl-center-text">
-						<img src="/assets/icons/github.svg" class="img-x32">
-					</a>
-					<div class="header-more-wrapper dropdown dropdown--right">
+                    <div class="header-more-wrapper" title="GitHub">
+                        <a href="https://github.com/secretdeveloperisme" class="hl-center-text">
+                            <i class="fa-brands fa-github img-x32"></i>
+                        </a>
+                    </div>
+                    <div class="header-more-wrapper dropdown dropdown--right" id="userActionsWrapper" title="User">
+						<div class="dropdown-btn cursor-pointer">
+                            <img src="/assets/icons/user.png" class="user-avatar-img img-x32 primary-border">
+                        </div>
+						<div class="dropdown-content">
+                            <div username="hlp" class="user-info-wrapper user-info-wrapper-header">
+                                <img src="/assets/icons/user.png" class="user-avatar-img img-x32 primary-border">
+                                <div class="user-username hl-center-text">Linh Nguyen</div>
+                            </div>
+							<a href="pages/profile.html" class="hl-center-text user-my-profile-link">My Profile</a>
+							<a href="pages/my_posts.html" class="hl-center-text user-my-posts-link">My Posts</a>
+						</div>
+					</div>
+					<div class="header-more-wrapper dropdown dropdown--right" title="More actions">
 						<div class="dropdown-btn btn-more cursor-pointer">More</div>
 						<div class="dropdown-content">
 							<a class="hl-center-text" target="_blank"
@@ -103,6 +118,16 @@
 						<h1 class="hl-color-text">LinhPlus</h1>
 					</a>
 				</li>
+                <li class="header__nav-mobile-item">
+                    <div class="header-nav-mobile__sub-item">
+                        <div username="hlp" class="user-info-wrapper">
+                            <img src="/assets/icons/user.png" class="user-avatar-img img-x32 primary-border">
+                            <p class="user-username">Linh Nguyen</p>
+                        </div>
+                        <a href="pages/profile.html" class="hl-center-text user-my-profile-link">My Profile</a>
+                        <a href="pages/my_posts.html" class="hl-center-text user-my-posts-link">My Posts</a>
+                    </div>
+                </li>
 				<li class="header__nav-mobile-item">
 					<div class="header-nav-mobile-item__label">Sections</div>
 					<div class="header-nav-mobile__sub-item">
@@ -140,7 +165,7 @@
 				<li class="header__nav-mobile-item">
 					<div class="header-nav-mobile-item__label">More</div>
 					<div class="header-nav-mobile__sub-item">
-						<a class="hl-center-text" href="pages/hlp_cv.html">My CV</a>
+						<a class="hl-center-text" href="https://secretdeveloperisme.github.io/Curriculum_Vitae/HoangLinhPlusCV.html" target="_blank">My CV</a>
 						<a class="hl-center-text" href="pages/login.html">Login</a>
 					</div>
 				</li>
