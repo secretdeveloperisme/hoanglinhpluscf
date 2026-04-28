@@ -1,5 +1,5 @@
-import { getLoginUser } from "./auth.js";
-import { callUploadFile, showToast, UPLOAD_FILE_API_URL } from "./common.js";
+import { getLoginUser, saveLoggedInUser } from "./auth.js";
+import { callUploadFile, HttpReponseErr, showToast, UPLOAD_FILE_API_URL } from "./common.js";
 import { updateUserProfile } from "./user.js";
 
 // DOM elements
@@ -24,6 +24,12 @@ window.addEventListener('DOMContentLoaded', async () => {
     avatarPathInput.value = currentUser.avatar_path || '';
     previewAvatarImage.src = currentUser.avatar_path || '../assets/icons/user.png';
   } catch (err) {
+    if(err instanceof HttpReponseErr){
+      if(err.status === 401){
+        window.location.href = '/pages/login.html';
+        return;
+      }
+    }
     errorMessage.textContent = err.message;
     form.style.display = 'none';
     return;
@@ -45,14 +51,21 @@ window.addEventListener('DOMContentLoaded', async () => {
       } else {
         avatarPathInput.value = '';
         previewAvatarImage.src = defaultAvatarIcon;
-        showToast({ type: 'error', message: 'Failed to upload avatar.' });
+        showToast("error", "Update Profile", "Failed to upload avatar.");
       }
     }, (err) => {
       avatarPathInput.value = '';
       previewAvatarImage.src = defaultAvatarIcon;
-      showToast({ type: 'error', message: 'Failed to upload avatar.' });
+      showToast("error", "Update Profile", "Failed to upload avatar.");
     });
   });
+
+  function resetForm() {
+    passwordInput.value = '';
+    retypePasswordInput.value = '';
+    avatarPathInput.value = '';
+    avatarInput.value = '';
+  }
 
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
@@ -62,22 +75,30 @@ window.addEventListener('DOMContentLoaded', async () => {
       errorMessage.textContent = 'Passwords do not match.';
       return;
     }
-    const payload = {
-      email: emailInput.value,
-      avatar_path: avatarPathInput.value
-    };
-    if (passwordInput.value) payload.password = passwordInput.value;
+    const payload = {};
+
+    if(emailInput.value && emailInput.value !== currentUser.email){
+      payload.email = emailInput.value;
+    }
+    if(avatarPathInput.value && avatarPathInput.value !== currentUser.avatar_path){
+      payload.avatar_path = avatarPathInput.value;
+    }
+    if (passwordInput.value) {
+      payload.password = passwordInput.value;
+    }
     try {
       const result = await updateUserProfile(currentUser.id, payload);
       if (result.status === 200) {
-        showToast({ type: 'success', message: 'Profile updated successfully!' });
-        passwordInput.value = '';
-        retypePasswordInput.value = '';
+        showToast("success", "Update Profile", "Profile updated successfully.");
+        // Handle post updated
+        resetForm();
+        currentUser = await getLoginUser();
+        saveLoggedInUser(currentUser);
       } else {
-        showToast({ type: 'error', message: result.message || 'Failed to update profile.' });
+        showToast("error", "Update Profile", result.message || 'Failed to update profile.');
       }
     } catch (err) {
-      showToast({ type: 'error', message: err.message });
+      showToast("error", "Update Profile", err.message || 'Failed to update profile.');
     }
   });
 

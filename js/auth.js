@@ -51,20 +51,15 @@ class UserCredential{
 }
 
 export async function getLoginUser() {
-  try{
-    let verifyResp = await makeHttpRequest('GET', AUTH_API_URL, {});
-    if(verifyResp?.data){
-      return new User({
-        id: verifyResp.data.user_id,
-        role: verifyResp.data.role,
-        username: verifyResp.data.user_info.username,
-        email: verifyResp.data.user_info.email,
-        avatar_path: verifyResp.data.user_info.avatar_path
-      })
-    }
-  }catch(err){
-    console.error("Error verifying user:", err);
-    return null;
+  let verifyResp = await makeHttpRequest('GET', AUTH_API_URL, {});
+  if(verifyResp?.data){
+    return new User({
+      id: verifyResp.data.user_id,
+      role: verifyResp.data.role,
+      username: verifyResp.data.user_info.username,
+      email: verifyResp.data.user_info.email,
+      avatar_path: verifyResp.data.user_info.avatar_path
+    })
   }
 }
 
