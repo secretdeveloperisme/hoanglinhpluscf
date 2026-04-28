@@ -203,16 +203,29 @@ fetchAndRenderPosts();
 /* Get current loggedin user to display on navigation bar */
 
 async function showCurrentUserOnNavBar() {
+  const headerNavDesktopWrapper = document.getElementById("userActionsDesktopWrapper");
+  const headerNavMobileWrapper = document.getElementById("userActionsMobileWrapper");
   const userAvatarImgs = document.querySelectorAll(".user-avatar-img");
   const userInfoWrappers = document.querySelectorAll(".user-info-wrapper");
   const userUsernames = document.querySelectorAll(".user-username");
   const userMyProfileLinks = document.querySelectorAll(".user-my-profile-link");
   const userMyPostsLinks = document.querySelectorAll(".user-my-posts-link");
 
+  if(!headerNavDesktopWrapper || !headerNavMobileWrapper || userAvatarImgs.length === 0 || userInfoWrappers.length === 0 || userUsernames.length === 0){
+    console.warn("Some user info elements are missing in the DOM. Skipping user info display on nav bar.");
+    return;
+  }
+
   const currentUser = await getLoggedInUserFromStorage();
   if(currentUser == null){
     return;
   }
+
+  headerNavDesktopWrapper.classList.remove("hl-display-none");
+  headerNavMobileWrapper.classList.remove("hl-display-none");
+
+  headerNavDesktopWrapper.title = currentUser.username || "User";
+  headerNavMobileWrapper.title = currentUser.username || "User";
 
   userAvatarImgs.forEach(img => {
     img.src = currentUser.avatar_path || "/assets/icons/user.png";
