@@ -59,7 +59,7 @@ export async function getLoginUser() {
         role: verifyResp.data.role,
         username: verifyResp.data.user_info.username,
         email: verifyResp.data.user_info.email,
-        avatar_path: verifyResp.data.avatar_path
+        avatar_path: verifyResp.data.user_info.avatar_path
       })
     }
   }catch(err){

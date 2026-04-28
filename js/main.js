@@ -242,7 +242,7 @@ async function showCurrentUserOnNavBar() {
     link.href = `pages/my_posts.html?user_id=${currentUser.id}`;
   });
   userMyProfileLinks.forEach(link => {
-    link.href = `pages/profile.html?user_id=${currentUser.id}`;
+    link.href = `pages/update_profile.html?user_id=${currentUser.id}`;
   });
 }
 

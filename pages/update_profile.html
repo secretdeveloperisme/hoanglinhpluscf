@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Update Profile</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../assets/css/base.css">
+    <link rel="stylesheet" href="../assets/css/components/login.css">
+</head>
+<body>
+    <section>
+        <!-- Background spans for theme -->
+        <!-- 120 spans for background effect, same as login.html -->
+        <!-- ... -->
+        <div class="signin">
+            <div class="content">
+                <h2 id="profileTitle">Update Profile</h2>
+                <form id="updateProfileForm" class="form">
+                    <div class="avatar-wrapper inputBox hl-vertical-center" id="imageUpload">
+                        <p class="hl-text-white hl-margin-bottom-md">Avatar</p>
+                        <input type="file" name="avatar" hidden accept="image/*" id="avatar">
+                        <input type="hidden" name="avatar_path" id="avatarPath">
+                        <label class="avatar-image-wrapper" for="avatar">
+                            <img class="avatar-image img-x128" id="previewAvatarImage" src="../assets/icons/user.png" alt="avatar image">
+                        </label>
+                    </div>
+                    <div class="inputBox">
+                        <input type="text" name="username" id="username" required class="form-control-input" readonly> <i>Username</i>
+                    </div>
+                    <div class="inputBox">
+                        <input type="email" name="email" id="email" required class="form-control-input"> <i>Email</i>
+                    </div>
+                    <div class="inputBox">
+                        <input type="password" name="password" id="password" class="form-control-input" placeholder="Leave blank to keep current password"> <i>New Password</i>
+                    </div>
+                    <div class="inputBox">
+                        <input type="password" name="retype_password" id="retype_password" class="form-control-input" placeholder="Retype new password"> <i>Retype Password</i>
+                    </div>
+                    <div id="updateErrorMessage" style="color: red; margin-bottom: 10px; font-size: 1.6rem;"></div>
+                    <div id="updateSuccessMessage" style="color: green; margin-bottom: 10px; font-size: 1.6rem;"></div>
+                    <div class="inputBox">
+                        <input type="submit" value="Update Profile" id="updateProfileButton" class="form-control-input">
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+    <script type="module" src="/js/update_profile.js"></script>
+</body>
+</html>

@@ -121,9 +121,47 @@ switch ($method_action) {
                 respond_to_client(403, "Forbidden: You do not have permission to update this user");
                 exit;
             }
-            $user = User::fromJson(file_get_contents("php://input"));
-            $stmt = $connection->prepare("UPDATE users SET email = ? WHERE id = ?");
-            $stmt->bind_param("si", $user->email, $id);
+            $userInput = User::fromJson(file_get_contents("php://input"));
+            $fields = [];
+            $params = [];
+            $types = '';
+            if (!empty($userInput->email)) {
+                $fields[] = "email = ?";
+                $params[] = $userInput->email;
+                $types .= 's';
+            }
+            if (!empty($userInput->password)) {
+                $fields[] = "password = ?";
+                $hashedPassword = password_hash($userInput->password, PASSWORD_BCRYPT);
+                $params[] = $hashedPassword;
+                $types .= 's';
+            }
+            if (isset($userInput->avatar_path)) {
+                $avatarPath = $userInput->avatar_path;
+                if (!CommonUtility::isNullOrEmptyString($avatarPath)) {
+                    $avatarFilename = FileUtility::extractFileNameFromUrl($avatarPath);
+                    $move_result = FileService::moveFilesToUpload([$avatarFilename]);
+                    if (!$move_result) {
+                        respond_to_client(500, "Failed to move avatar file");
+                        exit;
+                    }
+                    $avatarPath = PostUtility::replaceText($avatarPath, FileUtility::$FILE_IS_TEMP_SEARCHING_TEXT, 'isTemp=false');
+                } else {
+                    $avatarPath = null;
+                }
+                $fields[] = "avatar_path = ?";
+                $params[] = $avatarPath;
+                $types .= 's';
+            }
+            if (empty($fields)) {
+                respond_to_client(400, "No fields to update");
+                exit;
+            }
+            $params[] = $id;
+            $types .= 'i';
+            $sql = "UPDATE users SET ".implode(", ", $fields)." WHERE id = ?";
+            $stmt = $connection->prepare($sql);
+            $stmt->bind_param($types, ...$params);
             if ($stmt->execute()) {
                 respond_to_client(200, "User updated successfully");
             } else {
