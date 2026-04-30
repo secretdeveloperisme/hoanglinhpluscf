@@ -372,7 +372,7 @@ switch ($method_action) {
                 respond_to_client(500, "Failed to retrieve newly created post");
                 exit;
             }
-            echo respond_to_client(200, "Creates the post successfully", $new_post);
+            respond_to_client(200, "Creates the post successfully", $new_post);
         } else {
             $logger->error("Failed to create post: " . $stmt->error);
             respond_to_client(500, "Failed to create post");
@@ -518,7 +518,11 @@ switch ($method_action) {
         array_map(function($key, $value) use (&$fields_strings) {
             $fields_strings[]= "$key = $value";
         }, array_keys($fields), array_values($fields));
-        $sql = "UPDATE posts SET ".implode(", ", $fields_strings).", updated_at = CURRENT_TIMESTAMP WHERE post_id = ? AND deleted_at IS NULL";
+        if(empty($fields_strings)){
+            $sql = "UPDATE posts SET updated_at = CURRENT_TIMESTAMP WHERE post_id = ? AND deleted_at IS NULL";
+        } else {
+            $sql = "UPDATE posts SET ".implode(", ", $fields_strings).", updated_at = CURRENT_TIMESTAMP WHERE post_id = ? AND deleted_at IS NULL";
+        }
         $logger->debug("[updatePost] SQL: $sql");
         $logger->debug("[updatePost] type: ".implode("", $types));
         $stmt = $connection->prepare($sql);

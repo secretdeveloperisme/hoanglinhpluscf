@@ -29,6 +29,27 @@ form {
     padding: 0.5rem 1rem;
 }
 
+/* auto saving draft post result style*/
+#autoSaveDraftStatus{
+    position : fixed;
+    top : 16px;
+    right : 16px;
+    z-index:  99;
+    padding : 8px 16px;
+    border-radius : 6px;
+    box-shadow : 0 2px 8px rgba(0,0,0,0.1);
+}
+
+#autoSaveDraftStatus.error{
+    color: #842029;
+    background : #f8d7da;
+}
+
+#autoSaveDraftStatus.success{
+    background : #e2f7e2;
+    color : #155724;
+}
+
 
 /* Sidebar elements */
 .post-image-wrapper {
@@ -291,7 +312,7 @@ input[type="radio"].btn-check:checked+.btn.btn-outline-danger {
     background: #fff;
     box-shadow: 0 2px 8px rgba(0,0,0,0.07);
     border-radius: 8px;
-    overflow: visible; 
+    overflow: visible;
 }
 
 .main-content {

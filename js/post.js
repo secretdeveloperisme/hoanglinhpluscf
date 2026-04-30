@@ -6,15 +6,40 @@ import { quillOptions, attachments,  addResizeHandleToImages} from "./editor_con
 
 document.addEventListener("DOMContentLoaded", async () => {
   let user = await getLoginUser();
-  if (!user || !user.user_id) {
+  if (!user) {
     window.location.href = "/pages/login.html?redirect=" + encodeURIComponent(window.location.href);
+  }
+
+  // Debounce config
+  const DRAFT_DEBOUNCE_MS = 7000;
+  let draftTimeout = null;
+  let isAutoSaving = false;
+  let lastDraftStatus = null;
+
+  // Show draft save status
+  function showDraftStatus(msg, isError = false) {
+    let statusId = 'autoSaveDraftStatus';
+    let statusElem = document.getElementById(statusId);
+    if (!statusElem) {
+      statusElem = document.createElement('div');
+      statusElem.id = statusId;
+      document.body.appendChild(statusElem);
+    }
+    if(isError) {
+      statusElem.className = 'error'
+    } else {
+      statusElem.className = 'success';
+    }
+    statusElem.textContent = msg;
+    statusElem.style.display = 'block';
+    setTimeout(() => { statusElem.style.display = 'none'; }, 2000);
   }
   function checkOwnership(post) {
     if (user.role === "ADMIN") {
       return true;
     }
-    if (post.author_id !== user.user_id) {
-      console.error(`User ${user.user_id} does not own post ${post.post_id}`);
+    if (post.author_id !== user.id) {
+      console.error(`User ${user.id} does not own post ${post.post_id}`);
       showToast("error", "Access Denied", "You do not have permission to edit this post.");
       window.location.href = "/pages/login.html?redirect=" + encodeURIComponent(window.location.href);
       return false;
@@ -57,6 +82,10 @@ document.addEventListener("DOMContentLoaded", async () => {
       displayPostImage.src = event.target.result;
     }
     fileReader.readAsDataURL(this.files[0]);
+  });
+
+  postTitle.addEventListener("input", function (event) {
+    document.title = event.target.value
   });
 
   const quillBetterTableModule = editor.getModule('table-better');
@@ -165,7 +194,6 @@ document.addEventListener("DOMContentLoaded", async () => {
       console.error("No post ID provided for loading post data.");
       return;
     }
-    document.title = "Edit Post";
     try {
       let {data: post} = await makeHttpRequest("GET", A_POST_URL + postId)
       if (post === null) {
@@ -178,6 +206,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         window.location.href = "/pages/login.html?redirect=" + encodeURIComponent(window.location.href);
         return;
       }
+      document.title = "Edit Post - " + post.title;
       postTitle.value = post.title;
       postDescription.value = post.description;
       switch (post.post_status) {
@@ -349,6 +378,47 @@ document.addEventListener("DOMContentLoaded", async () => {
       });
   }
 
+  // Debounced auto-save draft
+  async function autoSaveDraft(postId) {
+    if (isAutoSaving) return;
+    isAutoSaving = true;
+    try {
+      let dataObject = preparePostPayload();
+      if (!dataObject) {
+        isAutoSaving = false;
+        return;
+      }
+      // Always save as draft
+      dataObject.post_status = "DRAFT";
+      // Use a separate endpoint or the same update endpoint with DRAFT status
+      let resp = await fetch(`${A_POST_URL}${postId}&action=update`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(dataObject)
+      });
+      let rawBody = await resp.text();
+      let jsonResp = parseJson(rawBody);
+      if (jsonResp && jsonResp.status == 200) {
+        showDraftStatus("Draft saved");
+        lastDraftStatus = "success";
+      } else {
+        showDraftStatus("Draft save failed", true);
+        lastDraftStatus = "error";
+      }
+    } catch (err) {
+      showDraftStatus("Draft save error", true);
+      lastDraftStatus = "error";
+    }
+    isAutoSaving = false;
+  }
+
+  function debounceAutoSave(postId) {
+    if (draftTimeout) clearTimeout(draftTimeout);
+    draftTimeout = setTimeout(() => {
+      autoSaveDraft(postId);
+    }, DRAFT_DEBOUNCE_MS);
+  }
+
   function resetPostForm() {
     displayPostImage.src = defaultUploadIconUrl;
     tagsContainer.innerHTML = "";
@@ -367,23 +437,50 @@ document.addEventListener("DOMContentLoaded", async () => {
   const postId = urlParams.get('id');
   if (postId) {
     loadPostData(postId);
+    postTitle.addEventListener("input", (event) =>{
+      document.title = "Edit Post - " + event.target.value;
+    });
+    // Attach debounced auto-save to all relevant fields
+    [postTitle, postDescription, tagsContainer, publishedStatusRadio, draftStatusRadio, postImageInput, editor.root].forEach(el => {
+      if (!el) return;
+      if (el === editor.root) {
+        editor.on('text-change', () => debounceAutoSave(postId));
+      } else if (el === tagsContainer) {
+        let tagInputObserver = new MutationObserver(() => debounceAutoSave(postId));
+        tagInputObserver.observe(tagsContainer, { childList: true, subtree: true });
+      } else if (el === postImageInput) {
+        el.addEventListener('change', () => debounceAutoSave(postId));
+      } else {
+        el.addEventListener('input', () => debounceAutoSave(postId));
+      }
+    });
+    // Attachments: listen for changes in the container
+    if (attachmentContainer) {
+      const observer = new MutationObserver(() => debounceAutoSave(postId));
+      observer.observe(attachmentContainer, { childList: true, subtree: true });
+    }
+  }else{
+    postTitle.addEventListener("input", (event) =>{
+      document.title = "New Post - " + event.target.value;
+    });
   }
 
   // Add event listeners
 
   btnResetPost.addEventListener("click", resetPostForm);
+  // Cancel auto-save on manual save
+  if (btnSavePost != undefined) {
+    btnSavePost.addEventListener("click", (event) => {
+      event.preventDefault();
+      if (draftTimeout) clearTimeout(draftTimeout);
+      callUpdatePost(postId);
+    });
+  }
 
   if (btnCreatePost != undefined) {
     btnCreatePost.addEventListener("click", (event) => {
       event.preventDefault();
       callCreatePost();
-    });
-  }
-
-  if (btnSavePost != undefined) {
-    btnSavePost.addEventListener("click", (event) => {
-      event.preventDefault();
-      callUpdatePost(postId);
     });
   }
 });

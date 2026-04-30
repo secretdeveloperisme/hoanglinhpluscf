@@ -96,20 +96,15 @@
     .post-navbar-search {
         margin-top: 10px;
         width: 100%;
-        max-width: none; /* Remove max-width on smaller screens */
+        max-width: none;
     }
 
     .search-dropdown {
         left: 0;
         right: 0;
-        width: auto; /* Adjust width for full responsiveness */
+        width: auto;
     }
 }
-
-
-
-/* Container for centering content */
-
 .posts-container {
     max-width: 1140px;
     margin-left: auto;
@@ -370,7 +365,7 @@
     color: #fff;
     background-color: var(--primary-color);
     border-color: var(--primary-color);
-}   
+}
 
 
 
