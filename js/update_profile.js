@@ -16,8 +16,8 @@ const successMessage = document.getElementById('updateSuccessMessage');
 const backToLoginButton = document.getElementById('backToLoginButton');
 
 window.addEventListener('DOMContentLoaded', async () => {
-  let currentUser = await getLoginUser();
   try {
+    let currentUser = await getLoginUser();
     usernameInput.value = currentUser.username;
     emailInput.value = currentUser.email;
     avatarPathInput.value = currentUser.avatar_path || '';

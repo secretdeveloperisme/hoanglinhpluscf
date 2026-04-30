@@ -257,6 +257,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     request_posts_url.set('limit', itemsPerPage);
     request_posts_url.set('sort', sortColumn);
     request_posts_url.set('direction', sortDirection);
+    request_posts_url.set('get_all_for', 'admin_manage');
     try {
       let response = await makeHttpRequest("GET", `${POSTS_API_URL}?${request_posts_url.toString()}`);
       return response.data;

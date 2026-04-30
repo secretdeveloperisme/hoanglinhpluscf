@@ -1,30 +1,37 @@
 <?php
 // Entity class for the 'posts' table
+
+use Api\Constants\PostStatus;
+
 class Post {
     public static $SELECT_COLUMNS;
     public static $SEARCH_COLUMNS = [
         "post_id", "title", "slug"
     ];
 
-    public $post_id;
-    public $title;
-    public $description;
-    public $content;
-    public $cover_image;
-    public $slug;
-    public $author_id;
-    public $post_status;
-    public $reading_time; // in minutes
-    public $created_at;
-    public $updated_at;
-    public $deleted_at;
-    public $tags = [];
-    public $attachments = [];
+    public int $post_id;
+    public string $title;
+    public ?string $description;
+    public string $content;
+    public ?string $cover_image;
+    public string $slug;
+    public int $author_id;
+    public PostStatus $post_status;
+    public int $reading_time; // in minutes
+    public string $created_at;
+    public string $updated_at;
+    public ?string $deleted_at;
+    public array $tags = [];
+    public array $attachments = [];
 
     public function __construct($data = []) {
         foreach ($data as $key => $value) {
             if (property_exists($this, $key)) {
-                $this->$key = $value;
+                if($key === 'post_status' && is_string($value)){
+                    $this->$key = PostStatus::fromString($value);
+                } else {
+                    $this->$key = $value;
+                }
             }
         }
     }

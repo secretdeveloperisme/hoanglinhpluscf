@@ -27,7 +27,7 @@ $action = isset($_GET['action'])?$_GET['action']:'default';
 $method_action = strtoupper($method.'_'.$action);
 
 
-function getPostTags($connection, $post_id) {
+function getPostTags(mysqli $connection, int $post_id) {
     $stmt = $connection->prepare("SELECT t.tag_id, t.name, t.created_at FROM post_tags pt JOIN tags t ON pt.tag_id = t.tag_id WHERE pt.post_id = ?");
     $stmt->bind_param("i", $post_id);
     $stmt->execute();
@@ -39,7 +39,7 @@ function getPostTags($connection, $post_id) {
     return $tags;
 }
 
-function getPostAttachments($connection, $post_id) {
+function getPostAttachments(mysqli $connection, int $post_id) {
     $stmt = $connection->prepare("SELECT attachment_id, post_id, file_name, file_url, file_type, created_at FROM attachments WHERE post_id = ?");
     $stmt->bind_param("i", $post_id);
     $stmt->execute();
@@ -51,7 +51,7 @@ function getPostAttachments($connection, $post_id) {
     return $attachments;
 }
 
-function getPostById($connection, $post_id) {
+function getPostById(mysqli $connection, int $post_id) {
     $stmt = $connection->prepare("SELECT * FROM posts WHERE post_id = ?");
     $stmt->bind_param("i", $post_id);
     $stmt->execute();
@@ -63,7 +63,7 @@ function getPostById($connection, $post_id) {
     return new Post($post);
 }
 
-function getPostBySlug($connection, $slug) {
+function getPostBySlug(mysqli $connection, string $slug) {
     $stmt = $connection->prepare("SELECT * FROM posts WHERE slug = ? AND deleted_at IS NULL");
     $stmt->bind_param("s", $slug);
     $stmt->execute();
@@ -76,7 +76,7 @@ function getPostBySlug($connection, $slug) {
 }
 
 
-function isTagsChanged($connection, $post_id, $new_tags) {
+function isTagsChanged(mysqli $connection, int $post_id, array $new_tags) {
     if (!is_array($new_tags)) return true;
     $existing_tags = getPostTags($connection, $post_id);
     if (count($existing_tags) !== count($new_tags)) return true;
@@ -92,7 +92,7 @@ function isTagsChanged($connection, $post_id, $new_tags) {
 }
 
 
-function checkUserAuthentication($user, $method_action) {
+function checkUserAuthentication(?object $user, string $method_action) {
     if ($method_action === 'GET_DEFAULT') {
         return true;
     }
@@ -102,26 +102,26 @@ function checkUserAuthentication($user, $method_action) {
     return true;
 }
 
-function checkOwnerPermission($user, $post) {
+function checkOwnerPermission(object $user, Post $post) {
     if ($user->id !== $post->author_id) {
         respond_to_client(403, "You are not the owner of this post");
         exit;
     }
 }
-$user = CommonUtility::getUserFromTokenCookie();
 
-$logger->debug("User from token cookie: ".json_encode($user));
+$user = CommonUtility::getUserFromTokenCookie();
 
 if(!checkUserAuthentication($user, $method_action)) {
     respond_to_client(401, "Unauthenticated: Please login to access this resource");
     exit;
 }
 
+$is_admin = $user != null && $user->role === 'ADMIN';
 
 switch ($method_action) {
     case 'GET_DEFAULT': // GET METHOD
         if (isset($_GET['id']) || isset($_GET['slug'])) {
-            $post = [];
+            $post = null;
             if(isset($_GET['slug'])) {
                 $slug = $_GET['slug'];
                 $post = getPostBySlug($connection, $slug);
@@ -132,6 +132,11 @@ switch ($method_action) {
 
             if (!$post) {
                 respond_to_client(404, "Post not found");
+                exit;
+            }
+
+            if(!$is_admin && $post->post_status === PostStatus::DRAFT && ($user == null || $user->id !== $post->author_id)){
+                respond_to_client(403, "Forbidden: You don't have permission to access this resource");
                 exit;
             }
 
@@ -146,9 +151,32 @@ switch ($method_action) {
             $limit = isset($_GET['limit']) ? max(1, intval($_GET['limit'])) : $default_page_size;
             $offset = ($page - 1) * $limit;
 
-            // Filtering
-            $where = ["deleted_at IS NULL"];
+            $where = [];
 
+            $get_all_for = isset($_GET['get_all_for'])?$_GET['get_all_for']:'default';
+            if($get_all_for !== 'default'){
+                if($user == null){
+                    respond_to_client(401, "Unauthenticated: Please login to access this resource");
+                    exit;
+                }
+            }
+
+            switch ($get_all_for) {
+                case 'user_manage':
+                    array_push($where, "author_id = ".$user->id);
+                    break;
+
+                case 'admin_manage':
+                     if($user == null || $user->role !== 'ADMIN'){
+                        respond_to_client(403, "Forbidden: You don't have permission to access this resource");
+                        exit;
+                    }
+                    $where[] = "1=1";
+                    break;
+                default:
+                    array_push($where, "deleted_at IS NULL","post_status = 'PUBLISHED'");
+                    break;
+            }
             $params = [];
             $types = '';
 
@@ -185,6 +213,9 @@ switch ($method_action) {
             $params[] = $offset;
             $types .= 'ii';
 
+            $logger->debug("[getPosts] sql statement: ".$sql);
+            $logger->debug("[getPosts] params: ".implode(",", $params));
+
             $stmt = $connection->prepare($sql);
             $stmt->bind_param($types, ...$params);
             $stmt->execute();
@@ -200,7 +231,7 @@ switch ($method_action) {
             // Optionally, return total count for pagination
             $count_sql = "SELECT COUNT(*) as total FROM posts WHERE $where_sql";
             $count_stmt = $connection->prepare($count_sql);
-            $logger->debug("[getPosts] type: ".$types);
+            $logger->debug("[getPosts] count sql statement: ".$count_sql);
             $logger->debug("[getPosts] params: ".implode(",", $params));
 
             if ($types !== '') {
@@ -477,7 +508,7 @@ switch ($method_action) {
                 }
             }
             if (!empty($filenames)) {
-                $logger->debug("Files need to move to upload folder: ", implode(", ", $filenames));
+                $logger->debug("Files need to move to upload folder: ".implode(", ", $filenames));
                 $move_result = FileService::moveFilesToUpload($filenames);
                 if (!$move_result) {
                     $connection->close();

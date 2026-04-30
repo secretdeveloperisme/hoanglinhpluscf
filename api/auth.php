@@ -77,7 +77,6 @@ switch ($method_action) {
                 respond_to_client(200, "Authentication successful", data: [
                     "user_id" => $jwtUser->id,
                     "role" => $jwtUser->role,
-                    "access_token" => $accessToken,
                     "user_info" => $userInfo
                 ]);
                 exit;
