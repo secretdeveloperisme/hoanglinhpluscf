@@ -10,9 +10,11 @@ const showRegisterFormButton = document.getElementById('showRegisterForm');
 const showLoginFormButton = document.getElementById('showLoginForm');
 const errorMessage = document.getElementById('errorMessage');
 const registerErrorMessage = document.getElementById('registerErrorMessage');
+const passwordInput = document.getElementById('registerPassword');
+const retypePasswordInput = document.getElementById('retypePassword');
+
 let redirectUrl = new URLSearchParams(window.location.search).get('redirect');
 
-// Avatar upload logic
 const avatarInput = document.getElementById('avatar');
 const avatarPathInput = document.getElementById('avatarPath');
 const previewAvatarImage = document.getElementById('previewAvatarImage');
@@ -45,7 +47,27 @@ if (avatarInput && previewAvatarImage && avatarPathInput) {
   });
 }
 
-showRegisterFormButton.addEventListener('click', () => {
+if(passwordInput && retypePasswordInput){
+  const validatePasswords = () => {
+    if (passwordInput.value && retypePasswordInput.value && passwordInput.value !== retypePasswordInput.value) {
+      registerErrorMessage.textContent = 'Passwords do not match!';
+    } else {
+      registerErrorMessage.textContent = '';
+    }
+  }
+  const handlePasswordInput = () => {
+    if (retypePasswordInput.value) {
+      validatePasswords();
+    }
+    retypePasswordInput.value = '';
+    registerErrorMessage.textContent = '';
+  }
+  passwordInput.addEventListener('input', handlePasswordInput);
+  retypePasswordInput.addEventListener('blur', validatePasswords);
+}
+
+showRegisterFormButton.addEventListener('click', (e) => {
+  e.preventDefault();
   loginForm.classList.add('fade-out');
   loginForm.addEventListener('animationend', () => {
     loginForm.style.display = 'none';
@@ -55,9 +77,11 @@ showRegisterFormButton.addEventListener('click', () => {
   }, { once: true });
   signinTitle.textContent = "REGISTER";
   errorMessage.textContent = '';
+  document.title = "Register";
 });
 
-showLoginFormButton.addEventListener('click', () => {
+showLoginFormButton.addEventListener('click', (e) => {
+  e.preventDefault();
   registerForm.classList.add('fade-out');
   registerForm.addEventListener('animationend', () => {
     registerForm.style.display = 'none';
@@ -66,6 +90,7 @@ showLoginFormButton.addEventListener('click', () => {
     loginForm.classList.add('fade-in');
   }, { once: true });
   signinTitle.textContent = "SIGN IN";
+  document.title = "Login";
   registerErrorMessage.textContent = '';
 });
 
@@ -104,6 +129,7 @@ loginForm.addEventListener('submit', async (e) => {
     console.error('Error:', error);
   }
 });
+
 
 registerForm.addEventListener('submit', async (e) => {
   e.preventDefault();

@@ -13,12 +13,11 @@ const avatarPathInput = document.getElementById('avatarPath');
 const previewAvatarImage = document.getElementById('previewAvatarImage');
 const errorMessage = document.getElementById('updateErrorMessage');
 const successMessage = document.getElementById('updateSuccessMessage');
-
+const backToLoginButton = document.getElementById('backToLoginButton');
 
 window.addEventListener('DOMContentLoaded', async () => {
-  let currentUser = null;
+  let currentUser = await getLoginUser();
   try {
-    currentUser = await getLoginUser();
     usernameInput.value = currentUser.username;
     emailInput.value = currentUser.email;
     avatarPathInput.value = currentUser.avatar_path || '';
@@ -26,7 +25,7 @@ window.addEventListener('DOMContentLoaded', async () => {
   } catch (err) {
     if(err instanceof HttpReponseErr){
       if(err.status === 401){
-        window.location.href = '/pages/login.html';
+        window.location.href = '/pages/login.html?redirect=/pages/update_profile.html';
         return;
       }
     }
@@ -59,6 +58,25 @@ window.addEventListener('DOMContentLoaded', async () => {
       showToast("error", "Update Profile", "Failed to upload avatar.");
     });
   });
+
+  if(passwordInput && retypePasswordInput){
+    const validatePasswords = () => {
+    if (passwordInput.value && retypePasswordInput.value && passwordInput.value !== retypePasswordInput.value) {
+      errorMessage.textContent = 'Passwords do not match!';
+    } else {
+      errorMessage.textContent = '';
+    }
+  }
+  const handlePasswordInput = () => {
+    if (retypePasswordInput.value) {
+      validatePasswords();
+    }
+    retypePasswordInput.value = '';
+    errorMessage.textContent = '';
+  }
+  passwordInput.addEventListener('input', handlePasswordInput);
+  retypePasswordInput.addEventListener('blur', validatePasswords);
+  }
 
   function resetForm() {
     passwordInput.value = '';
@@ -100,6 +118,11 @@ window.addEventListener('DOMContentLoaded', async () => {
     } catch (err) {
       showToast("error", "Update Profile", err.message || 'Failed to update profile.');
     }
+  });
+
+  backToLoginButton.addEventListener('click', (e) => {
+    e.preventDefault();
+    window.location.href = '/pages/login.html';
   });
 
 });
