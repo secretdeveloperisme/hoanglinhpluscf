@@ -123,7 +123,6 @@ function buildTOC(contentEl, tocContainer) {
     if (postContent && post.content) {
       quillOptionsWithoutToolBar.readOnly = true;
       quillOptionsWithoutToolBar.modules["table-better"] = null;
-      console.log(quillOptionsWithoutToolBar)
       const quillEditor = new Quill(postContent, quillOptionsWithoutToolBar);
       const contentDelta = JSON.parse(post.content);
       quillEditor.updateContents(contentDelta);

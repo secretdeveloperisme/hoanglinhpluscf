@@ -52,7 +52,7 @@ let quillOptionsWithoutToolBar = {
   modules: {
     syntax: {
       languages: [
-        { key: 'Plain', label: 'Plain' },
+        { key: 'plain', label: 'Plain' },
         { key: 'java', label: 'Java' },
         { key: 'rust', label: 'Rust' },
         { key: 'javascript', label: 'JavaScript' },
