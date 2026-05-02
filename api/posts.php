@@ -564,9 +564,9 @@ switch ($method_action) {
             $fields_strings[]= "$key = $value";
         }, array_keys($fields), array_values($fields));
         if(empty($fields_strings)){
-            $sql = "UPDATE posts SET updated_at = CURRENT_TIMESTAMP WHERE post_id = ? AND deleted_at IS NULL";
+            $sql = "UPDATE posts SET updated_at = UTC_TIMESTAMP WHERE post_id = ? AND deleted_at IS NULL";
         } else {
-            $sql = "UPDATE posts SET ".implode(", ", $fields_strings).", updated_at = CURRENT_TIMESTAMP WHERE post_id = ? AND deleted_at IS NULL";
+            $sql = "UPDATE posts SET ".implode(", ", $fields_strings).", updated_at = UTC_TIMESTAMP WHERE post_id = ? AND deleted_at IS NULL";
         }
         $logger->debug("[updatePost] SQL: $sql");
         $logger->debug("[updatePost] type: ".implode("", $types));
@@ -693,7 +693,7 @@ switch ($method_action) {
             }
         } else {
             // Soft delete
-            $stmt = $connection->prepare("UPDATE posts SET deleted_at = CURRENT_TIMESTAMP WHERE post_id = ? AND deleted_at IS NULL");
+            $stmt = $connection->prepare("UPDATE posts SET deleted_at = UTC_TIMESTAMP WHERE post_id = ? AND deleted_at IS NULL");
             $stmt->bind_param("i", $post_id);
             if ($stmt->execute()) {
                 respond_to_client(200, "Post soft deleted");

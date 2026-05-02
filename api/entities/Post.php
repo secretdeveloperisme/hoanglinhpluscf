@@ -8,6 +8,7 @@ class Post {
     public static array $SEARCH_COLUMNS = [
         "post_id", "title", "slug"
     ];
+    public static array $TIME_COLUMNS = ["created_at", "updated_at", "deleted_at"];
 
     public int $post_id;
     public string $title;
@@ -29,7 +30,10 @@ class Post {
             if (property_exists($this, $key)) {
                 if($key === 'post_status' && is_string($value)){
                     $this->$key = PostStatus::fromString($value);
-                } else {
+                }else if(in_array($key, self::$TIME_COLUMNS) && !empty($value)){
+                    $this->$key = (new DateTime($value, new DateTimeZone('UTC')))->format(DATE_ATOM);
+                }
+                else {
                     $this->$key = $value;
                 }
             }
