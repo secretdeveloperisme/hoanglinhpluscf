@@ -4,8 +4,8 @@
 use Api\Constants\PostStatus;
 
 class Post {
-    public static $SELECT_COLUMNS;
-    public static $SEARCH_COLUMNS = [
+    public static array $SELECT_COLUMNS;
+    public static array $SEARCH_COLUMNS = [
         "post_id", "title", "slug"
     ];
 
@@ -60,5 +60,5 @@ class Post {
 }
 Post::$SELECT_COLUMNS = [
     "post_id", "title", "description", "cover_image",
-    "slug", "author_id", "post_status", "reading_time", "created_at", "updated_at"
+    "slug", "author_id", "post_status", "reading_time", "created_at", "updated_at", 'deleted_at'
 ];

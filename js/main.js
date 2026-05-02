@@ -208,8 +208,6 @@ async function showCurrentUserOnNavBar() {
   const userAvatarImgs = document.querySelectorAll(".user-avatar-img");
   const userInfoWrappers = document.querySelectorAll(".user-info-wrapper");
   const userUsernames = document.querySelectorAll(".user-username");
-  const userMyProfileLinks = document.querySelectorAll(".user-my-profile-link");
-  const userMyPostsLinks = document.querySelectorAll(".user-my-posts-link");
 
   if(!headerNavDesktopWrapper || !headerNavMobileWrapper || userAvatarImgs.length === 0 || userInfoWrappers.length === 0 || userUsernames.length === 0){
     console.warn("Some user info elements are missing in the DOM. Skipping user info display on nav bar.");
@@ -237,12 +235,6 @@ async function showCurrentUserOnNavBar() {
 
   userUsernames.forEach(usernameTag => {
     usernameTag.textContent = currentUser.username || "User";
-  });
-  userMyPostsLinks.forEach(link => {
-    link.href = `pages/my_posts.html?user_id=${currentUser.id}`;
-  });
-  userMyProfileLinks.forEach(link => {
-    link.href = `pages/update_profile.html?user_id=${currentUser.id}`;
   });
 }
 

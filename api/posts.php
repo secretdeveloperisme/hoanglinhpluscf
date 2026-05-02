@@ -102,11 +102,22 @@ function checkUserAuthentication(?object $user, string $method_action) {
     return true;
 }
 
-function checkOwnerPermission(object $user, Post $post) {
-    if ($user->id !== $post->author_id) {
-        respond_to_client(403, "You are not the owner of this post");
-        exit;
+function checkAdminPermission(object $user): bool {
+    return $user->role === 'ADMIN';
+}
+
+function checkOwnerPermission(object $user, Post $post): bool {
+    return $user->id === $post->author_id;
+}
+
+function checkPostPermission(?object $user, Post $post) {
+    if(checkAdminPermission($user)){
+        return true;
     }
+    if(checkOwnerPermission($user, $post)){
+        return true;
+    }
+    return false;
 }
 
 $user = CommonUtility::getUserFromTokenCookie();
@@ -163,7 +174,7 @@ switch ($method_action) {
 
             switch ($get_all_for) {
                 case 'user_manage':
-                    array_push($where, "author_id = ".$user->id);
+                    array_push($where, "author_id = ".$user->id, "deleted_at IS NULL");
                     break;
 
                 case 'admin_manage':
@@ -422,7 +433,10 @@ switch ($method_action) {
             respond_to_client(404, "Post not found");
             exit;
         }
-        checkOwnerPermission($user, $post); // exit if user is not the owner of the post
+        if (!checkOwnerPermission($user, $post)) {
+            respond_to_client(403, "You are not the owner of this post");
+            exit;
+        }
         $orginal_post_map = $post->get_object();
         $data = json_decode(file_get_contents('php://input'), true);
         $fields = [];
@@ -646,7 +660,10 @@ switch ($method_action) {
         }
         $post_id = intval($_GET['id']);
         $post = getPostById($connection, $post_id);
-        checkOwnerPermission($user, $post); // exit if user is not the owner of the post
+        if (!checkOwnerPermission($user, $post)) {
+            respond_to_client(403, "You are not the owner of this post");
+            exit;
+        }
         $is_hard = isset($_GET['isHard']) && ($_GET['isHard'] === 'true' || $_GET['isHard'] === '1');
 
         if ($is_hard) {
