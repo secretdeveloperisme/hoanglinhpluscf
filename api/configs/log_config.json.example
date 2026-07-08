@@ -1,0 +1,5 @@
+{
+  "log_dir": "logs",
+  "log_level": "DEBUG",
+  "max_files": 5
+}
