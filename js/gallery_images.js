@@ -1,5 +1,6 @@
 
 let GALLERY_IMAGES = [
+  { "src": "assets/images/gallery/linux_mint.webp", "alt": "Linux Mint", "dataOrientation": "landscape" },
   { "src": "assets/images/gallery/ubuntu.webp", "alt": "Ubuntu", "dataOrientation": "landscape" },
   { "src": "assets/images/gallery/AI_DG_contest.webp", "alt": "AI contest certificate", "dataOrientation": "landscape" },
   { "src": "assets/images/gallery/embedded_programming.webp", "alt": "Embedded programming", "dataOrientation": "portait" },
